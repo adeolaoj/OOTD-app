@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">OOTD</string>
+    <string name="newUserButtonText">New user</string>
+    <string name="existingUserButtonText">Existing user</string>
 </resources>

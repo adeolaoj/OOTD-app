@@ -2,4 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="warm_brown">#FFAF8B87</color>
+    <color name="med_warm_brown">#FFC29D93</color>
+    <color name="med_pink">#FFFFBFCC</color>
+    <color name="light_pink">#FFFFD4DF</color>
+    <color name="super_light_pink">#FFFFE0ED</color>
+    <color name="beige">#FFF9EEE6</color>
+    <color name="light_grey">#FFFAFAFA</color>
+
 </resources>
