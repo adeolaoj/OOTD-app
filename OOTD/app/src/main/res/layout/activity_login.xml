@@ -21,6 +21,16 @@
         app:layout_constraintVertical_bias="0.257">
 
         <Button
+            android:id="@+id/tester"
+            android:layout_width="match_parent"
+            android:text="Default"
+            android:layout_height="wrap_content"
+            android:layout_margin= "10dp"
+
+            android:background="@drawable/outlined_button_style_from_youtube_video"
+            />
+
+        <Button
             android:id="@+id/existingUserButton"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="164dp"
