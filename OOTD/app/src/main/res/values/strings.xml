@@ -4,4 +4,10 @@
     <string name="existingUserButtonText">Existing user</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_closet">Closet</string>
+    <string name="title_outfit_log">Outfit Log</string>
+    <string name="title_add_plan">Add/Plan</string>
+    <string name="title_generate">Generate</string>
+    <string name="title_profile">Profile</string>
 </resources>
