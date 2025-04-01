@@ -3,30 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_library">
+    app:startDestination="@+id/navigation_closet">
 
 
     <fragment
-        android:id="@+id/navigation_library"
-        android:name="com.example.a5_sample.LibraryFragment"
-        android:label="@string/title_library"
-        tools:layout="@layout/fragment_library" />
+        android:id="@+id/navigation_closet"
+        android:name="com.example.ootd.ClosetLanding_ItemListing"
+        android:label="@string/title_closet"
+        tools:layout="@layout/fragment_closet_landing__item_listing" />
 
     <fragment
-        android:id="@+id/navigation_chat"
-        android:name="com.example.a5_sample.ChatFragment"
-        android:label="@string/title_chat"
-        tools:layout="@layout/fragment_chat" />
+        android:id="@+id/navigation_outfit_log"
+        android:name="com.example.ootd.OutfitLogFragment"
+        android:label="@string/title_outfit_log"
+        tools:layout="@layout/fragment_outfit_log" />
 
     <fragment
-        android:id="@+id/navigation_map"
-        android:name="com.example.a5_sample.MapFragment"
-        android:label="@string/title_map"
-        tools:layout="@layout/fragment_map" />
+        android:id="@+id/navigation_add_plan"
+        android:name="com.example.ootd.AddPlanLanding"
+        android:label="@string/title_add_plan"
+        tools:layout="@layout/fragment_add_plan_landing" />
+
+    <fragment
+        android:id="@+id/navigation_generate"
+        android:name="com.example.ootd.GenerateFragment"
+        android:label="@string/title_generate"
+        tools:layout="@layout/fragment_generate" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.a5_sample.ProfileFragment"
+        android:name="com.example.ootd.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>
