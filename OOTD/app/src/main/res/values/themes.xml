@@ -3,7 +3,23 @@
     <style name="Base.Theme.OOTD" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- Nav bar color. Not working for some reason??? -->
+        <item name="android:navigationBarColor">@color/med_pink</item>
+        <!-- colorOnSecondaryContainer should be med_pink and the nav bar should be light_pink but too high contrast since it doesn't work-->
+        <item name="colorSecondaryContainer">@color/super_light_pink</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/light_pink</item>
+        <item name="colorPrimaryVariant">@color/med_pink</item>
+        <item name="colorOnPrimary">@color/dark_text</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/beige</item>
+        <item name="colorSecondaryVariant">@color/warm_brown</item>
+        <item name="colorOnSecondary">@color/dark_text</item>
+
     </style>
 
-    <style name="Theme.OOTD" parent="Base.Theme.OOTD" />
+    <style name="Theme.OOTD" parent="Base.Theme.OOTD">
+        <item name="android:navigationBarColor">@color/med_pink</item>
+    </style>
 </resources>

@@ -11,4 +11,6 @@
     <color name="beige">#FFF9EEE6</color>
     <color name="light_grey">#FFFAFAFA</color>
 
+    <color name="dark_text">#FF49454F</color>
+
 </resources>
