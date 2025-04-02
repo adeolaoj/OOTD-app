@@ -10,4 +10,11 @@
     <string name="title_add_plan">Add/Plan</string>
     <string name="title_generate">Generate</string>
     <string name="title_profile">Profile</string>
+
+    <string name="hello_closet_garment_fragment">This is the Closet (Garment) Fragment</string>
+    <string name="hello_closet_outfit_fragment">This is the Closet (Outfit) Fragment</string>
+    <string name="hello_log_fragment">This is the Outfit Log Fragment</string>
+    <string name="hello_add_fragment">This is the Add/Plan Fragment</string>
+    <string name="hello_generate_fragment">This is the Generate Fragment</string>
+    <string name="hello_profile_fragment">This is the Profile Fragment</string>
 </resources>
