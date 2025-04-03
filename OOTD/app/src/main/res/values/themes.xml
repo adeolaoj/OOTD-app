@@ -5,7 +5,7 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
 
         <!-- Nav bar color. Not working for some reason??? -->
-        <item name="colorSurface">@color/nav_bar_color</item>
+        <item name="colorSurface">@color/beige</item> <!-- color for closet vs saved outfits -->
         <!-- colorOnSecondaryContainer should be med_pink and the nav bar should be light_pink but too high contrast since it doesn't work-->
         <item name="colorSecondaryContainer">@color/med_pink</item>
         <!-- Primary brand color. -->
