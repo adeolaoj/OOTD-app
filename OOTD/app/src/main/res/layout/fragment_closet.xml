@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         app:tabIndicatorFullWidth="false"
-        app:tabIndicatorColor = "@android:color/white"/>
+        app:tabIndicatorColor = "@color/beige"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
