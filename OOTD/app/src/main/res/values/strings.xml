@@ -10,6 +10,8 @@
     <string name="title_add_plan">Add/Plan</string>
     <string name="title_generate">Generate</string>
     <string name="title_profile">Profile</string>
+    <string name="title_plan_outfit">Plan Outfit</string>
+    <string name="title_add_item">Add Item</string>
 
     <string name="hello_closet_garment_fragment">This is the Closet (Garment) Fragment</string>
     <string name="hello_closet_outfit_fragment">This is the Closet (Outfit) Fragment</string>
