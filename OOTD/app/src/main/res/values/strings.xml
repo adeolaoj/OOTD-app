@@ -17,4 +17,7 @@
     <string name="hello_add_fragment">This is the Add/Plan Fragment</string>
     <string name="hello_generate_fragment">This is the Generate Fragment</string>
     <string name="hello_profile_fragment">This is the Profile Fragment</string>
+
+    <string name="add_item_dsc">Add item to closet.</string>
+    <string name="plan_outfit_dsc">Plan outfit for closet.</string>
 </resources>
