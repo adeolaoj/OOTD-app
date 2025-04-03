@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddPlanLanding">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_add_fragment"
-        android:gravity="center" />
 
-</FrameLayout>
+    <ImageButton
+        android:id="@+id/addItemButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="140dp"
+        android:backgroundTint="#00FFFFFF"
+        android:contentDescription="@string/add_item_dsc"
+        android:src="@drawable/add_item_icon" />
+
+    <ImageButton
+        android:id="@+id/planOutfitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/addItemButton"
+        android:layout_above="@id/addItemButton"
+        android:backgroundTint="#00FFFFFF"
+        android:contentDescription="@string/plan_outfit_dsc"
+        android:src="@drawable/plan_outfit_icon" />
+
+</RelativeLayout>

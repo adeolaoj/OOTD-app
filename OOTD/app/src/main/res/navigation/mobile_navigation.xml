@@ -25,6 +25,18 @@
         tools:layout="@layout/fragment_add_plan_landing" />
 
     <fragment
+        android:id="@+id/navigation_plan_outfit"
+        android:name="com.example.ootd.PlanOutfitFragment"
+        android:label="@string/title_plan_outfit"
+        tools:layout="@layout/fragment_plan_outfit" />
+
+    <fragment
+        android:id="@+id/navigation_add_item"
+        android:name="com.example.ootd.AddItemFragment"
+        android:label="@string/title_add_item"
+        tools:layout="@layout/fragment_add_item" />
+
+    <fragment
         android:id="@+id/navigation_generate"
         android:name="com.example.ootd.GenerateFragment"
         android:label="@string/title_generate"
