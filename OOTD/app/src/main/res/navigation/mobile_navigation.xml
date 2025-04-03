@@ -8,9 +8,9 @@
 
     <fragment
         android:id="@+id/navigation_closet"
-        android:name="com.example.ootd.ClosetLanding_ItemListing"
+        android:name="com.example.ootd.ClosetFragment"
         android:label="@string/title_closet"
-        tools:layout="@layout/fragment_closet_landing__item_listing" />
+        tools:layout="@layout/fragment_closet" />
 
     <fragment
         android:id="@+id/navigation_outfit_log"
