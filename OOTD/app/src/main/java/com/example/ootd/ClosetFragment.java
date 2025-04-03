@@ -16,10 +16,10 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ClosetLanding_ItemListing#newInstance} factory method to
+ * Use the {@link ClosetFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ClosetLanding_ItemListing extends Fragment {
+public class ClosetFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,7 +30,7 @@ public class ClosetLanding_ItemListing extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ClosetLanding_ItemListing() {
+    public ClosetFragment() {
         // Required empty public constructor
     }
 
@@ -40,11 +40,11 @@ public class ClosetLanding_ItemListing extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ClosetLanding_ItemListing.
+     * @return A new instance of fragment ClosetFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ClosetLanding_ItemListing newInstance(String param1, String param2) {
-        ClosetLanding_ItemListing fragment = new ClosetLanding_ItemListing();
+    public static ClosetFragment newInstance(String param1, String param2) {
+        ClosetFragment fragment = new ClosetFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,9 +64,45 @@ public class ClosetLanding_ItemListing extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_closet_landing__item_listing, container, false);
+        View view = inflater.inflate(R.layout.fragment_closet, container, false);
+
+        TabLayout tabLayout = view.findViewById(R.id.closetTabs);
+        ViewPager2 viewPager = view.findViewById(R.id.viewPager);
+
+        ClosetFragment.ClosetPagerAdapter adapter = new ClosetFragment.ClosetPagerAdapter(this);
+        viewPager.setAdapter(adapter);
+
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            if (position == 0) {
+                tab.setText("Closet");
+            } else {
+                tab.setText("Saved Outfits");
+            }
+        }).attach();
+
+
+        return view;
     }
 
+    public static class ClosetPagerAdapter extends FragmentStateAdapter {
+        public ClosetPagerAdapter(Fragment fragment) {
+            super(fragment);
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            if (position == 0) {
+                return new ClosetLanding_ItemListing();
+            } else {
+                return new ClosetLanding_OutfitFragment();
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return 2;
+        }
+    }
 }
