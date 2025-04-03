@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PlanOutfitFragment">
+
+    <Spinner
+        android:id="@+id/clothing_dropdown"
+        android:layout_width="139dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="100dp"
+        android:text="@string/dropdown_menu_default" />
+
+    <Button
+        android:id="@+id/done_planning_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="@color/med_warm_brown"
+        android:text="@string/done_planning_btn"
+        android:textColor="@color/white"
+        app:cornerRadius="50dp" />
+</FrameLayout>
+
