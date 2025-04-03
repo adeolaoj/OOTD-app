@@ -1,10 +1,6 @@
 package com.example.ootd;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,29 +12,14 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-
-public class LoginActivity extends AppCompatActivity {
-
-    private SharedPreferences myPrefs;
+public class NewUserActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_new_user);
 
-        Button stinkerButton = findViewById(R.id.stinker);
-
-        stinkerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // close the login page
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
         /*
         TabLayout loginTabLayout = findViewById(R.id.loginTabs);
@@ -51,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
                 tab.setText("New User");
             }
         }).attach();
+
          */
     }
 }
