@@ -37,4 +37,7 @@
         <item>Headwear</item>
         <item>Other</item>
     </string-array>
+
+    <string name="log_out">Log Out</string>
+
 </resources>
