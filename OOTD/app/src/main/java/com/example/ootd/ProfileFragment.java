@@ -31,6 +31,7 @@ public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
     private Button logOutButton;
+    private Button stinkerButton;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -79,6 +80,18 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
 
                 getActivity().finish(); // TODO: null pointer exception?
+            }
+        });
+
+        // testing camera
+        stinkerButton = binding.stinkerTester;
+        stinkerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CameraApplication.class);
+                startActivity(intent);
+
+                getActivity().finish();
             }
         });
 
