@@ -47,6 +47,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui:2.8.9")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
+    implementation("androidx.cardview:cardview:1.0.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
