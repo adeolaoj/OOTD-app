@@ -39,5 +39,11 @@
     </string-array>
 
     <string name="log_out">Log Out</string>
+    <string name="log_in">Log In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="textEmail">Email</string>
+    <string name="textPassword">Password</string>
+    <string name="textName">Name</string>
+    <string name="confirmPassword">Confirm Password</string>
 
 </resources>
