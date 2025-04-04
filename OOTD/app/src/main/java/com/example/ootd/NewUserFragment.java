@@ -1,5 +1,8 @@
 package com.example.ootd;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,58 +10,72 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NewUserFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.ootd.databinding.FragmentLoginBinding;
+import com.example.ootd.databinding.FragmentNewUserBinding;
+
+
 public class NewUserFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private Button signUpButton;
+    private EditText email;
+    private EditText password;
+    private EditText name;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private SharedPreferences myPrefs;
+    private String savedEmail;
+    private String savedPassword;
+    private String savedName;
+    private FragmentNewUserBinding binding;
 
-    public NewUserFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NewUserFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NewUserFragment newInstance(String param1, String param2) {
-        NewUserFragment fragment = new NewUserFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_user, container, false);
+        binding = FragmentNewUserBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+
+        signUpButton = binding.signUpButton;
+        email = binding.signUpNewUserEmail;
+        password = binding.signUpNewUserPassword;
+        name = binding.signUpNewUserName;
+
+        Context context = getActivity().getApplicationContext();
+        myPrefs = context.getSharedPreferences("OOTD", Context.MODE_PRIVATE);
+
+        // get saved info from prefs
+        savedEmail = myPrefs.getString("loginEmail","");
+        savedPassword = myPrefs.getString("loginPassword","");
+        savedName = myPrefs.getString("signUpName","");
+
+        // set info to text views
+        email.setText(savedEmail);
+        password.setText(savedPassword);
+        name.setText(savedName);
+
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor peditor = myPrefs.edit();
+                peditor.putString("loginEmail", String.valueOf(email.getText()));
+                peditor.putString("loginPassword", String.valueOf(password.getText()));
+                peditor.apply();
+
+                // login
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+        return root;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

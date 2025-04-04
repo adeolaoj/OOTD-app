@@ -1,15 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="LOGIN FRAGMENT BRUH"
-        android:gravity="bottom"/>
+    <EditText
+        android:id="@+id/loginUserEmail"
+        android:layout_width="287dp"
+        android:layout_height="55dp"
 
-</FrameLayout>
+        android:background="@drawable/login_edit_text_box"
+
+        android:hint="@string/textEmail"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.275" />
+
+    <EditText
+        android:id="@+id/loginUserPassword"
+        android:layout_width="287dp"
+        android:layout_height="55dp"
+
+        android:background="@drawable/login_edit_text_box"
+
+        android:hint="@string/textPassword"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginUserEmail"
+        app:layout_constraintVertical_bias="0.082" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="287dp"
+        android:layout_height="53dp"
+        android:background="@drawable/yet_another_round_button"
+        android:backgroundTint="@color/super_light_pink"
+        android:text="@string/log_in"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginUserPassword"
+        app:layout_constraintVertical_bias="0.543" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
