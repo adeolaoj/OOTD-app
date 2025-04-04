@@ -7,6 +7,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+/*
+assistance from youtube video: https://www.youtube.com/watch?app=desktop&v=ayKMfVt2Sg4
+ */
+
 public class LoginAdapter extends FragmentPagerAdapter {
     private Context ctx;
     int totalTabs;
