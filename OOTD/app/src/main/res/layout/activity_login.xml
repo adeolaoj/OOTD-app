@@ -36,8 +36,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:tabBackground="@color/light_grey"
-            app:tabIndicatorColor="@color/light_pink"
+            app:tabBackground="@color/light_pink"
             app:tabIndicatorFullWidth="false"
             app:tabSelectedTextColor="@color/dark_text"
             tools:layout_editor_absoluteY="139dp" />
