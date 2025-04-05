@@ -90,8 +90,6 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), CameraApplication.class);
                 startActivity(intent);
-
-                getActivity().finish();
             }
         });
 
