@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.navigation.fragment.NavHostFragment;
 
 public class CameraApplication extends AppCompatActivity {
 
@@ -32,6 +33,7 @@ public class CameraApplication extends AppCompatActivity {
         buttonPicture = findViewById(R.id.stinkerCamera);
         imageView = findViewById(R.id.imageView1);
 
+
         buttonPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,7 +45,6 @@ public class CameraApplication extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
         if (requestCode == CAMERA_CODE && resultCode == RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(photo);
@@ -51,5 +52,12 @@ public class CameraApplication extends AppCompatActivity {
             Toast.makeText(this,"Cancelled",Toast.LENGTH_SHORT).show();
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
