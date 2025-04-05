@@ -59,6 +59,8 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.firebase.database)
     implementation(libs.firebase.auth)
+    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
+    implementation("com.google.firebase:firebase-analytics")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

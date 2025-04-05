@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ClosetLanding_ItemListing">
 
@@ -10,7 +11,11 @@
         android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/garmentRecyclerView">
+        android:id="@+id/garmentRecyclerView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
     </androidx.recyclerview.widget.RecyclerView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
