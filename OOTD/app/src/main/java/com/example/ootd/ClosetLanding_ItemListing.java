@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.google.android.material.chip.Chip;
@@ -120,6 +121,7 @@ public class ClosetLanding_ItemListing extends Fragment {
             //private final TextView textView;
             private final ImageView imageView;
             private final ChipGroup chipGroup;
+            private final ImageButton favorite;
 
             public ViewHolder(View view) {
                 super(view);
@@ -127,6 +129,7 @@ public class ClosetLanding_ItemListing extends Fragment {
 
                 chipGroup = view.findViewById(R.id.tagsList);
                 imageView = view.findViewById(R.id.garmentImageView);
+                favorite = view.findViewById(R.id.favorites);
             }
 
             public ChipGroup getChips() {
@@ -135,6 +138,10 @@ public class ClosetLanding_ItemListing extends Fragment {
 
             public ImageView getImageView() {
                 return imageView;
+            }
+
+            public ImageButton getFavoriteButton() {
+                return favorite;
             }
         }
 
@@ -169,6 +176,25 @@ public class ClosetLanding_ItemListing extends Fragment {
                 chip.setCloseIconVisible(false);
                 chipGroup.addView(chip);
             }
+
+            ImageButton favoriteBtn = viewHolder.favorite;
+
+//            for (Garment element : garmentList) {
+//                if (element.isFavorite()) {
+//                    favoriteBtn.setImageResource(R.drawable.favorites_filled);
+//                }
+//            }
+
+            
+            favoriteBtn.setOnClickListener(v -> {
+                garmentList.get(viewHolder.getAdapterPosition()).setFavorites();
+
+                if (garmentList.get(viewHolder.getAdapterPosition()).isFavorite()) {
+                    favoriteBtn.setImageResource(R.drawable.favorites_filled);
+                } else {
+                    favoriteBtn.setImageResource(R.drawable.favorites_unfilled);
+                }
+            });
 
             // Get element from your dataset at this position and replace the
             // contents of the view with that element

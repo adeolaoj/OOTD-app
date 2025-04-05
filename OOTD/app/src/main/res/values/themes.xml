@@ -31,4 +31,12 @@
     <style name="MyToolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="background">@color/nav_bar_color</item>
     </style>
+
+    <style name="ShapeAppearanceOverlay.MaterialComponents.Chip" parent="">
+        <item name="cornerSize">20%</item>
+    </style>
+
+    <style name="ChipTextStyle">
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>
