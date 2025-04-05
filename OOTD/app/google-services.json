@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "566242182265",
+    "firebase_url": "https://ootd-c9213-default-rtdb.firebaseio.com",
+    "project_id": "ootd-c9213",
+    "storage_bucket": "ootd-c9213.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566242182265:android:ce76bb63f3ac4f2778c0a8",
+        "android_client_info": {
+          "package_name": "com.example.ootd"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnSWS8Dexz_Ad76qMgv6RlqUk79w7_4W4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

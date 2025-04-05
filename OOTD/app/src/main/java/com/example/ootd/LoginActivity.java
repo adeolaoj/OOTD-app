@@ -34,8 +34,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        mAuth = FirebaseAuth.getInstance();
+
+        // for sprint 2: firebase authentication
+        //mAuth = FirebaseAuth.getInstance();
         
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
@@ -52,22 +53,9 @@ public class LoginActivity extends AppCompatActivity {
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-        /*
-        Button stinkerButton = findViewById(R.id.stinker);
-
-        stinkerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // login
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        */
-
     }
-    
+
+    /*
     @Override
     public void onStart() {
         super.onStart();
@@ -75,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
+     */
 
     private void updateUI(FirebaseUser currentUser) {
 
