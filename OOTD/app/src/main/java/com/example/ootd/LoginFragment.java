@@ -44,9 +44,8 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //View root = inflater.inflate(R.layout.fragment_new_user, container, false);
-
-        mAuth = FirebaseAuth.getInstance();
+        // authentication for sprint 2
+        //mAuth = FirebaseAuth.getInstance();
 
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -70,12 +69,17 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor peditor = myPrefs.edit();
-                String email = binding.loginUserEmail.getText().toString();
-                String password = binding.loginUserPassword.getText().toString();
 
-                loginUser(email, password);
+                //loginUser(email, password);
+                peditor.putString("loginEmail", String.valueOf(email.getText()));
+                peditor.putString("loginPassword", String.valueOf(password.getText()));
+                peditor.apply();
+
 
                 // login
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+                getActivity().finish();
 
             }
         });
@@ -90,6 +94,8 @@ public class LoginFragment extends Fragment {
         binding = null;
     }
 
+    // fix authentication for sprint 2
+    /*
     public void loginUser(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(ContextCompat.getMainExecutor(getActivity()), task -> {
@@ -108,6 +114,7 @@ public class LoginFragment extends Fragment {
                     }
                 });
     }
+     */
 
 
 }
