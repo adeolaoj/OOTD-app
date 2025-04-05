@@ -20,16 +20,23 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
     private SharedPreferences myPrefs;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        mAuth = FirebaseAuth.getInstance();
+        
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
@@ -58,6 +65,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         */
+
+    }
+    
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+    }
+
+    private void updateUI(FirebaseUser currentUser) {
 
     }
 }
