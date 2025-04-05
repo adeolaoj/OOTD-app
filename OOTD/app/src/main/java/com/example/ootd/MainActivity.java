@@ -54,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         SharedPreferences myPrefs = context.getSharedPreferences("LIBRARY", MODE_PRIVATE);
         String name = myPrefs.getString("loginName", "Owner");
-
-
          */
         EdgeToEdge.enable(this);
 
