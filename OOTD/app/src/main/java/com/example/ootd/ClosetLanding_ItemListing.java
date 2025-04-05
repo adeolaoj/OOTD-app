@@ -4,7 +4,14 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +39,8 @@ public class ClosetLanding_ItemListing extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private RecyclerView recyclerView;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -74,44 +83,44 @@ public class ClosetLanding_ItemListing extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_closet_landing__item_listing, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.garmentRecyclerView);
+        recyclerView = view.findViewById(R.id.garmentRecyclerView);
+        recyclerView.setPadding(0, 0, 0, 160);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
 
-        recyclerView.setAdapter(new GarmentAdapter(sampleGarmentList(), getContext()));
+        GarmentViewModel viewModel = new ViewModelProvider(requireActivity()).get(GarmentViewModel.class);
+
+        GarmentAdapter adapter = new GarmentAdapter(new ArrayList<>(), getContext());
+        recyclerView.setAdapter(adapter);
+
+        // set up the data, get the data from the ViewModel
+        viewModel.getGarmentsData().observe(getViewLifecycleOwner(), garments ->{
+            adapter.updateGarmentData(garments);
+        });
+
 
         // Inflate the layout for this fragment
         return view;
     }
 
-    private List<Garment> sampleGarmentList() {
-        List<Garment> garments = new ArrayList<>();
-        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Casual",
-                "Winter", "Long-Sleeves"))));
-        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Formal",
-                "Summer", "Short-Sleeves"))));
-        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Semi-Formal",
-                "Fall", "Sleeveless"))));
-        garments.get(2).setFavorites();
-        return garments;
-    }
-
-    public class GarmentAdapter extends RecyclerView.Adapter<GarmentAdapter.ViewHolder> {
+    public static class GarmentAdapter extends RecyclerView.Adapter<GarmentAdapter.ViewHolder> {
 
         private List<Garment> garmentList;
         private Context context;
 
         /**
          * Initialize the dataset of the Adapter
-         *
-         * @param dataSet String[] containing the data to populate views to be used
-         * by RecyclerView
          */
 
         public GarmentAdapter(List<Garment> dataSet, Context context) {
             this.garmentList = dataSet;
             this.context = context;
+        }
+
+        public void updateGarmentData(List<Garment> list) {
+            this.garmentList = list;
+            notifyDataSetChanged();
         }
 
 
@@ -164,9 +173,6 @@ public class ClosetLanding_ItemListing extends Fragment {
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 
-            int[] garmentImages = {R.drawable.garment_picture_default, R.drawable.garment_picture_default,
-                    R.drawable.garment_picture_default, R.drawable.garment_picture_default};
-
             Garment currGarment = garmentList.get(position);
 
             ChipGroup chipGroup = viewHolder.chipGroup;
@@ -178,8 +184,6 @@ public class ClosetLanding_ItemListing extends Fragment {
                 chip.setCloseIconVisible(false);
                 chipGroup.addView(chip);
             }
-
-            Log.d("AdapterDebug", "Favorite button is null? " + (viewHolder.favorite == null));
 
             ImageButton favoriteBtn = viewHolder.favorite;
 
@@ -198,9 +202,10 @@ public class ClosetLanding_ItemListing extends Fragment {
                 }
             });
 
-            // Get element from your dataset at this position and replace the
-            // contents of the view with that element
-            viewHolder.getImageView().setImageResource(garmentImages[position]);
+            // Get element from dataset at the corresponding positions and replace the
+            // contents of the view with a picture of the garment
+            //TODO: REPLACE WITH NON-PLACEHOLDER IMAGE
+            viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default);
         }
 
         // Return the size of your dataset (invoked by the layout manager)

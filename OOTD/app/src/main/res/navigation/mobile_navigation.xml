@@ -52,4 +52,10 @@
         android:name="com.example.ootd.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_review_outfit"
+        android:name="com.example.ootd.ProfileFragment"
+        android:label="Review Your Outfit"
+        tools:layout="@layout/fragment_outfit_review" />
 </navigation>
