@@ -2,4 +2,49 @@
     <string name="app_name">OOTD</string>
     <string name="newUserButtonText">New user</string>
     <string name="existingUserButtonText">Existing user</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_closet">Closet</string>
+    <string name="title_outfit_log">Outfit Log</string>
+    <string name="title_add_plan">Add/Plan</string>
+    <string name="title_generate">Generate</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_plan_outfit">Plan Outfit</string>
+    <string name="title_add_item">Add Item</string>
+
+    <string name="hello_closet_garment_fragment">This is the Closet (Garment) Fragment</string>
+    <string name="hello_closet_outfit_fragment">This is the Closet (Outfit) Fragment</string>
+    <string name="hello_log_fragment">This is the Outfit Log Fragment</string>
+    <string name="hello_add_fragment">This is the Add/Plan Fragment</string>
+    <string name="hello_generate_fragment">This is the Generate Fragment</string>
+    <string name="hello_profile_fragment">This is the Profile Fragment</string>
+
+    <string name="add_item_dsc">Add item to closet.</string>
+    <string name="plan_outfit_dsc">Plan outfit for closet.</string>
+
+    <string name="done_planning_btn">Done Planning</string>
+    <string name="dropdown_menu_default">Tops</string>
+    <string-array name="dropdown_menu_items">
+        <item>Tops</item>
+        <item>Bottoms</item>
+        <item>Shoes</item>
+        <item>Outerwear</item>
+        <item>Dresses</item>
+        <item>Swim</item>
+        <item>Accessories</item>
+        <item>Jewelry</item>
+        <item>Bags</item>
+        <item>Headwear</item>
+        <item>Other</item>
+    </string-array>
+
+    <string name="log_out">Log Out</string>
+    <string name="log_in">Log In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="textEmail">Email</string>
+    <string name="textPassword">Password</string>
+    <string name="textName">Name</string>
+    <string name="confirmPassword">Confirm Password</string>
+    <string name="title_activity_camera_application">CameraApplication</string>
+
 </resources>

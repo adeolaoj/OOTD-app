@@ -1,0 +1,185 @@
+package com.example.ootd;
+
+import android.content.Context;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link ClosetLanding_ItemListing#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class ClosetLanding_ItemListing extends Fragment {
+
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    public ClosetLanding_ItemListing() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment ClosetLanding_ItemListing.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static ClosetLanding_ItemListing newInstance(String param1, String param2) {
+        ClosetLanding_ItemListing fragment = new ClosetLanding_ItemListing();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_closet_landing__item_listing, container, false);
+
+        RecyclerView recyclerView = view.findViewById(R.id.garmentRecyclerView);
+
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.setAdapter(new GarmentAdapter(sampleGarmentList(), getContext()));
+
+        // Inflate the layout for this fragment
+        return view;
+    }
+
+    private List<Garment> sampleGarmentList() {
+        List<Garment> garments = new ArrayList<>();
+        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Casual",
+                "Winter", "Long-Sleeves"))));
+        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Formal",
+                "Summer", "Short-Sleeves"))));
+        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Semi-Formal",
+                "Fall", "Sleeveless"))));
+        return garments;
+    }
+
+    public class GarmentAdapter extends RecyclerView.Adapter<GarmentAdapter.ViewHolder> {
+
+        private List<Garment> garmentList;
+        private Context context;
+
+        /**
+         * Initialize the dataset of the Adapter
+         *
+         * @param dataSet String[] containing the data to populate views to be used
+         * by RecyclerView
+         */
+
+        public GarmentAdapter(List<Garment> dataSet, Context context) {
+            this.garmentList = dataSet;
+            this.context = context;
+        }
+
+
+        /**
+         * Provide a reference to the type of views that you are using
+         * (custom ViewHolder)
+         */
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            //private final TextView textView;
+            private final ImageView imageView;
+            private final ChipGroup chipGroup;
+
+            public ViewHolder(View view) {
+                super(view);
+                // Define click listener for the ViewHolder's View
+
+                chipGroup = view.findViewById(R.id.tagsList);
+                imageView = view.findViewById(R.id.garmentImageView);
+            }
+
+            public ChipGroup getChips() {
+                return chipGroup;
+            }
+
+            public ImageView getImageView() {
+                return imageView;
+            }
+        }
+
+
+
+        // Create new views (invoked by the layout manager)
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+            // Create a new view, which defines the UI of the list item
+            View view = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.garment_layout, viewGroup, false);
+
+            return new ViewHolder(view);
+        }
+
+        // Replace the contents of a view (invoked by the layout manager)
+        @Override
+        public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+
+            int[] garmentImages = {R.drawable.garment_picture_default, R.drawable.garment_picture_default,
+                    R.drawable.garment_picture_default, R.drawable.garment_picture_default};
+
+            Garment currGarment = garmentList.get(position);
+
+            ChipGroup chipGroup = viewHolder.chipGroup;
+
+            chipGroup.removeAllViews();
+            for (String tag : currGarment.getGarmentTags()) {
+                Chip chip = new Chip(context);
+                chip.setText(tag);
+                chip.setCloseIconVisible(false);
+                chipGroup.addView(chip);
+            }
+
+            // Get element from your dataset at this position and replace the
+            // contents of the view with that element
+            viewHolder.getImageView().setImageResource(garmentImages[position]);
+        }
+
+        // Return the size of your dataset (invoked by the layout manager)
+        @Override
+        public int getItemCount() {
+            return garmentList.size();
+        }
+    }
+
+}

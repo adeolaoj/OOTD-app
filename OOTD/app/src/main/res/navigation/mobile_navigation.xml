@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_closet">
+
+
+    <fragment
+        android:id="@+id/navigation_closet"
+        android:name="com.example.ootd.ClosetFragment"
+        android:label="@string/title_closet"
+        tools:layout="@layout/fragment_closet" />
+
+    <fragment
+        android:id="@+id/navigation_outfit_log"
+        android:name="com.example.ootd.OutfitLogFragment"
+        android:label="@string/title_outfit_log"
+        tools:layout="@layout/fragment_outfit_log" />
+
+    <fragment
+        android:id="@+id/navigation_add_plan"
+        android:name="com.example.ootd.AddPlanLanding"
+        android:label="@string/title_add_plan"
+        tools:layout="@layout/fragment_add_plan_landing" />
+
+    <fragment
+        android:id="@+id/navigation_plan_outfit"
+        android:name="com.example.ootd.PlanOutfitFragment"
+        android:label="@string/title_plan_outfit"
+        tools:layout="@layout/fragment_plan_outfit" />
+
+    <fragment
+        android:id="@+id/navigation_add_item"
+        android:name="com.example.ootd.AddItemFragment"
+        android:label="@string/title_add_item"
+        tools:layout="@layout/fragment_add_item" />
+
+    <fragment
+        android:id="@+id/navigation_generate"
+        android:name="com.example.ootd.GenerateFragment"
+        android:label="@string/title_generate"
+        tools:layout="@layout/fragment_generate" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.ootd.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>
