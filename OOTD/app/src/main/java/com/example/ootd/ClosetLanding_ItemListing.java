@@ -8,9 +8,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.google.android.material.chip.Chip;
@@ -91,6 +93,7 @@ public class ClosetLanding_ItemListing extends Fragment {
                 "Summer", "Short-Sleeves"))));
         garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Semi-Formal",
                 "Fall", "Sleeveless"))));
+        garments.get(2).setFavorites();
         return garments;
     }
 
@@ -120,6 +123,7 @@ public class ClosetLanding_ItemListing extends Fragment {
             //private final TextView textView;
             private final ImageView imageView;
             private final ChipGroup chipGroup;
+            private final ImageButton favorite;
 
             public ViewHolder(View view) {
                 super(view);
@@ -127,6 +131,7 @@ public class ClosetLanding_ItemListing extends Fragment {
 
                 chipGroup = view.findViewById(R.id.tagsList);
                 imageView = view.findViewById(R.id.garmentImageView);
+                favorite = view.findViewById(R.id.favorites);
             }
 
             public ChipGroup getChips() {
@@ -135,6 +140,10 @@ public class ClosetLanding_ItemListing extends Fragment {
 
             public ImageView getImageView() {
                 return imageView;
+            }
+
+            public ImageButton getFavoriteButton() {
+                return favorite;
             }
         }
 
@@ -169,6 +178,25 @@ public class ClosetLanding_ItemListing extends Fragment {
                 chip.setCloseIconVisible(false);
                 chipGroup.addView(chip);
             }
+
+            Log.d("AdapterDebug", "Favorite button is null? " + (viewHolder.favorite == null));
+
+            ImageButton favoriteBtn = viewHolder.favorite;
+
+            if (currGarment.isFavorite()) {
+                favoriteBtn.setImageResource(R.drawable.favorites_filled);
+            }
+
+            
+            favoriteBtn.setOnClickListener(v -> {
+                garmentList.get(viewHolder.getAdapterPosition()).setFavorites();
+
+                if (garmentList.get(viewHolder.getAdapterPosition()).isFavorite()) {
+                    favoriteBtn.setImageResource(R.drawable.favorites_filled);
+                } else {
+                    favoriteBtn.setImageResource(R.drawable.favorites_unfilled);
+                }
+            });
 
             // Get element from your dataset at this position and replace the
             // contents of the view with that element
