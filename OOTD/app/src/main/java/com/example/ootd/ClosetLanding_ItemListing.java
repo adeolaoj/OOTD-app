@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,6 +93,7 @@ public class ClosetLanding_ItemListing extends Fragment {
                 "Summer", "Short-Sleeves"))));
         garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Semi-Formal",
                 "Fall", "Sleeveless"))));
+        garments.get(2).setFavorites();
         return garments;
     }
 
@@ -177,13 +179,13 @@ public class ClosetLanding_ItemListing extends Fragment {
                 chipGroup.addView(chip);
             }
 
+            Log.d("AdapterDebug", "Favorite button is null? " + (viewHolder.favorite == null));
+
             ImageButton favoriteBtn = viewHolder.favorite;
 
-//            for (Garment element : garmentList) {
-//                if (element.isFavorite()) {
-//                    favoriteBtn.setImageResource(R.drawable.favorites_filled);
-//                }
-//            }
+            if (currGarment.isFavorite()) {
+                favoriteBtn.setImageResource(R.drawable.favorites_filled);
+            }
 
             
             favoriteBtn.setOnClickListener(v -> {

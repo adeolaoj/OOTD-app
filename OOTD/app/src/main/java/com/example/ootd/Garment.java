@@ -10,6 +10,7 @@ public class Garment {
     public Garment(Integer imageAddress, List<String> garmentTags) {
         this.imageAddress = imageAddress;
         this.garmentTags = garmentTags;
+        this.favorites = false;
     }
 
     public Integer getImageAddress() {return imageAddress;}
