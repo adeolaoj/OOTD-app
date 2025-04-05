@@ -60,4 +60,11 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
 
     }
+
+    // implement the back button for fragments
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        return (navController.navigateUp() || super.onSupportNavigateUp());
+    }
 }
