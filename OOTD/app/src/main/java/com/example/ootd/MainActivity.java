@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -25,6 +26,9 @@ import android.view.View;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.ootd.databinding.ActivityMainBinding;
 import com.google.firebase.FirebaseApp;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,5 +63,39 @@ public class MainActivity extends AppCompatActivity {
          */
         EdgeToEdge.enable(this);
 
+        // setting up a list of garments (temporary data):
+        List<Garment> garments = new ArrayList<>();
+        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Casual",
+                "Winter", "Long-Sleeves"))));
+        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Formal",
+                "Summer", "Short-Sleeves"))));
+        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Semi-Formal",
+                "Fall", "Sleeveless"))));
+        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Basic",
+                "Winter", "Long-Sleeves"))));
+        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Boxy",
+                "Summer", "Short-Sleeves"))));
+        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Baggy",
+                "Fall", "Sleeveless"))));
+        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Business",
+                "Winter", "Long-Sleeves"))));
+        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Pajamas",
+                "Summer", "Short-Sleeves"))));
+        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Colorful",
+                "Fall", "Sleeveless", "Supercute", "amazing"))));
+
+        garments.get(2).setFavorites();
+
+        // Initializing the data by referencing the GarmentViewModel:
+        GarmentViewModel viewModel = new ViewModelProvider(this).get(GarmentViewModel.class);
+        viewModel.setGarmentsData(garments); // TODO: replace garments with actual database stuff later
+
+    }
+
+    // implement the back button for fragments
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        return (navController.navigateUp() || super.onSupportNavigateUp());
     }
 }
