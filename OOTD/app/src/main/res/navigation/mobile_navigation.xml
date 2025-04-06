@@ -64,4 +64,19 @@
         android:name="com.example.ootd.GarmentListingFragment"
         android:label="Garment Listing"
         tools:layout="@layout/fragment_garment_listing" />
+
+    <fragment
+        android:id="@+id/navigation_saved_outfit_details"
+        android:name="com.example.ootd.SavedOutfitDetail" />
+        <argument
+            android:name="outfit position"
+            app:argType="integer" />
+
+    <fragment
+        android:id="@+id/navigation_saved_outfit_tab"
+        android:name="com.example.ootd.ClosetLanding_OutfitFragment" />
+        <action
+            android:id="@+id/action_viewSavedOutfitDetails_onClick"
+            app:destination="@id/navigation_saved_outfit_details" />
+
 </navigation>

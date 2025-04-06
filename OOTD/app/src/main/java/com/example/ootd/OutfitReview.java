@@ -70,10 +70,6 @@ public class OutfitReview extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -99,9 +95,18 @@ public class OutfitReview extends Fragment {
 
         saveBtn = view.findViewById(R.id.saveOutfitButton);
         saveBtn.setOnClickListener(v->{
-            Navigation.findNavController(v).navigate(R.id.navigation_closet);
+            List<Garment> outfitChosen = garmentsForOutfit.getSelectedGarments().getValue();
+            if (outfitChosen != null && !outfitChosen.isEmpty()) {
+                viewModel.saveOutfit(outfitChosen);
+                garmentsForOutfit.clearSelection();
+                Toast.makeText(requireContext(), "Outfit successfully saved!",
+                        Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(v).navigate(R.id.navigation_closet);
+            } else {
+                Toast.makeText(requireContext(), "No garments selected!",
+                        Toast.LENGTH_SHORT).show();
+            }
         });
-
         return view;
     }
 
