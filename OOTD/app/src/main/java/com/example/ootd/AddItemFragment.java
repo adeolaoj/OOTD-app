@@ -162,7 +162,8 @@ public class AddItemFragment extends Fragment {
                     public void onSuccess(Uri uri) {
                         Bundle bundle = new Bundle();
                         String downloadUrl = uri.toString();
-                        bundle.putString("downloadURL", downloadUrl);
+
+                        bundle.putString("ImageURL", downloadUrl);
 
 
                         GarmentListingFragment fragmentB = new GarmentListingFragment();
