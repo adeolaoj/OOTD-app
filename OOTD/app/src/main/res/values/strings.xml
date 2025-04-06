@@ -48,4 +48,11 @@
     <string name="title_activity_camera_application">CameraApplication</string>
     <string name="next">Next</string>
 
+    <string name="click_to_take_picture">Press the camera icon to launch the camera</string>
+    <string name="save_button">Save</string>
+
+    <string name="category">Category</string>
+    <string name="sub_category">Sub-Category</string>
+    <string name="weather">Weather</string>
+
 </resources>

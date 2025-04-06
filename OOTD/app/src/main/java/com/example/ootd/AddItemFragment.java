@@ -1,13 +1,25 @@
 package com.example.ootd;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
+import static android.app.Activity.RESULT_OK;
+
+import com.example.ootd.databinding.FragmentAddItemBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,6 +27,13 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class AddItemFragment extends Fragment {
+
+    private FragmentAddItemBinding binding;
+
+    ImageButton takePicture;
+    ImageView imageView;
+    Button saveButton;
+    private static final int CAMERA_CODE = 100;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,8 +78,48 @@ public class AddItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_item, container, false);
+        binding = FragmentAddItemBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+
+        takePicture = binding.imageButton;
+        imageView = binding.imageDisplay;
+
+        takePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_CODE);
+            }
+        });
+        return root;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == CAMERA_CODE && resultCode == RESULT_OK) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            imageView.setImageBitmap(photo);
+
+            // once the user takes the picture, display a button to save
+            saveButton = binding.addItemSubmitButton;
+            saveButton.setVisibility(View.VISIBLE);
+
+            // save the photo to the database
+            saveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: SEND PHOTO TO DATABASE, MAKE NEW GARMENT, SEND TO CLOSET VIEW
+
+                    // send back to closet view
+                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
+                    navController.navigate(R.id.action_addItemFragment_to_closetFragment);
+                }
+            });
+
+        } else {
+            Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_SHORT).show();
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 

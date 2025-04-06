@@ -83,16 +83,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // testing camera
-        stinkerButton = binding.stinkerTester;
-        stinkerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CameraApplication.class);
-                startActivity(intent);
-            }
-        });
-
         return root;
     }
 }
