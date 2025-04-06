@@ -8,6 +8,7 @@
     android:layout_margin="30dp"
     tools:context=".CameraApplication">
 
+
     <Button
         android:id="@+id/stinkerCamera"
         android:layout_width="match_parent"

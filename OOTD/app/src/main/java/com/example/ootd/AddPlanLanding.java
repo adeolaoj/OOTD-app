@@ -88,7 +88,7 @@ public class AddPlanLanding extends Fragment {
             @Override
             public void onClick(View v) {
                 // navigate to the add item fragment
-                Navigation.findNavController(v).navigate(R.id.navigation_camera);
+                Navigation.findNavController(v).navigate(R.id.navigation_add_item);
             }
         });
     }
