@@ -5,7 +5,6 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_closet">
 
-
     <fragment
         android:id="@+id/navigation_closet"
         android:name="com.example.ootd.ClosetFragment"
@@ -53,4 +52,11 @@
         android:name="com.example.ootd.ProfileFragment"
         android:label="Review Your Outfit"
         tools:layout="@layout/fragment_outfit_review" />
-</navigation>
+
+    <activity
+        android:id="@+id/navigation_camera"
+        android:name="com.example.ootd.CameraApplication"
+        android:label="Camera"
+        tools:layout="@layout/activity_camera_application" />
+
+    =</navigation>

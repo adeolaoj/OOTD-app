@@ -15,7 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+
+import com.google.firebase.storage.StorageReference;
 
 public class CameraApplication extends AppCompatActivity {
 
@@ -48,6 +51,20 @@ public class CameraApplication extends AppCompatActivity {
         if (requestCode == CAMERA_CODE && resultCode == RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(photo);
+
+            Button next = findViewById(R.id.NextButton);
+            next.setVisibility(View.VISIBLE);
+
+            next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    StorageReference storageRef = storage.getReference();
+                    Navigation.findNavController(v).navigate(R.id.navigation_plan_outfit);
+
+
+                }
+            });
+
         } else {
             Toast.makeText(this,"Cancelled",Toast.LENGTH_SHORT).show();
             super.onActivityResult(requestCode, resultCode, data);
@@ -56,6 +73,7 @@ public class CameraApplication extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

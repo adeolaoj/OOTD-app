@@ -46,5 +46,6 @@
     <string name="textName">Name</string>
     <string name="confirmPassword">Confirm Password</string>
     <string name="title_activity_camera_application">CameraApplication</string>
+    <string name="next">Next</string>
 
 </resources>
