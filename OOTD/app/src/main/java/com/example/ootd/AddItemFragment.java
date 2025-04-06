@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -20,6 +21,15 @@ import android.widget.Toast;
 import static android.app.Activity.RESULT_OK;
 
 import com.example.ootd.databinding.FragmentAddItemBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import android.net.Uri;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -94,6 +104,7 @@ public class AddItemFragment extends Fragment {
         return root;
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == CAMERA_CODE && resultCode == RESULT_OK) {
@@ -108,11 +119,15 @@ public class AddItemFragment extends Fragment {
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO: SEND PHOTO TO DATABASE, MAKE NEW GARMENT, SEND TO CLOSET VIEW
+                    uploadImageToFirebaseStorage(photo);
 
-                    // send back to closet view
-                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
-                    navController.navigate(R.id.action_addItemFragment_to_closetFragment);
+                    Navigation.findNavController(v).navigate(R.id.navigation_garment_listing);
+
+
+                    //send back to closet view
+                    //yoinking this for later
+                    //NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
+                    //navController.navigate(R.id.action_addItemFragment_to_closetFragment);
                 }
             });
 
@@ -123,4 +138,45 @@ public class AddItemFragment extends Fragment {
     }
 
 
+    public byte[] convertBitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        return baos.toByteArray();
+    }
+
+
+    private void uploadImageToFirebaseStorage(Bitmap bitmap) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference imageRef = storageRef.child("images/" + System.currentTimeMillis() + ".jpg");
+
+        byte[] data = convertBitmapToByteArray(bitmap);
+
+        UploadTask uploadTask = imageRef.putBytes(data);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(getActivity(), "Upload successful!", Toast.LENGTH_SHORT).show();
+                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Bundle bundle = new Bundle();
+                        String downloadUrl = uri.toString();
+                        bundle.putString("downloadURL", downloadUrl);
+
+
+                        GarmentListingFragment fragmentB = new GarmentListingFragment();
+                        fragmentB.setArguments(bundle);
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getActivity(), "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }
+
