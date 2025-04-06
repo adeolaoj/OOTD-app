@@ -49,6 +49,8 @@ public class PlanOutfitFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private Button donePlanningBtn;
+
     public PlanOutfitFragment() {
         // Required empty public constructor
     }
@@ -225,9 +227,19 @@ public class PlanOutfitFragment extends Fragment {
 
     }
 
-//    @Override
-//    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        donePlanningBtn = view.findViewById(R.id.done_planning_button);
+
+        donePlanningBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // navigate to the plan outfit fragment
+                Navigation.findNavController(v).navigate(R.id.navigation_review_outfit);
+            }
+        });
 //
 //        // initialize spinner with proper dropdown menu
 //        Spinner spinner = view.findViewById(R.id.clothing_dropdown);
@@ -252,5 +264,5 @@ public class PlanOutfitFragment extends Fragment {
 //            }
 //        });
 //
-//    }
+    }
 }
