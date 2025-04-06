@@ -28,44 +28,59 @@ public class LoginActivity extends AppCompatActivity {
 
     private SharedPreferences myPrefs;
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+    private ViewPager2 viewPager;
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // for sprint 2: firebase authentication
-        //mAuth = FirebaseAuth.getInstance();
-        
+        mAuth = FirebaseAuth.getInstance();
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
         tabLayout = findViewById(R.id.login_tab_layout);
         viewPager = findViewById(R.id.view_pager);
 
+        /*
         tabLayout.addTab(tabLayout.newTab().setText("Login"));
         tabLayout.addTab(tabLayout.newTab().setText("Sign Up"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        */
 
-        LoginAdapter adapter = new LoginAdapter(getSupportFragmentManager(),this,2);
+        LoginAdapter adapter = new LoginAdapter(getSupportFragmentManager(), getLifecycle(), 2);
         viewPager.setAdapter(adapter);
 
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            if (position == 0) {
+                tab.setText("Login");
+            } else {
+                tab.setText("Sign Up");
+            }
+        });
+        tabLayoutMediator.attach();
+
 
     }
 
-    /*
-    @Override
+
     public void onStart() {
         super.onStart();
 
+        // TURN OFF TO MAKE USER SIGN IN EVERYTIME
+        // im only adding this for our convenience so yall dont have to log in everytime
+        //will delete once we start doing demo
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
-     */
+
 
     private void updateUI(FirebaseUser currentUser) {
-
+        if (currentUser != null) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }
