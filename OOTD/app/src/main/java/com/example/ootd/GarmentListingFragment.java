@@ -62,13 +62,13 @@ public class GarmentListingFragment extends Fragment {
                     return;
                 }
 
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageRef = storage.getReference();
-                StorageReference imageRef = storageRef.child("images/" + System.currentTimeMillis() + ".jpg");
+                //FirebaseStorage storage = FirebaseStorage.getInstance();
+                //StorageReference storageRef = storage.getReference();
+                //StorageReference imageRef = storageRef.child("images/" + System.currentTimeMillis() + ".jpg");
 
-                Bundle bundle = getArguments();
-                String URL = bundle.getString("downloadURL");
-                Garment newlisting = new Garment(URL, );
+                //Bundle bundle = getArguments();
+                //String URL = bundle.getString("downloadURL");
+                //Garment newlisting = new Garment(URL, );
 
                 //send back to closet view
                 //yoinked
