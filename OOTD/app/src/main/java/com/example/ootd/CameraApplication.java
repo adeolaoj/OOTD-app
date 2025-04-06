@@ -43,6 +43,7 @@ public class CameraApplication extends AppCompatActivity {
         });
     }
 
+    /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == CAMERA_CODE && resultCode == RESULT_OK) {
@@ -53,6 +54,7 @@ public class CameraApplication extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+     */
 
     @Override
     public void onBackPressed() {
