@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.ootd.databinding.FragmentProfileBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,13 +77,17 @@ public class ProfileFragment extends Fragment {
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
-
-                getActivity().finish(); // TODO: null pointer exception?
+                getActivity().finish();
             }
         });
 
         return root;
     }
+
+
+
 }
