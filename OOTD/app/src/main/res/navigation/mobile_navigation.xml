@@ -34,7 +34,12 @@
         android:id="@+id/navigation_add_item"
         android:name="com.example.ootd.AddItemFragment"
         android:label="@string/title_add_item"
-        tools:layout="@layout/fragment_add_item" />
+        tools:layout="@layout/fragment_add_item">
+        <!-- allow navigation back to closet for saving images -->
+        <action
+            android:id="@+id/action_addItemFragment_to_closetFragment"
+            app:destination="@id/navigation_closet" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_generate"

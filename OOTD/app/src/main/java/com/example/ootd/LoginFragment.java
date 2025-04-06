@@ -44,8 +44,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // authentication for sprint 2
-        //mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -68,18 +67,10 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor peditor = myPrefs.edit();
+                String email = binding.loginUserEmail.getText().toString();
+                String password = binding.loginUserPassword.getText().toString();
 
-                //loginUser(email, password);
-                peditor.putString("loginEmail", String.valueOf(email.getText()));
-                peditor.putString("loginPassword", String.valueOf(password.getText()));
-                peditor.apply();
-
-
-                // login
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-                getActivity().finish();
+                loginUser(email, password);
 
             }
         });
@@ -94,27 +85,21 @@ public class LoginFragment extends Fragment {
         binding = null;
     }
 
-    // fix authentication for sprint 2
-    /*
     public void loginUser(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(ContextCompat.getMainExecutor(getActivity()), task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
                         Log.d("Auth", "signInWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        // Update UI or proceed to next activity
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
                         getActivity().finish();
                     } else {
-                        // If sign in fails, display a message to the user.
                         Log.w("Auth", "signInWithEmail:failure", task.getException());
                         Toast.makeText(getActivity(), "Invalid Sign In", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-     */
 
 
 }
