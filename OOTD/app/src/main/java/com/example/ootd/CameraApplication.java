@@ -42,6 +42,7 @@ public class CameraApplication extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_camera_application);
+        storage = FirebaseStorage.getInstance();
 
         buttonPicture = findViewById(R.id.stinkerCamera);
         imageView = findViewById(R.id.imageView1);
