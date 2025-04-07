@@ -18,8 +18,8 @@ public class Garment {
 
 
 
-    public Garment(String imageAddress, String category, String subcategory, List<String> colorTags) {
-        this.ImagePath = imageAddress;
+    public Garment(String ImagePath, String category, String subcategory, List<String> colorTags) {
+        this.ImagePath = ImagePath;
         this.Category = category;
         this.Subcategory = subcategory;
         this.colorTags = colorTags;
@@ -28,7 +28,12 @@ public class Garment {
 
 
 
-    public String getImageAddress() {return ImagePath;}
+    public String getImagePath() {
+        if (ImagePath == null) {
+            return "IMG_3234.jpeg";
+        }
+        return ImagePath;
+    }
     public String getCategory(){return Category;}
     public String getSubcategory(){return Subcategory;}
 

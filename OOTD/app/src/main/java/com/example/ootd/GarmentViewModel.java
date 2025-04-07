@@ -57,7 +57,7 @@ public class GarmentViewModel extends ViewModel {
                         garments.add(garment);
                     }
                 }
-                garmentsData.setValue(garments); // Update the LiveData only once after all garments are added
+                garmentsData.setValue(garments);
             }
 
             @Override
