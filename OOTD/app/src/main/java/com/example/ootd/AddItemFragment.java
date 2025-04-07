@@ -121,7 +121,7 @@ public class AddItemFragment extends Fragment {
                 public void onClick(View v) {
 
                     // move later
-                    //uploadImageToFirebaseStorage(photo);
+                    uploadImageToFirebaseStorage(photo);
 
                     Navigation.findNavController(v).navigate(R.id.navigation_garment_listing);
 
