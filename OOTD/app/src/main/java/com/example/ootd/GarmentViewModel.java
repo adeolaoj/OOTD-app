@@ -1,29 +1,28 @@
 package com.example.ootd;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-    Class that contains information about the Garments. Essentially a list of garments
-    that automatically updates in all views/fragments (closet, add/plan, etc.)
-    Can be updated to reference database once we get that connected.
- */
-
 public class GarmentViewModel extends ViewModel {
     private MutableLiveData<List<Garment>> garmentsData = new MutableLiveData<>();
-    //private FirebaseFirestore database = FirebaseFirestore.getInstance();
-
     private MutableLiveData<List<List<Garment>>> outfitsSaved = new MutableLiveData<>(new ArrayList<>());
+
+    public GarmentViewModel() {
+        fetchGarmentData(); // Fetch data initially or when the ViewModel is instantiated
+    }
 
     public LiveData<List<Garment>> getGarmentsData() {
         return garmentsData;
@@ -38,32 +37,33 @@ public class GarmentViewModel extends ViewModel {
     }
 
     public void saveOutfit(List<Garment> outfit) {
-        List<List<Garment>> outfitChosen = outfitsSaved.getValue();
-        if (outfitChosen == null) {
-            outfitChosen = new ArrayList<>();
+        List<List<Garment>> currentOutfits = outfitsSaved.getValue();
+        if (currentOutfits == null) {
+            currentOutfits = new ArrayList<>();
         }
-        outfitChosen.add(new ArrayList<>(outfit));
-        outfitsSaved.setValue(outfitChosen);
+        currentOutfits.add(new ArrayList<>(outfit));
+        outfitsSaved.setValue(currentOutfits);
     }
 
-
-    /*
     public void fetchGarmentData() {
-        database.collection("Garments").get().addOnSuccessListener(queryDocumentSnapshots -> {
-            if (!queryDocumentSnapshots.isEmpty()) {
-                List<Garment> garmentList = new ArrayList<>();
-                for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
-                    String id = snapshot.getId();
-                    Long imageAddress = snapshot.getLong("imageAddress");
-
-                    //Garment piece = new Garment(imageAddress, id);
-                    //garmentList.add(piece);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Garments");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Garment> garments = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Garment garment = snapshot.getValue(Garment.class);
+                    if (garment != null) {
+                        garments.add(garment);
+                    }
                 }
+                garmentsData.setValue(garments); // Update the LiveData only once after all garments are added
+            }
 
-                garmentsData.setValue(garmentList);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("GarmentViewModel", "loadGarments:onCancelled", databaseError.toException());
             }
         });
     }
-     */
-
 }
