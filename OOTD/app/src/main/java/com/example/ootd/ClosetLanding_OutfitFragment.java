@@ -121,7 +121,7 @@ public class ClosetLanding_OutfitFragment extends Fragment {
         public void onBindViewHolder(ViewHolder holder, int position) {
             List<Garment> outfit = outfits.get(position);
             if (!outfits.isEmpty()) {
-                holder.imageView.setImageResource(outfit.get(0).getImageAddress());
+               // holder.imageView.setImageURI(outfit.get(0).getImageAddress());
             }
         }
 
