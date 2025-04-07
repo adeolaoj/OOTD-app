@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,12 +23,27 @@ public class GarmentViewModel extends ViewModel {
     private MutableLiveData<List<Garment>> garmentsData = new MutableLiveData<>();
     //private FirebaseFirestore database = FirebaseFirestore.getInstance();
 
+    private MutableLiveData<List<List<Garment>>> outfitsSaved = new MutableLiveData<>(new ArrayList<>());
+
     public LiveData<List<Garment>> getGarmentsData() {
         return garmentsData;
     }
 
     public void setGarmentsData(List<Garment> list) {
         garmentsData.setValue(list);
+    }
+
+    public LiveData<List<List<Garment>>> getSavedOutfits() {
+        return outfitsSaved;
+    }
+
+    public void saveOutfit(List<Garment> outfit) {
+        List<List<Garment>> outfitChosen = outfitsSaved.getValue();
+        if (outfitChosen == null) {
+            outfitChosen = new ArrayList<>();
+        }
+        outfitChosen.add(new ArrayList<>(outfit));
+        outfitsSaved.setValue(outfitChosen);
     }
 
 
