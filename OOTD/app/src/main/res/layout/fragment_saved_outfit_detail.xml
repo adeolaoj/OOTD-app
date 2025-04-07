@@ -39,7 +39,7 @@
         android:backgroundTint="@color/chip_pink"
         android:text="@string/delete_button"
         android:textColor="@color/white"
-        app:layout_marginStart="635dp"
+        android:layout_marginStart="635dp"
         app:cornerRadius="100dp" />
     </LinearLayout>
 </LinearLayout>
