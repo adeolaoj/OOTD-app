@@ -14,7 +14,6 @@
         android:id="@+id/Listing_Image"
         android:layout_width="200dp"
         android:layout_height="300dp"
-        android:src="@drawable/yet_another_round_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

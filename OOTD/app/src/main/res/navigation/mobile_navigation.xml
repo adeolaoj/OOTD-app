@@ -37,8 +37,8 @@
         tools:layout="@layout/fragment_add_item">
         <!-- allow navigation back to closet for saving images -->
         <action
-            android:id="@+id/action_addItemFragment_to_closetFragment"
-            app:destination="@id/navigation_closet" />
+            android:id="@+id/action_addItemFragment_to_garmentListingFragment"
+            app:destination="@id/navigation_garment_listing"  />
     </fragment>
 
     <fragment
