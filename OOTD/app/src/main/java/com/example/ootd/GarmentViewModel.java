@@ -5,6 +5,12 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -15,6 +21,7 @@ import java.util.List;
 
 public class GarmentViewModel extends ViewModel {
     private MutableLiveData<List<Garment>> garmentsData = new MutableLiveData<>();
+    //private FirebaseFirestore database = FirebaseFirestore.getInstance();
 
     private MutableLiveData<List<List<Garment>>> outfitsSaved = new MutableLiveData<>(new ArrayList<>());
 
@@ -38,4 +45,25 @@ public class GarmentViewModel extends ViewModel {
         outfitChosen.add(new ArrayList<>(outfit));
         outfitsSaved.setValue(outfitChosen);
     }
+
+
+    /*
+    public void fetchGarmentData() {
+        database.collection("Garments").get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if (!queryDocumentSnapshots.isEmpty()) {
+                List<Garment> garmentList = new ArrayList<>();
+                for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
+                    String id = snapshot.getId();
+                    Long imageAddress = snapshot.getLong("imageAddress");
+
+                    //Garment piece = new Garment(imageAddress, id);
+                    //garmentList.add(piece);
+                }
+
+                garmentsData.setValue(garmentList);
+            }
+        });
+    }
+     */
+
 }

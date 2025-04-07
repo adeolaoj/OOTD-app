@@ -18,4 +18,16 @@
 
     <color name="dark_text">#FF49454F</color>
 
+    <color name="red">#FFFB2A2A</color>
+    <color name="orange">#FFFB962A</color>
+    <color name="yellow">#FFFFDD43</color>
+    <color name="green">#FF9CF24B</color>
+    <color name="blue">#FF4BDFF2</color>
+    <color name="purple">#FF8770FA</color>
+    <color name="grey">#FF817889</color>
+    <color name="magenta">#FFF67CE6</color>
+    <color name="chip_pink">#FFFF96B6</color>
+    <color name="chip_beige">#FFAF8B87</color>
+    <color name="brown">#FF8F503B</color>
+
 </resources>
