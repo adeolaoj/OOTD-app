@@ -63,7 +63,7 @@ public class GarmentListingFragment extends Fragment {
         saveButton = binding.SaveListing;
 
         database = FirebaseDatabase.getInstance();
-        dbref = database.getReference("Garment");
+        dbref = database.getReference("Garments");
 
         imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override

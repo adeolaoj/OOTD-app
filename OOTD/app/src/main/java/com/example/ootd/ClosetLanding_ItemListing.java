@@ -1,6 +1,7 @@
 package com.example.ootd;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,9 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +40,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.auth.User;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -65,8 +70,6 @@ public class ClosetLanding_ItemListing extends Fragment {
     private RecyclerView recyclerView;
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public ClosetLanding_ItemListing() {
         // Required empty public constructor
@@ -180,18 +183,52 @@ public class ClosetLanding_ItemListing extends Fragment {
             ChipGroup chipGroup = viewHolder.chipGroup;
             chipGroup.removeAllViews();
 
-            for (String tag : garment.getGarmentTags()) {
-                Chip chip = new Chip(context);
-                chip.setText(tag);
-                chip.setCloseIconVisible(false);
-                chipGroup.addView(chip);
+            String imagePath = garment.getImagePath();
+            ImageView image = viewHolder.imageView;
+            if (imagePath != null && !imagePath.isEmpty()) {
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference imageRef = storage.getReference().child(imagePath);
+
+                // Get the download URL and load it with Glide
+                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Glide.with(viewHolder.imageView.getContext())
+                                .load(uri)
+                                .placeholder(R.drawable.garment_picture_default) // Show default while loading
+                                .error(R.drawable.garment_picture_default) // Show default on error
+                                .into(viewHolder.getImageView());
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Firebase", "Error loading image", e);
+                        // Optionally handle errors, e.g., by showing a default image or a toast
+                        viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default);
+                    }
+                });
+            } else {
+                // If no image path is available, use the default image
+                viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default);
             }
+
+
+            if (garment.getGarmentTags() != null) {
+                for (String tag : garment.getGarmentTags()) {
+                    Chip chip = new Chip(context);
+                    chip.setText(tag);
+                    chip.setCloseIconVisible(false);
+                    chipGroup.addView(chip);
+                }
+            }
+
 
             ImageButton favoriteBtn = viewHolder.favorite;
             favoriteBtn.setImageResource(garment.isFavorite() ? R.drawable.favorites_filled : R.drawable.favorites_unfilled);
             favoriteBtn.setOnClickListener(v -> {
                 boolean isFavorite = garment.isFavorite();
-                favoriteBtn.setImageResource(isFavorite ? R.drawable.favorites_filled : R.drawable.favorites_unfilled);
+                garment.setFavorites();
+                favoriteBtn.setImageResource(!isFavorite ? R.drawable.favorites_filled : R.drawable.favorites_unfilled);
             });
 
             viewHolder.itemView.setOnLongClickListener(v -> {
@@ -200,6 +237,7 @@ public class ClosetLanding_ItemListing extends Fragment {
             });
 
             viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default); // TODO: Load actual image
+
         }
 
         @Override

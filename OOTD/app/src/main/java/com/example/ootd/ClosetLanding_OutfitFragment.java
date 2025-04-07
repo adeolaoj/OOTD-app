@@ -2,6 +2,7 @@ package com.example.ootd;
 
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -85,12 +86,14 @@ public class ClosetLanding_OutfitFragment extends Fragment {
             adapter.updateOutfitData(outfits);
         });
 
-        adapter.setOnItemClickListener(position -> {
-            Bundle args = new Bundle();
-            args.putInt("outfit_position", position);
-            Navigation.findNavController(view).navigate(
-                    R.id.action_viewSavedOutfitDetails_onClick, args);
-        });
+        CardView outfitCard = view.findViewById(R.id.garmentCard);
+
+//        outfitCard.setOnClickListener(v -> {
+//            Bundle args = new Bundle();
+//            args.putInt("outfit_position", position);
+//            Navigation.findNavController(view).navigate(
+//                    R.id.action_viewSavedOutfitDetails_onClick, args);
+//        });
     }
 
     public static class outfitAdapter extends RecyclerView.Adapter<outfitAdapter.ViewHolder> {
@@ -121,7 +124,7 @@ public class ClosetLanding_OutfitFragment extends Fragment {
         public void onBindViewHolder(ViewHolder holder, int position) {
             List<Garment> outfit = outfits.get(position);
             if (!outfits.isEmpty()) {
-                holder.imageView.setImageResource(outfit.get(0).getImageAddress());
+               // holder.imageView.setImageURI(outfit.get(0).getImageAddress());
             }
         }
 
