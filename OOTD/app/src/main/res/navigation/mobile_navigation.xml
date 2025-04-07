@@ -38,7 +38,7 @@
         <!-- allow navigation back to closet for saving images -->
         <action
             android:id="@+id/action_addItemFragment_to_closetFragment"
-            app:destination="@id/navigation_closet" />
+            app:destination="@id/navigation_garment_listing" />
     </fragment>
 
     <fragment
@@ -63,7 +63,11 @@
         android:id="@+id/navigation_garment_listing"
         android:name="com.example.ootd.GarmentListingFragment"
         android:label="Garment Listing"
-        tools:layout="@layout/fragment_garment_listing" />
+        tools:layout="@layout/fragment_garment_listing">
+        <action
+            android:id="@+id/action_GarmentListFragment_to_closetFragment"
+            app:destination="@id/navigation_closet" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_saved_outfit_details"
