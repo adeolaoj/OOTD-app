@@ -108,7 +108,7 @@ public class AddItemFragment extends Fragment {
                     fragmentB.setArguments(bundle);
 
                     NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main); // Adjust the ID as per your layout
-                    navController.navigate(R.id.action_addItemFragment_to_garmentListingFragment, bundle);
+                    navController.navigate(R.id.action_addItemFragment_to_closetFragment, bundle);
                 } else {
                     Log.d("Debug", "URI is null");
                 }
