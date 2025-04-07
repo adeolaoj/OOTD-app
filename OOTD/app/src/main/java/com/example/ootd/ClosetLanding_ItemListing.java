@@ -17,11 +17,17 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,6 +48,7 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +56,12 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class ClosetLanding_ItemListing extends Fragment {
+
+    public static final int MENU_ITEM_EDIT = Menu.FIRST;
+    public static final int MENU_ITEM_DELETE = Menu.FIRST + 1;
+    Context cntx;
+    private MainActivity myact;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,6 +97,37 @@ public class ClosetLanding_ItemListing extends Fragment {
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        // create menu in code instead of in xml file (xml approach preferred)
+        cntx = getContext();
+
+        // Add menu items
+        menu.add(0, MENU_ITEM_EDIT, 0, R.string.edit_listing);
+        menu.add(0, MENU_ITEM_DELETE, 0, R.string.delete_listing);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        super.onContextItemSelected(item);
+
+        switch (item.getItemId()) {
+            case MENU_ITEM_EDIT: {
+                Toast.makeText(cntx, "view/edit not implemented",
+                        Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            case MENU_ITEM_DELETE: {
+                Toast.makeText(cntx, "delete not implemented",
+                        Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -104,6 +148,8 @@ public class ClosetLanding_ItemListing extends Fragment {
         viewModel.getGarmentsData().observe(getViewLifecycleOwner(), garments ->{
             adapter.updateGarmentData(garments);
         });
+
+        recyclerView.setOnCreateContextMenuListener(this);
 
 
         // Inflate the layout for this fragment
@@ -137,7 +183,7 @@ public class ClosetLanding_ItemListing extends Fragment {
             ChipGroup chipGroup = viewHolder.chipGroup;
             chipGroup.removeAllViews();
 
-            String imagePath = garment.getImageAddress();
+            String imagePath = garment.getImagePath();
             ImageView image = viewHolder.imageView;
             if (imagePath != null && !imagePath.isEmpty()) {
                 FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -184,6 +230,14 @@ public class ClosetLanding_ItemListing extends Fragment {
                 garment.setFavorites();
                 favoriteBtn.setImageResource(!isFavorite ? R.drawable.favorites_filled : R.drawable.favorites_unfilled);
             });
+
+            viewHolder.itemView.setOnLongClickListener(v -> {
+                v.showContextMenu();
+                return true;
+            });
+
+            viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default); // TODO: Load actual image
+
         }
 
         @Override

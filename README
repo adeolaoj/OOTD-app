@@ -6,6 +6,7 @@ Features completed so far:
 - Login/Sign Up
 - Logout button on the Profile Tab
 - Navigation between Fragments and Activities, including tabs and back arrows for navigation up
+
 - Closet Landing:
   - Closet Tab:
     - View list of garments in a scrollable grid.
@@ -18,7 +19,16 @@ Features completed so far:
     - Selects two-three garments, lets the user preview outfit, then saves to closet if user chooses to.
   - Add Item:
     - Add Item prompts the camera and saves the image to the database if the user fills out the listing. 
-
+- Closet landing:
+  - Shows a list of garments in the "Closet" tab and allows user to heart their favorite items.
+  - Shows a list of saved outfits in the "Saved Outfits" tab and allows the user to edit or delete any listing. 
+- Add/Plan:
+  - Plan Outfit lets the user pick an outfit based on the items in their closet.
+    - The user is required to choose at least two garments, and no more than three. Once the user is done planning, they should press the "Done Planning" button, or they can press the back button to navigate to the previous screen.
+    - Once the "Done Planning" button is clicked, the view will navigate to the Outfit Review view. The user can press the back button in the action bar to navigate to the previous screen, or they can click the "Save Outfit" button to save the outfit in their closet.
+    - Once the "Save Outfit" button is clicked, the view will navigate back to the Closet landing. If the user clicks on the "Saved Outfits" tab, the newly created outfit will appear.
+  - Add Item prompts the camera and saves the image to the database if the user fills out the listing. 
+  
 General state of app:
 - Navigating App Features:
   - Closet Landing:
@@ -63,6 +73,27 @@ General state of app:
         - If you wish to retake the picture after navigating here, simply press the back button. Otherwise, in the "Garment Listing" you will be unable to leave the screen until you describe your item with required categories.
         - Use the dropdown menus to select categories, and the color buttons to describe the color of the garment. After finishing, click "Save" which will navigate to the Closet landing.
         - You will now be able to see your newly added garment in your closet with its appropriate categorizations.
+
+    - This is the default view once the app opens, so there is no need to navigate anywhere on the navigation menu.
+    - The Closet landing allows you to scroll up/down, left/right (to navigate to "Saved Outfits" tab), and left/right on the garment details at the bottom of each garment image.
+    - To add a garment to your favorites, simply press the heart which will immediately fill the heart with pink. To unfavorite it, repeat this action.
+    - Click on the "Saved Outfits" tab or drag the screen to the left to navigate to the users saved outfits. Here will be a grid view of any saved outfits the user creates.
+  - Add/Plan:
+    - Plan Outfit:
+      - To plan an outfit, navigate to the Add/Plan tab at the bottom of the navigation menu.
+      - Press the Plan Outfit button which will navigate to the garment selection view.
+      - Choose at least two, but up to three, items and when you are satisfied, click Done Planning. This will navigate to the Outfit Review view.
+      - If you wish to remove/add an item, press the back button to navigate to the previous screen. Otherwise, click "Save Outfit" which will navigate to the Closet landing.
+      - Click on the "Saved Outfits" tab where your newly saved outfit will be.
+    - Add Item:
+      - To add an item, navigate to the Add/Plan tab at the bottom of the navigation menu.
+      - Press the Add Item button which will navigate to another view which will allow the user to capture an image.
+      - Click the camera button to capture the image.
+      - After capturing the image, either press the camera button again to retake the image, or press the "Save" button to navigate to the "Garment Listing" view.
+      - If you wish to retake the picture after navigating here, simply press the back button. Otherwise, in the "Garment Listing" you will be unable to leave the screen until you describe your item with required categories.
+      - Use the dropdown menus to select categories, and the color buttons to describe the color of the garment. After finishing, click "Save" which will navigate to the Closet landing.
+      - You will now be able to see your newly added garment in your closet with its appropriate categorizations.
+
 - Limitations:
   - Emulators are unable to support taking an actual picture, so there were limitations on the images stored in the app.
   - Could store limited amount of images in JSON, but only a few because of storage issues
