@@ -71,4 +71,7 @@
     <string name="black">Black</string>
     <string name="white">White</string>
 
+    <string name="edit_listing">Edit Listing</string>
+    <string name="delete_listing">Delete Listing</string>
+
 </resources>
