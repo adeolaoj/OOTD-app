@@ -50,6 +50,8 @@
 
     <string name="click_to_take_picture">Press the camera icon to launch the camera</string>
     <string name="save_button">Save</string>
+    <string name="edit_button">Edit Outfit</string>
+    <string name="delete_button">Delete Listing</string>
 
     <string name="category">Category</string>
     <string name="sub_category">Sub-Category</string>
