@@ -137,7 +137,7 @@ public class ClosetLanding_ItemListing extends Fragment {
             ChipGroup chipGroup = viewHolder.chipGroup;
             chipGroup.removeAllViews();
 
-            String imagePath = garment.getImageAddress();
+            String imagePath = garment.getImagePath();
             ImageView image = viewHolder.imageView;
             if (imagePath != null && !imagePath.isEmpty()) {
                 FirebaseStorage storage = FirebaseStorage.getInstance();
