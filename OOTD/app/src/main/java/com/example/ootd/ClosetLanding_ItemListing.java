@@ -185,6 +185,15 @@ public class ClosetLanding_ItemListing extends Fragment {
                 chipGroup.addView(chip);
             }
 
+            /*
+            for (String tag : currGarment.getColorTags()) {
+                Chip chip = new Chip(context);
+                chip.setText(tag);
+                chip.setCloseIconVisible(false);
+                chipGroup.addView(chip);
+            }
+                         */
+
             ImageButton favoriteBtn = viewHolder.favorite;
 
             if (currGarment.isFavorite()) {
