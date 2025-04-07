@@ -119,7 +119,9 @@ public class AddItemFragment extends Fragment {
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    uploadImageToFirebaseStorage(photo);
+
+                    // move later
+                    //uploadImageToFirebaseStorage(photo);
 
                     Navigation.findNavController(v).navigate(R.id.navigation_garment_listing);
 
