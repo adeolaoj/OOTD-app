@@ -1,20 +1,27 @@
 package com.example.ootd;
 
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.ootd.databinding.FragmentGarmentListingBinding;
 import com.example.ootd.databinding.FragmentProfileBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,8 +36,10 @@ public class GarmentListingFragment extends Fragment {
 
     private FragmentGarmentListingBinding binding;
     Button saveButton;
+    FirebaseStorage storage;
+    StorageReference sref;
     FirebaseDatabase database;
-    DatabaseReference myRef;
+    DatabaseReference dbref;
 
 
     public GarmentListingFragment() {
@@ -41,13 +50,35 @@ public class GarmentListingFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentGarmentListingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        ImageView image = binding.ListingImage;
+
+        Bundle bundles = getArguments();
+        String path = bundles.getString("ImagePath");
         setupDropdownMenu_Category();
         setupDropdownMenu_SubCategory();
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("Garment");
-
+        storage = FirebaseStorage.getInstance();
+        sref = storage.getReference();
+        StorageReference imageRef = sref.child(path);
 
         saveButton = binding.SaveListing;
+
+        database = FirebaseDatabase.getInstance();
+        dbref = database.getReference("Garment");
+
+        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL
+                Glide.with(getView())
+                        .load(uri.toString())
+                        .into(image);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("Firebase", "Error getting data", e);
+            }
+        });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,20 +96,14 @@ public class GarmentListingFragment extends Fragment {
                     return;
                 }
 
-                Bundle bundle = getArguments();
-
-                String userId = myRef.push().getKey();
+                String userId = dbref.push().getKey();
                 Map<String, Object> userData = new HashMap<>();
 
-                if (bundle != null) {
-                    String URL = bundle.getString("ImageURL");
-                    userData.put("URL", URL);
-                }
-
+                userData.put("ImagePath", path);
                 userData.put("Category", category);
                 userData.put("Subcategory", subcategory);
 
-                myRef.child(userId).setValue(userData);
+                dbref.child(userId).setValue(userData);
 
                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
                 navController.navigate(R.id.navigation_closet);

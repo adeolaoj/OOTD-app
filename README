@@ -1,0 +1,11 @@
+LOGIN INFORMATION:
+email: testuser@testemail.com
+password: password
+
+Features completed so far:
+- Login/Sign Up
+- Logout button on the Profile Tab
+- Navigation between Fragments and Activities, including tabs and back arrows for navigation up
+- Add/Plan:
+  - Add/Item prompts the camera and saves the image to the database if the user fills out the listing. 
+  - 

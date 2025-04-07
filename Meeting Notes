@@ -1,0 +1,56 @@
+Meeting Notes Sprint 1
+Meeting with Dr. Selinski & Linda (Project mentor)
+We discussed critiques on the app design, discussed what we would need for implementation and how best to implement core features, and split the project into Sprint 1 and Sprint 2:
+Critique:
+- Define what OOTD is for users (Outfit of the Day) and improve on a motto instead of "Pick your closet"
+- Rework the app logo to read from left->right, up->down
+- When adding an item, we should give the option to allow users to pick from their camera roll instead of just having them take a picture
+- Only have the option to delete an item once it has already been saved, otherwise the back button will suffice
+- Some screens shouldn't have the navigational menu showing, like for invididual garment listings or outfit listings, since the user shouldn't need to be navigating between tabs and it would make the lifecycle complicated
+- Possibly being able to pick existing outfits from the closet when adding outfits to the Outfit Log
+- Possibly reworking the theme as it is a bit girly
+- Change the statistics on the Profile tab to be "Least used items" instead of what we had
+- Change the "Times worn" statistic or remove it completely
+What we would need for implementation:
+- For storing images, we could either use Firebase or a local database. Firebase is more suited for image storage but we would need authentication for login/password. A local database would lessen the burden for authentication but is less suited to storing images
+- We may not implement the Generate or Outfit Log functionalites during either Sprint depending on how much work the rest of the implementation is as well as how complex the implementation for either tab would be
+For Sprint 1:
+- Main features (General navigation with inactive tabs for whatever we aren't implementing)
+- Login (basic login, could leave the login for the second sprint depending on how we decide to do the database)
+- Closet
+  - Individual items
+  - Saved Outfits
+- Outfit image preview generation (4 blocks or save for sprint 2 and just use a random cover for now)
+- Add/Plan tab
+  - Add Item
+  - Plan Outfit from data stored in closet
+- Database
+- Camera
+For Sprint 2:
+- More complicated Login/Sign up with authentication
+- Logout
+- Profile tab
+- Filtering
+- Favorites
+
+Wednesday (3/26)
+For this meeting, we briefly decided what we wanted for the first sprint, and discussed what we could realistically do in 2 weeks. We assigned broadly tasks to each person.
+Anna: Login/Signup, Navigation, Themes, Camera, Garment Listing
+Adeola: Closet tab implemtation (Saved outfits, Garments)
+Emily: Database and authentication, help connect the framework everyone else was working on to the database with the help of everyone else
+Shevante: Add/Plan tab implementation
+We decided it would be best to just start wherever and ensure that we weren't working on the same thing at the same time, and to notify the groupchat as things got done. That way, whenever someone needed help with something, the issues could be quickly resolved instead of having bugs that persisted throughout the code. 
+
+Sunday (3/30)
+For this meeting, we began discussing logistics of the database. We chose to do the Firebase database instead of relying on SharedPreferences since it would be better for storing and loading images. We began to do research on the database. We hadn't made much progress due to having many exams that week, and elected to start soon. At this point, the LoginActivity was rudimentary but the basic navigation of the app had been completed.
+We chose to move some of the stuff from sprint 2 to sprint 1 to make things easier. For example, we initially wanted a simple login structure since that isn't a primary app feature, but due to the nature of Firebase, we realized that we would need that, and so we prioritized getting that done first.
+We also chose not to change the theme of the app, and maintain the color palette we initially decided on.
+
+Wednesday (4/2)
+We had been implementing at this point pretty smoothly so the meeting was very short. The theme had some issues due to contrast, but we decided to continue with the theme regardless and try and change the contrast issues in each element instead of modifying the theme as a whole. 
+Our implementation strategy was to begin with a framework for app function to ensure smooth navigation between fragments (of which there were a lot) and activities, and then connect everything to the database at the end and load in data. As such, the Closet view was populated with placeholder data. Add/Plan was similar in this regard. The profile fragment has just a log out button and the rest will be implemented in sprint 2.
+
+Saturday (4/5)
+The majority of the basic implementation without data saving had been finished at this point. The xml files needed quite a bit of editing to ensure a cohesive look and we ultimately decided that functionality is more important than aesthetics and any aesthetic issues could be a sprint 2 issue. 
+The camera functionality behaves weird on the emulator, since the emulator isn't connected to the laptop/computer camera, and instead shows a little android. This complicated our plans for demonstration since the camera functionality will be a bit silly, but it nonetheless works. 
+We had difficulty passing images through the database, and decided due to the amount of work we did for this sprint, the functionality of saving outfits may be something we work on after turning in the code for the first sprint, if we cannot accomplish it now. 

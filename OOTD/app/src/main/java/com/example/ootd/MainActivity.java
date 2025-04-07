@@ -63,26 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
         // setting up a list of garments (temporary data):
         List<Garment> garments = new ArrayList<>();
-        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Casual",
-                "Winter", "Long-Sleeves"))));
-        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Formal",
-                "Summer", "Short-Sleeves"))));
-        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Semi-Formal",
-                "Fall", "Sleeveless"))));
-        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Basic",
-                "Winter", "Long-Sleeves"))));
-        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Boxy",
-                "Summer", "Short-Sleeves"))));
-        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Baggy",
-                "Fall", "Sleeveless"))));
-        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Business",
-                "Winter", "Long-Sleeves"))));
-        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Pajamas",
-                "Summer", "Short-Sleeves"))));
-        garments.add(new Garment(R.drawable.garment_picture_default, new ArrayList<String>(List.of("Colorful",
-                "Fall", "Sleeveless", "Supercute", "amazing"))));
-
-        garments.get(2).setFavorites();
 
         // Initializing the data by referencing the GarmentViewModel:
         GarmentViewModel viewModel = new ViewModelProvider(this).get(GarmentViewModel.class);
