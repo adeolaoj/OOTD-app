@@ -10,7 +10,7 @@
         <!-- colorOnSecondaryContainer should be med_pink and the nav bar should be light_pink but too high contrast since it doesn't work-->
         <item name="colorSecondaryContainer">@color/med_pink</item>
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/med_pink</item>
+        <item name="colorPrimary">@color/chip_pink</item>
         <item name="colorPrimaryVariant">@color/nav_bar_color</item>
         <item name="colorOnPrimary">@color/dark_text</item>
         <!-- Secondary brand color. -->
@@ -39,5 +39,15 @@
 
     <style name="ChipTextStyle">
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!-- doesn't work :( -->
+    <style name="BottomNavActiveIndicatorStyle" parent="">
+        <item name="android:color">@color/red</item>
+        <item name="android:shape">@style/BottomNavBubbleShape</item>
+    </style>
+
+    <style name="BottomNavBubbleShape" parent="ShapeAppearance.Material3.Corner.Full">
+        <item name="cornerSize">50%</item>
     </style>
 </resources>

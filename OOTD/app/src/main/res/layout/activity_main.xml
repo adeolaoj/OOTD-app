@@ -20,7 +20,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:backgroundTint="@color/super_light_pink"
         app:labelVisibilityMode="labeled"
-        app:itemActiveIndicatorStyle="@color/nav_bar_color"
+        app:itemActiveIndicatorStyle="@style/BottomNavActiveIndicatorStyle"
         app:menu="@menu/bottom_nav_menu" />
 
     <fragment
