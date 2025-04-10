@@ -114,7 +114,7 @@ public class GarmentListingFragment extends Fragment {
     }
 
     public void setupDropdownMenu_Category() {
-        String[] items = new String[]{"Tops"};
+        String[] items = getResources().getStringArray(R.array.category_dropdown_menu_items);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_dropdown_item_1line, items);
 
@@ -127,7 +127,7 @@ public class GarmentListingFragment extends Fragment {
         });
     }
     public void setupDropdownMenu_SubCategory() {
-        String[] items = new String[]{"Blouse"};
+        String[] items = getResources().getStringArray(R.array.subcategory_dropdown_menu_items);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_dropdown_item_1line, items);
 
