@@ -24,7 +24,7 @@
 
     <string name="done_planning_btn">Done Planning</string>
     <string name="dropdown_menu_default">Tops</string>
-    <string-array name="dropdown_menu_items">
+    <string-array name="category_dropdown_menu_items">
         <item>Tops</item>
         <item>Bottoms</item>
         <item>Shoes</item>
