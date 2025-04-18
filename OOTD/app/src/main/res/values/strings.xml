@@ -38,6 +38,18 @@
         <item>Other</item>
     </string-array>
 
+    <string name="tops">Tops</string>
+    <string name="bottoms">Bottoms</string>
+    <string name="shoes">Shoes</string>
+    <string name="outerwear">Outerwear</string>
+    <string name="dresses">Dresses</string>
+    <string name="swim">Swim</string>
+    <string name="accessories">Accessories</string>
+    <string name="jewelry">Jewelry</string>
+    <string name="bags">Bags</string>
+    <string name="headwear">Headwear</string>
+    <string name="other">Other</string>
+
     <string-array name="subcategory_dropdown_menu_items">
         <!-- top subcategories -->
         <item>Blouse</item>
@@ -153,5 +165,10 @@
 
     <string name="edit_listing">Edit Listing</string>
     <string name="delete_listing">Delete Listing</string>
+    <string name="sort_and_filter">Sort and Filter</string>
+    <string name="color">Color</string>
+    <string name="show_favorites">Show Favorites</string>
+    <string name="clear_filters_text">Clear Filters</string>
+    <string name="apply_filters_text">Apply Filters</string>
 
 </resources>
