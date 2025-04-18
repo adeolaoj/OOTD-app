@@ -48,7 +48,11 @@
                 android:hint="@string/category"
                 android:textColorHint="@color/regular_grey"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintWidth_percent="0.2" />
+                app:layout_constraintWidth_percent="0.2"
+
+                android:inputType="none"
+                android:focusable="false"
+                android:cursorVisible="false"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,7 +75,11 @@
                 android:hint="@string/sub_category"
                 android:textColorHint="@color/regular_grey"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintWidth_percent="0.2" />
+                app:layout_constraintWidth_percent="0.2"
+
+                android:inputType="none"
+                android:focusable="false"
+                android:cursorVisible="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.chip.ChipGroup
@@ -91,118 +99,118 @@
                 android:id="@+id/redChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipBackgroundColor="@color/regular_grey"
                 android:checkable="true"
+                android:text="@string/red"
                 app:checkedIcon="@color/red"
-                android:text="@string/red" />
+                app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/orangeChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipBackgroundColor="@color/regular_grey"
                 android:checkable="true"
+                android:text="@string/orange"
                 app:checkedIcon="@color/orange"
-                android:text="@string/orange" />
+                app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/yellowChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipBackgroundColor="@color/regular_grey"
                 android:checkable="true"
+                android:text="@string/yellow"
                 app:checkedIcon="@color/yellow"
-                android:text="@string/yellow" />
+                app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/greenChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipBackgroundColor="@color/regular_grey"
                 android:checkable="true"
+                android:text="@string/green"
                 app:checkedIcon="@color/green"
-                android:text="@string/green" />
+                app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/blueChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipBackgroundColor="@color/regular_grey"
                 android:checkable="true"
+                android:text="@string/blue"
                 app:checkedIcon="@color/blue"
-                android:text="@string/blue" />
+                app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/purpleChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipBackgroundColor="@color/regular_grey"
                 android:checkable="true"
+                android:text="@string/purple"
                 app:checkedIcon="@color/purple"
-                android:text="@string/purple" />
+                app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/greyChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipBackgroundColor="@color/regular_grey"
                 android:checkable="true"
+                android:text="@string/grey"
                 app:checkedIcon="@color/grey"
-                android:text="@string/grey" />
+                app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/magentaChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipBackgroundColor="@color/regular_grey"
                 android:checkable="true"
+                android:text="@string/magenta"
                 app:checkedIcon="@color/magenta"
-                android:text="@string/magenta" />
+                app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/pinkChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipBackgroundColor="@color/regular_grey"
                 android:checkable="true"
+                android:text="@string/pink"
                 app:checkedIcon="@color/chip_pink"
-                android:text="@string/pink" />
+                app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/beigeChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipBackgroundColor="@color/regular_grey"
                 android:checkable="true"
+                android:text="@string/beige"
                 app:checkedIcon="@color/chip_beige"
-                android:text="@string/beige" />
+                app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/brownChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipBackgroundColor="@color/regular_grey"
                 android:checkable="true"
+                android:text="@string/brown"
                 app:checkedIcon="@color/brown"
-                android:text="@string/brown" />
+                app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/blackChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipBackgroundColor="@color/regular_grey"
                 android:checkable="true"
+                android:text="@string/black"
                 app:checkedIcon="@color/black"
-                android:text="@string/black" />
+                app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/whiteChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipBackgroundColor="@color/regular_grey"
                 android:checkable="true"
+                android:text="@string/white"
                 app:checkedIcon="@color/white"
-                android:text="@string/white" />
+                app:chipBackgroundColor="@color/regular_grey" />
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -210,13 +218,12 @@
             android:id="@+id/SaveListing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
             android:text="@string/save_button"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/Listing_Image"
-            app:layout_constraintVertical_bias="0.825" />
+            app:layout_constraintTop_toBottomOf="@id/colorGroup" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </android.widget.ScrollView>
