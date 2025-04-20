@@ -85,6 +85,14 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        stinkerButton = binding.stinkerButton;
+        stinkerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         return root;
     }
 
