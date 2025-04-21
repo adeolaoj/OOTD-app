@@ -53,7 +53,16 @@ public class GarmentListingFragment extends Fragment {
         ImageView image = binding.ListingImage;
 
         Bundle bundles = getArguments();
-        String path = bundles.getString("ImagePath");
+        //String path = bundles.getString("ImagePath");
+        String path;
+        if (bundles != null && bundles.containsKey("ImagePath")) {
+            path = bundles.getString("ImagePath");
+        } else {
+            // debugging
+            Log.e("GarmentListingFragment", "Missing 'ImagePath' argument");
+            path = null;
+            Toast.makeText(getContext(), "Missing image path", Toast.LENGTH_SHORT).show();
+        }
         setupDropdownMenu_Category();
         setupDropdownMenu_SubCategory();
         storage = FirebaseStorage.getInstance();

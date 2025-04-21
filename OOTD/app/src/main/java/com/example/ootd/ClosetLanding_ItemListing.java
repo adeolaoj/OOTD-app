@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -68,6 +69,7 @@ public class ClosetLanding_ItemListing extends Fragment {
     private List<Garment> garmentList;
 
     private RecyclerView recyclerView;
+    private GarmentAdapter adapter;
 
     // TODO: Rename and change types of parameters
 
@@ -109,25 +111,6 @@ public class ClosetLanding_ItemListing extends Fragment {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        super.onContextItemSelected(item);
-
-        switch (item.getItemId()) {
-            case MENU_ITEM_EDIT: {
-                Toast.makeText(cntx, "view/edit not implemented",
-                        Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            case MENU_ITEM_DELETE: {
-                Toast.makeText(cntx, "delete not implemented",
-                        Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -141,7 +124,8 @@ public class ClosetLanding_ItemListing extends Fragment {
 
         GarmentViewModel viewModel = new ViewModelProvider(requireActivity()).get(GarmentViewModel.class);
 
-        GarmentAdapter adapter = new GarmentAdapter(new ArrayList<>(), getContext());
+        //GarmentAdapter adapter = new GarmentAdapter(new ArrayList<>(), getContext());
+        adapter = new GarmentAdapter(new ArrayList<>(), getContext());
         recyclerView.setAdapter(adapter);
 
         // set up the data, get the data from the ViewModel
@@ -156,18 +140,64 @@ public class ClosetLanding_ItemListing extends Fragment {
         return view;
     }
 
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        super.onContextItemSelected(item);
+
+        switch (item.getItemId()) {
+            case MENU_ITEM_EDIT: {
+                int currPosition = adapter.getCurrPosition();
+
+                //Garment curr = adapter.garmentList.get(currPosition);
+                Garment curr = adapter.getGarmentAt(currPosition);
+
+                // new bundle to pass data
+                Bundle bundle = new Bundle();
+                bundle.putString("ImagePath",curr.getImagePath());
+                Log.d("ImagePath", "Image Path before passing to bundle: " + curr.getImagePath());
+                bundle.putString("Category", curr.getCategory());
+                bundle.putString("Subcategory", curr.getSubcategory());
+                /*
+                List<String> colorTags = curr.getColorTags();
+                ArrayList<String> colorTagsBruh = (ArrayList<String>)colorTags;
+                bundle.putStringArrayList("colortags", colorTagsBruh);
+
+                 */
+
+                Navigation.findNavController(this.getView()).navigate(R.id.navigation_garment_listing, bundle);
+                return false;
+            }
+            case MENU_ITEM_DELETE: {
+                Toast.makeText(cntx, "delete not implemented",
+                        Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        }
+        return false;
+    }
+
     public class GarmentAdapter extends RecyclerView.Adapter<GarmentAdapter.ViewHolder> {
         private List<Garment> garmentList;
         private Context context;
+
+        private int currPosition = -1;
 
         public GarmentAdapter(List<Garment> dataSet, Context context) {
             this.garmentList = dataSet;
             this.context = context;
         }
 
+        public Garment getGarmentAt(int position) {
+            return garmentList.get(position);
+        }
+
         public void updateGarmentData(List<Garment> newData) {
             this.garmentList = newData;
             notifyDataSetChanged();  // Notifying the adapter to re-render the data
+        }
+
+        public int getCurrPosition() {
+            return currPosition;
         }
 
         @NonNull
@@ -232,6 +262,7 @@ public class ClosetLanding_ItemListing extends Fragment {
             });
 
             viewHolder.itemView.setOnLongClickListener(v -> {
+                currPosition = viewHolder.getAdapterPosition();
                 v.showContextMenu();
                 return true;
             });
