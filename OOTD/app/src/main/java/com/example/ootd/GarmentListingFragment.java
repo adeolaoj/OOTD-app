@@ -67,6 +67,7 @@ public class GarmentListingFragment extends Fragment {
         setupDropdownMenu_SubCategory();
 
         // editing logic
+        // TODO: right now, editing and saving will duplicate the key -> need to pass id stuff
         String savedCategory = null;
         String savedSubCat = null;
         ArrayList<String> savedColors = null;
@@ -74,7 +75,7 @@ public class GarmentListingFragment extends Fragment {
         if (bundles != null) {
             savedCategory = bundles.getString("Category");
             savedSubCat = bundles.getString("Subcategory");
-            //savedColors = bundles.getStringArrayList("ColorTags"); // check if this is going to cause a type error
+            //savedColors = bundles.getStringArrayList("ColorTags"); // TODO: check if this is going to cause a type error
         }
 
         // populate drop down menu if loading existing listing
@@ -85,6 +86,9 @@ public class GarmentListingFragment extends Fragment {
             binding.Blouse.setText(savedSubCat, false);
         }
         // TODO: logic for color tags
+        if (savedColors != null && !savedColors.isEmpty()) {
+            binding.colorGroup.removeAllViews();
+        }
 
         storage = FirebaseStorage.getInstance();
         sref = storage.getReference();
