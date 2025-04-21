@@ -50,6 +50,102 @@
     <string name="headwear">Headwear</string>
     <string name="other">Other</string>
 
+    <string-array name="subcategory_tops">
+        <item>Blouse</item>
+        <item>Camisole</item>
+        <item>Tank Top</item>
+        <item>T-shirt</item>
+        <item>Strapless</item>
+        <item>Jersey</item>
+        <item>Shirt</item>
+        <item>Hoodie</item>
+        <item>Sweatshirt</item>
+        <item>Sweater</item>
+        <item>Vest</item>
+        <item>Bodysuit</item>
+        <item>Cardigan</item>
+    </string-array>
+
+    <string-array name="subcategory_bottoms">
+        <item>Jeans</item>
+        <item>Pants</item>
+        <item>Skirt</item>
+        <item>Shorts</item>
+        <item>Sweatpants</item>
+        <item>Dress Pants</item>
+        <item>Tights</item>
+        <item>Leggings</item>
+    </string-array>
+
+    <string-array name="subcategory_outerwear">
+        <item>Jacket</item>
+        <item>Coat</item>
+        <item>Blazer</item>
+        <item>Puffer</item>
+    </string-array>
+
+    <string-array name="subcategory_bags">
+        <item>Backpack</item>
+        <item>Briefcase</item>
+        <item>Clutch</item>
+        <item>Cross-body</item>
+        <item>Tote</item>
+        <item>Shoulder bag</item>
+        <item>Wallet</item>
+        <item>Belt bag</item>
+    </string-array>
+
+    <string-array name="subcategory_shoes">
+        <item>Boots</item>
+        <item>Sneakers</item>
+        <item>Flats</item>
+        <item>Sandals</item>
+        <item>Loafers</item>
+        <item>Heels</item>
+        <item>Wedges</item>
+    </string-array>
+
+    <string-array name="subcategory_dresses">
+        <item>Maxi Dress</item>
+        <item>Midi Dress</item>
+        <item>Mini Dress</item>
+        <item>Romper</item>
+        <item>Jumpsuit</item>
+    </string-array>
+
+    <string-array name="subcategory_swim">
+        <item>Bikini</item>
+        <item>One-piece</item>
+        <item>Trunks</item>
+        <item>Cover-up</item>
+    </string-array>
+
+    <string-array name="subcategory_accessories">
+        <item>Belt</item>
+        <item>Gloves</item>
+        <item>Scarf</item>
+        <item>Sunglasses</item>
+        <item>Tie</item>
+        <item>Socks</item>
+        <item>Pocket Square</item>
+        <item>Other Accessory</item>
+    </string-array>
+
+    <string-array name="subcategory_jewelry">
+        <item>Bracelet</item>
+        <item>Ring</item>
+        <item>Necklace</item>
+        <item>Earrings</item>
+        <item>Watch</item>
+        <item>Other Jewelry</item>
+    </string-array>
+
+    <string-array name="subcategory_headwear">
+        <item>Hat</item>
+        <item>Hair Accessories</item>
+        <item>Hijab</item>
+    </string-array>
+
     <string-array name="subcategory_dropdown_menu_items">
         <!-- top subcategories -->
         <item>Blouse</item>
@@ -123,7 +219,7 @@
         <item>Earrings</item>
         <item>Watch</item>
         <item>Other Jewelry</item>
-        <!-- headware accessories -->
+        <!-- headwear accessories -->
         <item>Hat</item>
         <item>Hair Accessories</item>
         <item>Hijab</item>
