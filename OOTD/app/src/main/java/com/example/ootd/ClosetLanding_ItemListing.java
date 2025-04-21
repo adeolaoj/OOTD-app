@@ -252,6 +252,15 @@ public class ClosetLanding_ItemListing extends Fragment {
                 }
             }
 
+            if (garment.getColorTags() != null) {
+                for (String color: garment.getColorTags()) {
+                    Chip chip = new Chip(context);
+                    chip.setText(color);
+                    chip.setCloseIconVisible(false);
+                    chipGroup.addView(chip);
+                }
+            }
+
 
             ImageButton favoriteBtn = viewHolder.favorite;
             favoriteBtn.setImageResource(garment.isFavorite() ? R.drawable.favorites_filled : R.drawable.favorites_unfilled);

@@ -22,13 +22,17 @@ import com.example.ootd.databinding.FragmentGarmentListingBinding;
 import com.example.ootd.databinding.FragmentProfileBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -96,6 +100,7 @@ public class GarmentListingFragment extends Fragment {
 
                 String category = binding.Tops.getText().toString();
                 String subcategory = binding.Blouse.getText().toString();
+
                 if (category.isEmpty()) {
                     Toast.makeText(getActivity(), "Category Required", Toast.LENGTH_SHORT).show();
                     return;
@@ -106,12 +111,32 @@ public class GarmentListingFragment extends Fragment {
                     return;
                 }
 
+                ChipGroup chips = binding.colorGroup;
+                List<String> colorsSelected = new ArrayList<>();
+
+                for (int i = 0; i < chips.getChildCount(); ++i) {
+                    View chip = chips.getChildAt(i);
+                    if (chip instanceof Chip) {
+                        Chip color = (Chip) chip;
+                        if (color.isChecked()) {
+                            colorsSelected.add(color.getText().toString());
+                        }
+                    }
+                }
+
+                if (colorsSelected.isEmpty()) {
+                    Toast.makeText(getActivity(),"Please select at least one color",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 String userId = dbref.push().getKey();
                 Map<String, Object> userData = new HashMap<>();
 
                 userData.put("ImagePath", path);
                 userData.put("Category", category);
                 userData.put("Subcategory", subcategory);
+                userData.put("colorTags", colorsSelected);
 
                 dbref.child(userId).setValue(userData);
 
