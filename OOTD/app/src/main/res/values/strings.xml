@@ -146,6 +146,11 @@
         <item>Hijab</item>
     </string-array>
 
+    <string-array name="subcategory_other">
+        <item>Other</item>
+    </string-array>
+
+
     <string-array name="subcategory_dropdown_menu_items">
         <!-- top subcategories -->
         <item>Blouse</item>

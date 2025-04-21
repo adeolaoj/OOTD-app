@@ -40,6 +40,7 @@ public class GarmentListingFragment extends Fragment {
     StorageReference sref;
     FirebaseDatabase database;
     DatabaseReference dbref;
+    String currentCategory;
 
 
     public GarmentListingFragment() {
@@ -64,7 +65,7 @@ public class GarmentListingFragment extends Fragment {
             Toast.makeText(getContext(), "Missing image path", Toast.LENGTH_SHORT).show();
         }
         setupDropdownMenu_Category();
-        setupDropdownMenu_SubCategory();
+
         storage = FirebaseStorage.getInstance();
         sref = storage.getReference();
         StorageReference imageRef = sref.child(path);
@@ -132,11 +133,30 @@ public class GarmentListingFragment extends Fragment {
 
         autoCompleteTextView.setOnItemClickListener((adapterView, view, i, l) -> {
             view.setBackgroundColor(getResources().getColor(R.color.highlight_grey));
+            currentCategory = adapter.getItem(i);
             autoCompleteTextView.setText(adapter.getItem(i));
+            setupDropdownMenu_SubCategory(currentCategory);
+        });
+
+        // fixes clearing selection issue
+        autoCompleteTextView.setOnClickListener(v -> {
+            if (!autoCompleteTextView.getText().toString().isEmpty()) {
+                autoCompleteTextView.setText("");
+                currentCategory = "";
+                binding.Blouse.setText("");
+            }
         });
     }
-    public void setupDropdownMenu_SubCategory() {
-        String[] items = getResources().getStringArray(R.array.subcategory_dropdown_menu_items);
+    public void setupDropdownMenu_SubCategory(String category) {
+
+        int subcategoryId = getSubcategory(category);
+        if (subcategoryId == 0) {
+            binding.Blouse.setAdapter(null);
+            binding.Blouse.setText("");
+            return;
+        }
+
+        String[] items = getResources().getStringArray(subcategoryId);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_dropdown_item_1line, items);
 
@@ -147,6 +167,44 @@ public class GarmentListingFragment extends Fragment {
             view.setBackgroundColor(getResources().getColor(R.color.highlight_grey));
             autoCompleteTextView.setText(adapter.getItem(i));
         });
+
+        // fixes clearing selection issue
+        autoCompleteTextView.setOnClickListener(v -> {
+            if (!autoCompleteTextView.getText().toString().isEmpty()) {
+                autoCompleteTextView.setText("");
+            }
+        });
     }
 
+    private int getSubcategory(String category) {
+        if (category == null || category.isEmpty()) {
+            return 0;
+        }
+        switch (category) {
+            case "Tops":
+                return R.array.subcategory_tops;
+            case "Bottoms":
+                return R.array.subcategory_bottoms;
+            case "Shoes":
+                return R.array.subcategory_shoes;
+            case "Outerwear":
+                return R.array.subcategory_outerwear;
+            case "Dresses":
+                return R.array.subcategory_dresses;
+            case "Swim":
+                return R.array.subcategory_swim;
+            case "Accessories":
+                return R.array.subcategory_accessories;
+            case "Jewelry":
+                return R.array.subcategory_jewelry;
+            case "Bags":
+                return R.array.subcategory_bags;
+            case "Headwear":
+                return R.array.subcategory_headwear;
+            case "Other":
+                return R.array.subcategory_other;
+            default:
+                return 0;
+        }
+    }
 }
