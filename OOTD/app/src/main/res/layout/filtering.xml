@@ -1,0 +1,855 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:padding="16dp" >
+
+
+        <TextView
+            android:id="@+id/SortFilterText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/sort_and_filter"
+            android:textColor="@color/dark_text"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/SortFilterCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/category"
+            android:textColor="@color/dark_text"
+            android:textSize="20sp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/topsChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/tops"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/bottomsChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/bottoms"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/shoesChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/shoes"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/outerwearChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/outerwear"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/dressesChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/dresses"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/swimChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/swim"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/accessoriesChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/accessories"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/jewelryChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/jewelry"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/bagsChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/bags"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/headwearChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/headwear"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/otherChipCat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/other"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <TextView
+            android:id="@+id/ColorCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/color"
+            android:textColor="@color/dark_text"
+            android:textSize="20sp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/redChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/red"
+                app:checkedIcon="@color/red"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/orangeChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/orange"
+                app:checkedIcon="@color/orange"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/yellowChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/yellow"
+                app:checkedIcon="@color/yellow"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/greenChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/green"
+                app:checkedIcon="@color/green"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/blueChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/blue"
+                app:checkedIcon="@color/blue"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/purpleChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/purple"
+                app:checkedIcon="@color/purple"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/greyChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/grey"
+                app:checkedIcon="@color/grey"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/magentaChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/magenta"
+                app:checkedIcon="@color/magenta"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/pinkChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/pink"
+                app:checkedIcon="@color/chip_pink"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/beigeChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/beige"
+                app:checkedIcon="@color/chip_beige"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/brownChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/brown"
+                app:checkedIcon="@color/brown"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/blackChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/black"
+                app:checkedIcon="@color/black"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/whiteChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/white"
+                app:checkedIcon="@color/white"
+                app:chipBackgroundColor="@color/regular_grey" />
+            </com.google.android.material.chip.ChipGroup>
+
+        <TextView
+            android:id="@+id/SortFilterSubcategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/sub_category"
+            android:textColor="@color/dark_text"
+            android:textSize="20sp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp">
+
+            <!-- top subcat -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/blouseChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/blouse"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/camiChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/camisole"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/tankChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/tanktop"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/tshirtChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/tshirt"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/straplessChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/strapless"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/jerseyChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/jersey"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/shirtChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/shirt"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/hoodieChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/hoodie"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sweatshirtChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/sweatshirt"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sweaterChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/sweater"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/vestChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/vest"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/bodysuitChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/bodysuit"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cardiganChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/cardigan"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <!-- bottoms subcat -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/jeansChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/jeans"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/pantsChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/pants"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/skirtChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/skirt"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/shortsChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/shorts"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sweatpantsChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/sweatpants"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/dresspantsChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/dress_pants"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/tightsChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/tights"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/leggingsChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/leggings"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <!-- outerwear subcat -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/jacketChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/jacket"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/coatChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/coat"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/blazerChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/blazer"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/pufferChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/puffer"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <!-- bags subcat -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/backpackChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/backpack"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/briefcaseChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/briefcase"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/clutchChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/clutch"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/crossbodyChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/cross_body"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/toteChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/tote"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/shoulderbagChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/shoulder_bag"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/walletChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/wallet"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/beltbagChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/belt_bag"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <!-- shoes subcat -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/bootsChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/boots"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sneakersChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/sneakers"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/flatsChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/flats"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sandalsChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/sandals"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/loafersChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/loafers"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/heelsChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/heels"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/wedgesChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/wedges"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <!-- dresses subcat -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/maxiChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/maxi"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/midiChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/midi"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/miniChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/mini"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/romperChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/romper"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/jumpsuitChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/jumpsuit"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <!-- swim subcat -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/bikiniChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/bikini"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/onepieceChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/one_piece"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/trunksChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/trunks"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/coverupChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/cover_up"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <!-- accessories subcat -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/beltChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/belt"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/glovesChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/gloves"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/scarfChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/scarf"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sunglassesChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/sunglasses"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/tieChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/tie"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/socksChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/socks"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/pocketChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/pocket_sq"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/otheraccChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/other_acc"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <!-- jewelry subcat -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/braceletChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/bracelet"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/ringChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/ring"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/necklaceChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/necklace"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/earringsChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/earrings"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/watchChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/watch"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/otherjewelChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/other_jewel"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <!-- hat subcat -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/hatChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/hat"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/hijabChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/hijab"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/hairaccChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/hair_acc"
+                app:chipBackgroundColor="@color/regular_grey" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <CheckBox
+            android:id="@+id/checkboxFavorites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/show_favorites"
+            android:textSize="20sp"
+            android:textColor="@color/dark_text"
+            android:layout_marginTop="8dp"/>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/applyFilterButton"
+                android:layout_width="177dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/apply_filters_text" />
+
+            <Button
+                android:id="@+id/clearFilterButton"
+                android:layout_weight="1"
+                android:text="@string/clear_filters_text"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@color/light_pink"
+                android:layout_height="0dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

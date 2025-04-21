@@ -38,6 +38,18 @@
         <item>Other</item>
     </string-array>
 
+    <string name="tops">Tops</string>
+    <string name="bottoms">Bottoms</string>
+    <string name="shoes">Shoes</string>
+    <string name="outerwear">Outerwear</string>
+    <string name="dresses">Dresses</string>
+    <string name="swim">Swim</string>
+    <string name="accessories">Accessories</string>
+    <string name="jewelry">Jewelry</string>
+    <string name="bags">Bags</string>
+    <string name="headwear">Headwear</string>
+    <string name="other">Other</string>
+
     <string-array name="subcategory_dropdown_menu_items">
         <!-- top subcategories -->
         <item>Blouse</item>
@@ -118,6 +130,82 @@
 
     </string-array>
 
+    <string name="blouse">Blouse</string>
+    <string name="camisole">Camisole</string>
+    <string name="tanktop">Tank Top</string>
+    <string name="tshirt">T-shirt</string>
+    <string name="strapless">Strapless</string>
+    <string name="jersey">Jersey</string>
+    <string name="shirt">Shirt</string>
+    <string name="hoodie">Hoodie</string>
+    <string name="sweatshirt">Sweatshirt</string>
+    <string name="sweater">Sweater</string>
+    <string name="vest">Vest</string>
+    <string name="bodysuit">Bodysuit</string>
+    <string name="cardigan">Cardigan</string>
+
+    <string name="jeans">Jeans</string>
+    <string name="pants">Pants</string>
+    <string name="skirt">Skirt</string>
+    <string name="shorts">Shorts</string>
+    <string name="sweatpants">Sweatpants</string>
+    <string name="dress_pants">Dress Pants</string>
+    <string name="tights">Tights</string>
+    <string name="leggings">Leggings</string>
+
+    <string name="jacket">Jacket</string>
+    <string name="coat">Coat</string>
+    <string name="blazer">Blazer</string>
+    <string name="puffer">Puffer</string>
+
+    <string name="backpack">Backpack</string>
+    <string name="briefcase">Briefcase</string>
+    <string name="clutch">Clutch</string>
+    <string name="cross_body">Cross-body</string>
+    <string name="tote">Tote</string>
+    <string name="shoulder_bag">Shoulder bag</string>
+    <string name="wallet">Wallet</string>
+    <string name="belt_bag">Belt bag</string>
+
+    <string name="boots">Boots</string>
+    <string name="sneakers">Sneakers</string>
+    <string name="flats">Flats</string>
+    <string name="sandals">Sandals</string>
+    <string name="loafers">Loafers</string>
+    <string name="heels">Heels</string>
+    <string name="wedges">Wedges</string>
+
+    <string name="maxi">Maxi dress</string>
+    <string name="midi">Midi dress</string>
+    <string name="mini">Mini dress</string>
+    <string name="romper">Romper</string>
+    <string name="jumpsuit">Jumpsuit</string>
+
+    <string name="bikini">Bikini</string>
+    <string name="one_piece">One-piece</string>
+    <string name="trunks">Trunks</string>
+    <string name="cover_up">Cover-up</string>
+
+    <string name="belt">Belt</string>
+    <string name="gloves">Gloves</string>
+    <string name="scarf">Scarf</string>
+    <string name="sunglasses">Sunglasses</string>
+    <string name="tie">Tie</string>
+    <string name="socks">Socks</string>
+    <string name="pocket_sq">Pocket Square</string>
+    <string name="other_acc">Other Accessory</string>
+
+    <string name="bracelet">Bracelet</string>
+    <string name="ring">Ring</string>
+    <string name="necklace">Necklace</string>
+    <string name="earrings">Earrings</string>
+    <string name="watch">Watch</string>
+    <string name="other_jewel">Other Jewelry</string>
+
+    <string name="hat">Hat</string>
+    <string name="hijab">Hijab</string>
+    <string name="hair_acc">Hair Accessory</string>
+
     <string name="log_out">Log Out</string>
     <string name="log_in">Log In</string>
     <string name="sign_up">Sign Up</string>
@@ -153,5 +241,10 @@
 
     <string name="edit_listing">Edit Listing</string>
     <string name="delete_listing">Delete Listing</string>
+    <string name="sort_and_filter">Sort and Filter</string>
+    <string name="color">Color</string>
+    <string name="show_favorites">Show Favorites</string>
+    <string name="clear_filters_text">Clear Filters</string>
+    <string name="apply_filters_text">Apply Filters</string>
 
 </resources>
