@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +54,6 @@ public class GarmentListingFragment extends Fragment {
         ImageView image = binding.ListingImage;
 
         Bundle bundles = getArguments();
-        //String path = bundles.getString("ImagePath");
         String path;
         if (bundles != null && bundles.containsKey("ImagePath")) {
             path = bundles.getString("ImagePath");
@@ -65,6 +65,27 @@ public class GarmentListingFragment extends Fragment {
         }
         setupDropdownMenu_Category();
         setupDropdownMenu_SubCategory();
+
+        // editing logic
+        String savedCategory = null;
+        String savedSubCat = null;
+        ArrayList<String> savedColors = null;
+
+        if (bundles != null) {
+            savedCategory = bundles.getString("Category");
+            savedSubCat = bundles.getString("Subcategory");
+            //savedColors = bundles.getStringArrayList("ColorTags"); // check if this is going to cause a type error
+        }
+
+        // populate drop down menu if loading existing listing
+        if (savedCategory != null) {
+            binding.Tops.setText(savedCategory, false);
+        }
+        if (savedSubCat != null) {
+            binding.Blouse.setText(savedSubCat, false);
+        }
+        // TODO: logic for color tags
+
         storage = FirebaseStorage.getInstance();
         sref = storage.getReference();
         StorageReference imageRef = sref.child(path);
