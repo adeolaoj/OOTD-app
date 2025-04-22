@@ -58,7 +58,6 @@ public class GarmentListingFragment extends Fragment {
         ImageView image = binding.ListingImage;
 
         Bundle bundles = getArguments();
-        //String path = bundles.getString("ImagePath");
         String path;
         if (bundles != null && bundles.containsKey("ImagePath")) {
             path = bundles.getString("ImagePath");
@@ -69,6 +68,32 @@ public class GarmentListingFragment extends Fragment {
             Toast.makeText(getContext(), "Missing image path", Toast.LENGTH_SHORT).show();
         }
         setupDropdownMenu_Category();
+
+        setupDropdownMenu_SubCategory();
+
+        // editing logic
+        // TODO: right now, editing and saving will duplicate the key -> need to pass id stuff
+        String savedCategory = null;
+        String savedSubCat = null;
+        ArrayList<String> savedColors = null;
+
+        if (bundles != null) {
+            savedCategory = bundles.getString("Category");
+            savedSubCat = bundles.getString("Subcategory");
+            //savedColors = bundles.getStringArrayList("ColorTags"); // TODO: check if this is going to cause a type error
+        }
+
+        // populate drop down menu if loading existing listing
+        if (savedCategory != null) {
+            binding.Tops.setText(savedCategory, false);
+        }
+        if (savedSubCat != null) {
+            binding.Blouse.setText(savedSubCat, false);
+        }
+        // TODO: logic for color tags
+        if (savedColors != null && !savedColors.isEmpty()) {
+            binding.colorGroup.removeAllViews();
+        }
 
         storage = FirebaseStorage.getInstance();
         sref = storage.getReference();

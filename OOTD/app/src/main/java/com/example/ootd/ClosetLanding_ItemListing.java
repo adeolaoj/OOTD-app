@@ -148,7 +148,6 @@ public class ClosetLanding_ItemListing extends Fragment {
             case MENU_ITEM_EDIT: {
                 int currPosition = adapter.getCurrPosition();
 
-                //Garment curr = adapter.garmentList.get(currPosition);
                 Garment curr = adapter.getGarmentAt(currPosition);
 
                 // new bundle to pass data
@@ -157,12 +156,9 @@ public class ClosetLanding_ItemListing extends Fragment {
                 Log.d("ImagePath", "Image Path before passing to bundle: " + curr.getImagePath());
                 bundle.putString("Category", curr.getCategory());
                 bundle.putString("Subcategory", curr.getSubcategory());
-                /*
                 List<String> colorTags = curr.getColorTags();
                 ArrayList<String> colorTagsBruh = (ArrayList<String>)colorTags;
-                bundle.putStringArrayList("colortags", colorTagsBruh);
-
-                 */
+                bundle.putStringArrayList("ColorTags", colorTagsBruh);
 
                 Navigation.findNavController(this.getView()).navigate(R.id.navigation_garment_listing, bundle);
                 return false;
