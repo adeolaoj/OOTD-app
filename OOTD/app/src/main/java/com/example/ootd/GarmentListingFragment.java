@@ -69,7 +69,6 @@ public class GarmentListingFragment extends Fragment {
         }
         setupDropdownMenu_Category();
 
-        setupDropdownMenu_SubCategory();
 
         // editing logic
         // TODO: right now, editing and saving will duplicate the key -> need to pass id stuff
