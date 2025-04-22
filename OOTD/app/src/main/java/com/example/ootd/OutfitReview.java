@@ -95,8 +95,9 @@ public class OutfitReview extends Fragment {
 
         saveBtn = view.findViewById(R.id.saveOutfitButton);
         saveBtn.setOnClickListener(v->{
-            List<Garment> outfitChosen = garmentsForOutfit.getSelectedGarments().getValue();
-            if (outfitChosen != null && !outfitChosen.isEmpty()) {
+            List<Garment> garmentsSelected = garmentsForOutfit.getSelectedGarments().getValue();
+            Outfit outfitChosen = new Outfit(garmentsSelected);
+            if (!outfitChosen.isEmpty()) {
                 viewModel.saveOutfit(outfitChosen);
                 garmentsForOutfit.clearSelection();
                 Toast.makeText(requireContext(), "Outfit successfully saved!",

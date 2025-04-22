@@ -10,13 +10,11 @@ public class Garment {
     private String Category;
     private String Subcategory;
     private List<String> colorTags;
-    private Boolean favorites;
+    private Boolean favorites = false;
 
     public Garment() {
         // private constructor for firestore
     }
-
-
 
     public Garment(String ImagePath, String category, String subcategory, List<String> colorTags) {
         this.ImagePath = ImagePath;
@@ -25,7 +23,6 @@ public class Garment {
         this.colorTags = colorTags;
         this.favorites = false;
     }
-
 
 
     public String getImagePath() {
