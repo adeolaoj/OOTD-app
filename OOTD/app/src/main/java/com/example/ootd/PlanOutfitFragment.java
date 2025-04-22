@@ -195,7 +195,7 @@ public class PlanOutfitFragment extends Fragment {
                 if (selectedGarments.contains(currGarment)) {
                     selectedGarments.removeGarment(currGarment);
                     garmentSelected.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white));
-                } else if (selectedGarments.numGarments() < 3) {
+                } else if (selectedGarments.numGarments() < 5) {
                     selectedGarments.addGarment(currGarment);
                     garmentSelected.setCardBackgroundColor(ContextCompat.getColor(context, R.color.highlight_grey));
                 } else {

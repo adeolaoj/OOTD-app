@@ -18,7 +18,7 @@ import java.util.List;
 
 public class GarmentViewModel extends ViewModel {
     private MutableLiveData<List<Garment>> garmentsData = new MutableLiveData<>();
-    private MutableLiveData<List<List<Garment>>> outfitsSaved = new MutableLiveData<>(new ArrayList<>());
+    private MutableLiveData<List<Outfit>> outfitsSaved = new MutableLiveData<>(new ArrayList<>());
 
     public GarmentViewModel() {
         fetchGarmentData(); // Fetch data initially or when the ViewModel is instantiated
@@ -32,16 +32,16 @@ public class GarmentViewModel extends ViewModel {
         garmentsData.setValue(list);
     }
 
-    public LiveData<List<List<Garment>>> getSavedOutfits() {
+    public LiveData<List<Outfit>> getSavedOutfits() {
         return outfitsSaved;
     }
 
-    public void saveOutfit(List<Garment> outfit) {
-        List<List<Garment>> currentOutfits = outfitsSaved.getValue();
+    public void saveOutfit(Outfit outfits) {
+        List<Outfit> currentOutfits = outfitsSaved.getValue();
         if (currentOutfits == null) {
             currentOutfits = new ArrayList<>();
         }
-        currentOutfits.add(new ArrayList<>(outfit));
+        currentOutfits.add(outfits);
         outfitsSaved.setValue(currentOutfits);
     }
 
