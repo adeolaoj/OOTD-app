@@ -168,8 +168,37 @@ public class ClosetLanding_ItemListing extends Fragment {
                 return false;
             }
             case MENU_ITEM_DELETE: {
-                Toast.makeText(cntx, "delete not implemented",
-                        Toast.LENGTH_SHORT).show();
+                int position = adapter.getCurrPosition();
+                Garment toDelete = adapter.getGarmentAt(position);
+
+                if (toDelete.getImagePath() == null) {
+                    Toast.makeText(cntx, "Error: Image path not found",
+                            Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
+                DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Garments");
+                dbref.orderByChild("ImagePath").equalTo(toDelete.getImagePath())
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.exists()) {
+                                            for (DataSnapshot item : snapshot.getChildren()) {
+                                                item.getRef().removeValue(); // delete from Firebase
+                                            }
+                                            Toast.makeText(cntx, "Garment deleted",
+                                                    Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(cntx, "Item not found",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(cntx, "Delete unsuccessful",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                 return true;
             }
         }
