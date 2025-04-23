@@ -28,6 +28,13 @@ public class GarmentViewModel extends ViewModel {
         return garmentsData;
     }
 
+    public void addGarment(Garment g) {
+        List<Garment> current = garmentsData.getValue();
+        assert current != null;
+        current.add(g);
+        garmentsData.setValue(current);
+    }
+
     public void setGarmentsData(List<Garment> list) {
         garmentsData.setValue(list);
     }
