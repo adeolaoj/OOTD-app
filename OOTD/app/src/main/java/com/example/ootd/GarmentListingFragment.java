@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -122,15 +123,15 @@ public class GarmentListingFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String category = binding.Tops.getText().toString();
-                String subcategory = binding.Blouse.getText().toString();
+                String Category = binding.Tops.getText().toString();
+                String Subcategory = binding.Blouse.getText().toString();
 
-                if (category.isEmpty()) {
+                if (Category.isEmpty()) {
                     Toast.makeText(getActivity(), "Category Required", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (subcategory.isEmpty()) {
+                if (Subcategory.isEmpty()) {
                     Toast.makeText(getActivity(),"Subcategory Required",Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -158,11 +159,17 @@ public class GarmentListingFragment extends Fragment {
                 Map<String, Object> userData = new HashMap<>();
 
                 userData.put("ImagePath", path);
-                userData.put("Category", category);
-                userData.put("Subcategory", subcategory);
+                userData.put("Category", Category);
+                userData.put("Subcategory", Subcategory);
                 userData.put("colorTags", colorsSelected);
 
+                assert userId != null;
                 dbref.child(userId).setValue(userData);
+
+                Garment newGarment = new Garment(Category, path, Subcategory, colorsSelected);
+
+                GarmentViewModel garmentViewModel = new ViewModelProvider(requireActivity()).get(GarmentViewModel.class);
+                garmentViewModel.addGarment(newGarment);
 
                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
                 navController.navigate(R.id.navigation_closet);

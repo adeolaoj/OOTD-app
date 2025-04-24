@@ -6,26 +6,23 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Garment {
-    private String ImagePath;
     private String Category;
+    private String ImagePath;
     private String Subcategory;
     private List<String> colorTags;
-    private Boolean favorites;
+    private Boolean favorites = false;
 
     public Garment() {
         // private constructor for firestore
     }
 
-
-
-    public Garment(String ImagePath, String category, String subcategory, List<String> colorTags) {
+    public Garment(String Category, String ImagePath, String Subcategory, List<String> colorTags) {
+        this.Category = Category;
         this.ImagePath = ImagePath;
-        this.Category = category;
-        this.Subcategory = subcategory;
+        this.Subcategory = Subcategory;
         this.colorTags = colorTags;
         this.favorites = false;
     }
-
 
 
     public String getImagePath() {
