@@ -40,6 +40,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private DatabaseReference ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +52,23 @@ public class MainActivity extends AppCompatActivity {
 
         setupNavigation();
 
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            String username = bundle.getString("Username");
+            Log.d("MainActivity", "Logged in as: " + username);
+            ref = FirebaseDatabase.getInstance().getReference("users").child(username).child("Garments");
+
+        } else { // delete this later
+            Log.d("MainActivity", "No username passed.");
+            ref = FirebaseDatabase.getInstance().getReference("Garments");
+
+        }
+
         // Initialize the ViewModel
         GarmentViewModel viewModel = new ViewModelProvider(this).get(GarmentViewModel.class);
 
         // Fetch garments from Firebase and update ViewModel
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Garments");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
