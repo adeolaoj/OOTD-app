@@ -312,7 +312,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="textEmail">Email</string>
     <string name="textPassword">Password</string>
-    <string name="textName">Name</string>
+    <string name="textName">Username</string>
     <string name="confirmPassword">Confirm Password</string>
     <string name="title_activity_camera_application">CameraApplication</string>
     <string name="next">Next</string>

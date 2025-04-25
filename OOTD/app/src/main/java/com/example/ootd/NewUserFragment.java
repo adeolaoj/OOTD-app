@@ -23,20 +23,23 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class NewUserFragment extends Fragment {
 
     private Button signUpButton;
-    private EditText email;
-    private EditText password;
-    private EditText name;
-
-    private SharedPreferences myPrefs;
-    private String savedEmail;
-    private String savedPassword;
-    private String savedName;
+    private String email;
+    private String password;
+    private String confirmation;
+    private String name;
     private FragmentNewUserBinding binding;
     private FirebaseAuth mAuth;
 
@@ -48,38 +51,49 @@ public class NewUserFragment extends Fragment {
         View root = binding.getRoot();
 
         mAuth = FirebaseAuth.getInstance();
-
         signUpButton = binding.signUpButton;
-        email = binding.signUpNewUserEmail;
-        password = binding.signUpNewUserPassword;
-        name = binding.signUpNewUserName;
 
         Context context = getActivity().getApplicationContext();
-        myPrefs = context.getSharedPreferences("OOTD", Context.MODE_PRIVATE);
-
-        // get saved info from prefs
-        savedEmail = myPrefs.getString("loginEmail","");
-        savedPassword = myPrefs.getString("loginPassword","");
-        savedName = myPrefs.getString("signUpName","");
-
-        // set info to text views
-        email.setText(savedEmail);
-        password.setText(savedPassword);
-        name.setText(savedName);
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = binding.signUpNewUserEmail.getText().toString();
-                String password = binding.signUpNewUserPassword.getText().toString();
-                String password_confirm = binding.signUpNewUserConfirmPassword.getText().toString();
+                name = binding.signUpNewUserName.getText().toString();
+                email = binding.signUpNewUserEmail.getText().toString();
+                password = binding.signUpNewUserPassword.getText().toString();
+                confirmation = binding.signUpNewUserConfirmPassword.getText().toString();
 
-                if (password_confirm.equals(password)) {
-                    createAccount(email,password);
+                if (name.isEmpty()) {
+                    Toast.makeText(getActivity(), "Missing Name",
+                            Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
-                Toast.makeText(getActivity(), "Passwords Mismatching",
-                        Toast.LENGTH_SHORT).show();
+                if (email.isEmpty()) {
+                    Toast.makeText(getActivity(), "Missing Email",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (password.isEmpty()) {
+                    Toast.makeText(getActivity(), "Missing Password",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (confirmation.isEmpty()) {
+                    Toast.makeText(getActivity(), "Missing Password Confirmation",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (confirmation.equals(password)) {
+                    createAccount(name, email,password);
+                } else {
+                    Toast.makeText(getActivity(), "Passwords Non-Matching",
+                            Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });
@@ -93,7 +107,7 @@ public class NewUserFragment extends Fragment {
         binding = null;
     }
 
-    private void createAccount(String email, String password) {
+    private void createAccount(String name, String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(ContextCompat.getMainExecutor(getActivity()), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -102,13 +116,36 @@ public class NewUserFragment extends Fragment {
                             Log.d("SignUp", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference user_ref = database.getReference("users");
+                            DatabaseReference uid_ref = user_ref.child(user.getUid());
+                            uid_ref.setValue(name);
+
+                            DatabaseReference dbref = database.getReference("data");
+                            DatabaseReference name_ref = dbref.child(name);
+                            Map<String, Object> info = new HashMap<>();
+                            info.put("uid", user.getUid());
+                            info.put("email", email);
+                            info.put("garments",null);
+
+                            name_ref.setValue(info);
+
+                            Bundle bdl = new Bundle();
+                            bdl.putString("Username",name);
+
                             Intent intent = new Intent(getActivity(), MainActivity.class);
+                            intent.putExtras(bdl);
                             startActivity(intent);
                             getActivity().finish();
                         } else {
-                            Log.w("SignUp", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getActivity(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            if (!task.isSuccessful()) {
+                                Exception e = task.getException();
+                                if (e instanceof FirebaseAuthUserCollisionException) {
+                                    Toast.makeText(getActivity(), "Email already in use. Please log in instead.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getActivity(), "Sign up failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
                         }
                     }
                 });
