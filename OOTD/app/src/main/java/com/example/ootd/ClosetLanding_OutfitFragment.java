@@ -1,7 +1,11 @@
 package com.example.ootd;
 
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.content.Context;
 
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -9,14 +13,21 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -86,18 +97,11 @@ public class ClosetLanding_OutfitFragment extends Fragment {
             adapter.updateOutfitData(outfits);
         });
 
-        CardView outfitCard = view.findViewById(R.id.garmentCard);
-
-//        outfitCard.setOnClickListener(v -> {
-//            Bundle args = new Bundle();
-//            args.putInt("outfit_position", position);
-//            Navigation.findNavController(view).navigate(
-//                    R.id.action_viewSavedOutfitDetails_onClick, args);
-//        });
     }
 
     public static class outfitAdapter extends RecyclerView.Adapter<outfitAdapter.ViewHolder> {
-        private List<List<Garment>> outfits = new ArrayList<>();
+        private List<Outfit> outfits = new ArrayList<>();
+        private Context context;
         private OnItemClickListener listener;
 
         public interface OnItemClickListener {
@@ -108,23 +112,63 @@ public class ClosetLanding_OutfitFragment extends Fragment {
             this.listener = listener;
         }
 
-        public void updateOutfitData(List<List<Garment>> outfits) {
+        public void updateOutfitData(List<Outfit> outfits) {
             this.outfits = outfits;
             notifyDataSetChanged();
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.garment_layout,
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_outfit,
                     parent, false);
+            context = parent.getContext();
             return new ViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            List<Garment> outfit = outfits.get(position);
-            if (!outfits.isEmpty()) {
-               // holder.imageView.setImageURI(outfit.get(0).getImageAddress());
+            Outfit outfit = outfits.get(position);
+            List<Garment> garments = outfit.getOutfitGarments();
+
+            GridLayout mainGrid = holder.itemView.findViewById(R.id.mainGrid);
+            LinearLayout bottomRow = holder.itemView.findViewById(R.id.extraRow);
+
+            mainGrid.removeAllViews();
+            bottomRow.removeAllViews();
+
+            int padding = 4;
+            int index = 0;
+
+            for (Garment garment:garments) {
+                SquareImageView imageView = new SquareImageView(context);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setImageURI(Uri.parse(garment.getImagePath()));
+
+                if (index < 4) {
+                    GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                    params.rowSpec = GridLayout.spec(index / 2, 1f);
+                    params.columnSpec = GridLayout.spec(index % 2, 1f);
+                    params.width = 0;
+                    params.height = 0;
+                    params.setMargins(4, 4, 4, 4);
+                    imageView.setLayoutParams(params);
+                    mainGrid.addView(imageView);
+                } else {
+                    DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+                    int screenWidth = metrics.widthPixels;
+
+                    int cardPadding = 200;
+                    int maxItems = garments.size() - 4;
+
+                    int availableWidth = screenWidth - cardPadding;
+                    int bottomSize = availableWidth / Math.min(maxItems, 5);
+
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(bottomSize, bottomSize);
+                    params.setMargins(padding, 0, padding, 0);
+                    bottomRow.addView(imageView, params);
+                }
+
+                index++;
             }
         }
 
@@ -134,13 +178,34 @@ public class ClosetLanding_OutfitFragment extends Fragment {
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
-            final ImageView imageView;
+            GridLayout mainGrid;
+            LinearLayout bottomRow;
 
             ViewHolder(View itemView) {
                 super(itemView);
-                imageView = itemView.findViewById(R.id.garmentImageView);
+                mainGrid = itemView.findViewById(R.id.mainGrid);
+                bottomRow = itemView.findViewById(R.id.extraRow);
             }
 
+        }
+    }
+
+    public static class SquareImageView extends AppCompatImageView {
+        public SquareImageView(Context context) {
+            super(context);
+        }
+
+        public SquareImageView(Context context, AttributeSet attrs) {
+            super(context, attrs);
+        }
+
+        public SquareImageView(Context context, AttributeSet attrs, int defStyle) {
+            super(context, attrs, defStyle);
+        }
+
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            super.onMeasure(widthMeasureSpec, widthMeasureSpec);
         }
     }
 }

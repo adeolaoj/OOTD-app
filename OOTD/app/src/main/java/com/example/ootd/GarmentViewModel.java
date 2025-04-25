@@ -24,6 +24,7 @@ public class GarmentViewModel extends ViewModel {
     private String username;
     private DatabaseReference ref;
 
+
     public GarmentViewModel() {
         fetchGarmentData(); // Fetch data initially or when the ViewModel is instantiated
     }
@@ -32,20 +33,27 @@ public class GarmentViewModel extends ViewModel {
         return garmentsData;
     }
 
+    public void addGarment(Garment g) {
+        List<Garment> current = garmentsData.getValue();
+        assert current != null;
+        current.add(g);
+        garmentsData.setValue(current);
+    }
+
     public void setGarmentsData(List<Garment> list) {
         garmentsData.setValue(list);
     }
 
-    public LiveData<List<List<Garment>>> getSavedOutfits() {
+    public LiveData<List<Outfit>> getSavedOutfits() {
         return outfitsSaved;
     }
 
-    public void saveOutfit(List<Garment> outfit) {
-        List<List<Garment>> currentOutfits = outfitsSaved.getValue();
+    public void saveOutfit(Outfit outfits) {
+        List<Outfit> currentOutfits = outfitsSaved.getValue();
         if (currentOutfits == null) {
             currentOutfits = new ArrayList<>();
         }
-        currentOutfits.add(new ArrayList<>(outfit));
+        currentOutfits.add(outfits);
         outfitsSaved.setValue(currentOutfits);
     }
 
@@ -65,7 +73,6 @@ public class GarmentViewModel extends ViewModel {
                 Log.d("GarmentListingFragment", "Username not found!");
             }
 
-            // ✅ Safe to attach listener now because ref is initialized
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
