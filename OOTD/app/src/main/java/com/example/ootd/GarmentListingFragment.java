@@ -64,6 +64,7 @@ public class GarmentListingFragment extends Fragment {
         setupDropdownMenu_Category();
         setupDropdownMenu_SubCategory(null);
 
+        String garmentID = null;
         Bundle bundles = getArguments();
 
         String path;
@@ -108,7 +109,13 @@ public class GarmentListingFragment extends Fragment {
                             return;
                         }
 
-                        String userId = dbref.push().getKey();
+                        String userId;
+                        if (garmentID == null) {
+                            userId = dbref.push().getKey();
+                        } else {
+                            userId = garmentID;
+                        }
+
                         Map<String, Object> userData = new HashMap<>();
                         userData.put("ImagePath", path);
                         userData.put("Category", category);
