@@ -16,12 +16,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +43,8 @@ public class OutfitReview extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private Button saveBtn;
-
-    // TODO: Rename and change types of parameters
+    FirebaseDatabase database;
+    DatabaseReference dbref;
     private String mParam1;
     private String mParam2;
     private RecyclerView recyclerView;
@@ -49,15 +53,7 @@ public class OutfitReview extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment OutfitReview.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static OutfitReview newInstance(String param1, String param2) {
         OutfitReview fragment = new OutfitReview();
         Bundle args = new Bundle();
@@ -93,21 +89,33 @@ public class OutfitReview extends Fragment {
             adapter.updateGarmentData(garmentsForOutfit);
         });
 
+        EditText outftitEditText = view.findViewById(R.id.setOutfitName);
+        String outfitName = outftitEditText.getText().toString().trim();
+
         saveBtn = view.findViewById(R.id.saveOutfitButton);
         saveBtn.setOnClickListener(v->{
             List<Garment> garmentsSelected = garmentsForOutfit.getSelectedGarments().getValue();
-            Outfit outfitChosen = new Outfit(garmentsSelected);
+            Outfit outfitChosen = new Outfit(outfitName, garmentsSelected);
             if (!outfitChosen.isEmpty()) {
                 viewModel.saveOutfit(outfitChosen);
+//              this doesn't work LOL
+//                String outfitId = dbref.push().getKey();
+//                assert outfitId != null;
+//                dbref.child(outfitId).setValue(outfitChosen);
+
                 garmentsForOutfit.clearSelection();
                 Toast.makeText(requireContext(), "Outfit successfully saved!",
                         Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(v).navigate(R.id.navigation_closet);
             } else {
+                garmentsForOutfit.clearSelection();
                 Toast.makeText(requireContext(), "No garments selected!",
                         Toast.LENGTH_SHORT).show();
             }
         });
+
+        garmentsForOutfit.clearSelection();
+
         return view;
     }
 

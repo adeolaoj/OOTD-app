@@ -12,10 +12,10 @@ public class Outfit {
         // private constructor for firestore
     }
 
-    public Outfit(List<Garment> createdOutfit) {
-        //this.outfitName = outfitName;
-        this.favorites = false;
+    public Outfit(String outfitName, List<Garment> createdOutfit) {
+        this.outfitName = outfitName;
         this.createdOutfit = createdOutfit;
+        this.favorites = false;
     }
 
     public Boolean isFavorite(){

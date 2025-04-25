@@ -38,6 +38,7 @@ public class GarmentViewModel extends ViewModel {
     public void setGarmentsData(List<Garment> list) {
         garmentsData.setValue(list);
     }
+    public void setOutfitsData(List<Outfit> list) {outfitsSaved.setValue(list);}
 
     public LiveData<List<Outfit>> getSavedOutfits() {
         return outfitsSaved;

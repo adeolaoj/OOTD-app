@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,10 @@ import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -36,16 +41,14 @@ import java.util.Random;
  */
 public class ClosetLanding_OutfitFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private RecyclerView recyclerView;
     private GarmentViewModel viewModel;
+    private outfitAdapter adapter;
 
     public ClosetLanding_OutfitFragment() {
         // Required empty public constructor
@@ -79,7 +82,20 @@ public class ClosetLanding_OutfitFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_closet_landing__outfit, container, false);
+        View view = inflater.inflate(R.layout.fragment_closet_landing__outfit, container, false);
+
+        recyclerView = view.findViewById(R.id.outfitsRecyclerView);
+        recyclerView.setPadding(0, 0, 0, 160);
+
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(layoutManager);
+
+        GarmentViewModel viewModel = new ViewModelProvider(requireActivity()).get(GarmentViewModel.class);
+
+        adapter = new outfitAdapter(new ArrayList<>(), getContext());
+        recyclerView.setAdapter(adapter);
+
+        return view;
     }
 
     @Override
@@ -90,7 +106,7 @@ public class ClosetLanding_OutfitFragment extends Fragment {
         recyclerView.setPadding(0, 0, 0,160);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        outfitAdapter adapter = new outfitAdapter();
+        outfitAdapter adapter = new outfitAdapter(new ArrayList<>(), getContext());
         recyclerView.setAdapter(adapter);
 
         viewModel.getSavedOutfits().observe(getViewLifecycleOwner(), outfits -> {
@@ -100,7 +116,7 @@ public class ClosetLanding_OutfitFragment extends Fragment {
     }
 
     public static class outfitAdapter extends RecyclerView.Adapter<outfitAdapter.ViewHolder> {
-        private List<Outfit> outfits = new ArrayList<>();
+        private List<Outfit> outfitList;
         private Context context;
         private OnItemClickListener listener;
 
@@ -108,12 +124,17 @@ public class ClosetLanding_OutfitFragment extends Fragment {
             void onItemClick(int position);
         }
 
+        public outfitAdapter(List<Outfit> outfits, Context context) {
+            this.outfitList = outfits;
+            this.context = context;
+        }
+
         public void setOnItemClickListener(OnItemClickListener listener) {
             this.listener = listener;
         }
 
         public void updateOutfitData(List<Outfit> outfits) {
-            this.outfits = outfits;
+            this.outfitList = outfits;
             notifyDataSetChanged();
         }
 
@@ -127,7 +148,7 @@ public class ClosetLanding_OutfitFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            Outfit outfit = outfits.get(position);
+            Outfit outfit = outfitList.get(position);
             List<Garment> garments = outfit.getOutfitGarments();
 
             GridLayout mainGrid = holder.itemView.findViewById(R.id.mainGrid);
@@ -136,13 +157,20 @@ public class ClosetLanding_OutfitFragment extends Fragment {
             mainGrid.removeAllViews();
             bottomRow.removeAllViews();
 
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+
             int padding = 4;
             int index = 0;
 
             for (Garment garment:garments) {
                 SquareImageView imageView = new SquareImageView(context);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setImageURI(Uri.parse(garment.getImagePath()));
+                storageReference.child(garment.getImagePath()).getDownloadUrl().addOnSuccessListener( uri->{
+                    Glide.with(context).load(uri).into(imageView);
+                }).addOnFailureListener(e-> {
+                    Log.e("ImageLoadError", "Could not load image: " + e.getMessage());
+                    imageView.setImageResource(R.drawable.garment_picture_default);
+                });
 
                 if (index < 4) {
                     GridLayout.LayoutParams params = new GridLayout.LayoutParams();
@@ -174,7 +202,7 @@ public class ClosetLanding_OutfitFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return outfits.size();
+            return outfitList.size();
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
@@ -187,7 +215,14 @@ public class ClosetLanding_OutfitFragment extends Fragment {
                 bottomRow = itemView.findViewById(R.id.extraRow);
             }
 
+            SquareImageView imageView;
+            public SquareImageView getImageView() {
+                return imageView;
+            }
+
         }
+
+
     }
 
     public static class SquareImageView extends AppCompatImageView {
