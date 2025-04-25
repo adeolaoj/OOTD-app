@@ -71,8 +71,8 @@ public class LoginActivity extends AppCompatActivity {
         // TURN OFF TO MAKE USER SIGN IN EVERYTIME
         // im only adding this for our convenience so yall dont have to log in everytime
         //will delete once we start doing demo
-        //FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
     }
 
 
