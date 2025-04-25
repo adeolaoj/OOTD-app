@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,10 @@ import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -142,7 +147,18 @@ public class ClosetLanding_OutfitFragment extends Fragment {
             for (Garment garment:garments) {
                 SquareImageView imageView = new SquareImageView(context);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setImageURI(Uri.parse(garment.getImagePath()));
+
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                storageReference.child(garment.getImagePath()).getDownloadUrl().addOnSuccessListener(uri -> {
+                    Glide.with(context)
+                            .load(uri)
+                            .placeholder(R.drawable.garment_picture_default)
+                            .into(imageView);
+                }).addOnFailureListener(e -> {
+                    Log.e("ImageLoadError", "Could not load image: " + e.getMessage());
+                    imageView.setImageResource(R.drawable.garment_picture_default);
+                });
+
 
                 if (index < 4) {
                     GridLayout.LayoutParams params = new GridLayout.LayoutParams();
