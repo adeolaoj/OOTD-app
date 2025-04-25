@@ -100,7 +100,7 @@ public class AddItemFragment extends Fragment {
             Toast.makeText(getActivity(), "Upload successful!", Toast.LENGTH_SHORT).show();
             imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                 if (uri != null) {
-                    String downloadUrl =uri.toString();
+                    String downloadUrl = uri.toString();
                     Bundle bundle = new Bundle();
                     bundle.putString("ImagePath", path);
 

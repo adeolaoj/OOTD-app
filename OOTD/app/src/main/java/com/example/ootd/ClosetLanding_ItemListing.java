@@ -148,7 +148,6 @@ public class ClosetLanding_ItemListing extends Fragment {
             case MENU_ITEM_EDIT: {
                 int currPosition = adapter.getCurrPosition();
 
-                //Garment curr = adapter.garmentList.get(currPosition);
                 Garment curr = adapter.getGarmentAt(currPosition);
 
                 // new bundle to pass data
@@ -157,19 +156,45 @@ public class ClosetLanding_ItemListing extends Fragment {
                 Log.d("ImagePath", "Image Path before passing to bundle: " + curr.getImagePath());
                 bundle.putString("Category", curr.getCategory());
                 bundle.putString("Subcategory", curr.getSubcategory());
-                /*
                 List<String> colorTags = curr.getColorTags();
                 ArrayList<String> colorTagsBruh = (ArrayList<String>)colorTags;
-                bundle.putStringArrayList("colortags", colorTagsBruh);
-
-                 */
+                bundle.putStringArrayList("ColorTags", colorTagsBruh);
 
                 Navigation.findNavController(this.getView()).navigate(R.id.navigation_garment_listing, bundle);
                 return false;
             }
             case MENU_ITEM_DELETE: {
-                Toast.makeText(cntx, "delete not implemented",
-                        Toast.LENGTH_SHORT).show();
+                int position = adapter.getCurrPosition();
+                Garment toDelete = adapter.getGarmentAt(position);
+
+                if (toDelete.getImagePath() == null) {
+                    Toast.makeText(cntx, "Error: Image path not found",
+                            Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
+                DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Garments");
+                dbref.orderByChild("ImagePath").equalTo(toDelete.getImagePath())
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.exists()) {
+                                            for (DataSnapshot item : snapshot.getChildren()) {
+                                                item.getRef().removeValue(); // delete from Firebase
+                                            }
+                                            Toast.makeText(cntx, "Garment deleted",
+                                                    Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(cntx, "Item not found",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(cntx, "Delete unsuccessful",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                 return true;
             }
         }
@@ -214,7 +239,6 @@ public class ClosetLanding_ItemListing extends Fragment {
             chipGroup.removeAllViews();
 
             String imagePath = garment.getImagePath();
-            ImageView image = viewHolder.imageView;
             if (imagePath != null && !imagePath.isEmpty()) {
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference imageRef = storage.getReference().child(imagePath);
@@ -247,6 +271,15 @@ public class ClosetLanding_ItemListing extends Fragment {
                 for (String tag : garment.getGarmentTags()) {
                     Chip chip = new Chip(context);
                     chip.setText(tag);
+                    chip.setCloseIconVisible(false);
+                    chipGroup.addView(chip);
+                }
+            }
+
+            if (garment.getColorTags() != null) {
+                for (String color: garment.getColorTags()) {
+                    Chip chip = new Chip(context);
+                    chip.setText(color);
                     chip.setCloseIconVisible(false);
                     chipGroup.addView(chip);
                 }
