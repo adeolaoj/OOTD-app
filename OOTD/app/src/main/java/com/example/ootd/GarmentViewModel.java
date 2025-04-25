@@ -20,7 +20,7 @@ import java.util.List;
 
 public class GarmentViewModel extends ViewModel {
     private MutableLiveData<List<Garment>> garmentsData = new MutableLiveData<>();
-    private MutableLiveData<List<List<Garment>>> outfitsSaved = new MutableLiveData<>(new ArrayList<>());
+    private MutableLiveData<List<Outfit>> outfitsSaved = new MutableLiveData<>(new ArrayList<>());
     private String username;
     private DatabaseReference ref;
 
@@ -44,7 +44,7 @@ public class GarmentViewModel extends ViewModel {
         garmentsData.setValue(list);
     }
 
-    public LiveData<List<Outfit>> getSavedOutfits() {
+    public MutableLiveData<List<Outfit>> getSavedOutfits() {
         return outfitsSaved;
     }
 
