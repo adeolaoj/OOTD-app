@@ -49,6 +49,7 @@ public class GarmentListingFragment extends Fragment {
     DatabaseReference user_ref;
     String path;
     String username;
+    String currentCategory;
 
 
     public GarmentListingFragment() {
@@ -61,7 +62,7 @@ public class GarmentListingFragment extends Fragment {
         View root = binding.getRoot();
         ImageView image = binding.ListingImage;
         setupDropdownMenu_Category();
-        setupDropdownMenu_SubCategory();
+        setupDropdownMenu_SubCategory(null);
 
         Bundle bundles = getArguments();
 
