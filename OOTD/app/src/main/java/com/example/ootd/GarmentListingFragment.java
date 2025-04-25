@@ -23,6 +23,7 @@ import com.example.ootd.databinding.FragmentProfileBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -40,6 +41,11 @@ public class GarmentListingFragment extends Fragment {
     StorageReference sref;
     FirebaseDatabase database;
     DatabaseReference dbref;
+    DatabaseReference user_ref;
+    String path;
+    String username;
+
+
 
 
     public GarmentListingFragment() {
@@ -51,28 +57,74 @@ public class GarmentListingFragment extends Fragment {
         binding = FragmentGarmentListingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         ImageView image = binding.ListingImage;
+        setupDropdownMenu_Category();
+        setupDropdownMenu_SubCategory();
 
         Bundle bundles = getArguments();
-        //String path = bundles.getString("ImagePath");
-        String path;
         if (bundles != null && bundles.containsKey("ImagePath")) {
             path = bundles.getString("ImagePath");
+            Log.e("GarmentListingFragment", "ImagePath Found");
         } else {
             // debugging
             Log.e("GarmentListingFragment", "Missing 'ImagePath' argument");
             path = null;
             Toast.makeText(getContext(), "Missing image path", Toast.LENGTH_SHORT).show();
         }
-        setupDropdownMenu_Category();
-        setupDropdownMenu_SubCategory();
+
+
+        saveButton = binding.SaveListing;
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String user = auth.getUid();
+
+        user_ref = FirebaseDatabase.getInstance().getReference("users");
+
+        user_ref.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult().exists()) {
+                username = task.getResult().child(user).getValue(String.class);
+                Log.e("GarmentListingFragment", "Username: " + username);
+
+                dbref = FirebaseDatabase.getInstance().getReference("data").child(username).child("garments");
+
+                saveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String category = binding.Tops.getText().toString();
+                        String subcategory = binding.Blouse.getText().toString();
+
+                        if (category.isEmpty()) {
+                            Toast.makeText(getActivity(), "Category Required", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if (subcategory.isEmpty()) {
+                            Toast.makeText(getActivity(),"Subcategory Required",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        String userId = dbref.push().getKey();
+                        Map<String, Object> userData = new HashMap<>();
+                        userData.put("ImagePath", path);
+                        userData.put("Category", category);
+                        userData.put("Subcategory", subcategory);
+
+                        dbref.child(userId).setValue(userData);
+
+                        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
+                        navController.navigate(R.id.navigation_closet);
+                    }
+                });
+
+            } else {
+                Log.d("GarmentListingFragment", "Username not found!");
+            }
+        });
+
         storage = FirebaseStorage.getInstance();
         sref = storage.getReference();
         StorageReference imageRef = sref.child(path);
 
         saveButton = binding.SaveListing;
-
-        database = FirebaseDatabase.getInstance();
-        dbref = database.getReference("Garments");
 
         imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
