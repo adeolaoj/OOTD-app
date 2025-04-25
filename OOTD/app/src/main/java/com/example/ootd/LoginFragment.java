@@ -61,7 +61,13 @@ public class LoginFragment extends Fragment {
                 String password = binding.loginUserPassword.getText().toString();
                 Log.d("Auth", "Password: " + password);
 
-                lookup(name, password);
+                if (name.isEmpty()) {
+                    Toast.makeText(getActivity(), "Please enter username", Toast.LENGTH_SHORT).show();
+                } else if (password.isEmpty()) {
+                    Toast.makeText(getActivity(), "Please enter password", Toast.LENGTH_SHORT).show();
+                } else {
+                    lookup(name, password);
+                }
 
             }
         });
