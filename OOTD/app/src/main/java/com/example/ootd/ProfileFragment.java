@@ -1,7 +1,6 @@
 package com.example.ootd;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.ootd.databinding.FragmentProfileBinding;
@@ -104,7 +104,7 @@ public class ProfileFragment extends Fragment {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
 
         View bottomSheetView = LayoutInflater.from(getActivity()).inflate(
-                R.layout.filter_bottom_sheet,
+                R.layout.filter_bottom_sheet_garments,
                 getActivity().findViewById(android.R.id.content),
                 false
         );
@@ -113,6 +113,8 @@ public class ProfileFragment extends Fragment {
         // visibility for subcategories so the sort and filter screen isn't extremely long
         ChipGroup categoryChipGroup = bottomSheetView.findViewById(R.id.categoryChipGroup);
         TextView subcategoryText = bottomSheetView.findViewById(R.id.SortFilterSubcategory);
+        ChipGroup colorChipGroup = bottomSheetView.findViewById(R.id.colorChipGroup);
+        CheckBox favorites = bottomSheetView.findViewById(R.id.checkboxFavorites);
 
         // tops
         Chip topsChip = bottomSheetView.findViewById(R.id.topsChip);
@@ -228,6 +230,18 @@ public class ProfileFragment extends Fragment {
         if (bottomSheetDialog.getWindow() != null) {
             bottomSheetDialog.getWindow().setDimAmount(0.7f);
         }
+
+        // when press clear filters
+        bottomSheetView.findViewById(R.id.clearFilterButton).setOnClickListener(v -> {
+            categoryChipGroup.clearCheck();
+            colorChipGroup.clearCheck();
+            favorites.setChecked(false);
+        });
+
+        // when press apply filters
+        bottomSheetView.findViewById(R.id.applyFilterButton).setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+        });
 
         bottomSheetDialog.show();
     }

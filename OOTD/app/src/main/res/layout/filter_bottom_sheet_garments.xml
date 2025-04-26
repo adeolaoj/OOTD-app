@@ -47,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/tops"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -55,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/bottoms"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -63,6 +65,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/shoes"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -71,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/outerwear"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -79,6 +83,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/dresses"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -87,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/swim"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -95,6 +101,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/accessories"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -103,6 +110,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/jewelry"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -111,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/bags"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -119,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/headwear"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -127,6 +137,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/other"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
         </com.google.android.material.chip.ChipGroup>
@@ -922,6 +933,7 @@
             android:text="@string/show_favorites"
             android:textSize="20sp"
             android:textColor="@color/dark_text"
+            android:buttonTint="@color/nav_bar_color"
             android:layout_marginTop="8dp"/>
 
 
@@ -929,7 +941,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="12dp">
 
             <Button
                 android:id="@+id/applyFilterButton"
@@ -937,7 +949,8 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/apply_filters_text" />
+                android:text="@string/apply_filters_text"
+                android:layout_marginBottom="10dp"/>
 
             <Button
                 android:id="@+id/clearFilterButton"
