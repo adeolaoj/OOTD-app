@@ -24,13 +24,17 @@ public class Garment {
         this.favorites = false;
     }
 
-
     public String getImagePath() {
         if (ImagePath == null) {
             return "IMG_3234.jpeg";
         }
         return ImagePath;
     }
+
+    public void setImagePath(String path) {
+        this.ImagePath = path;
+    }
+
     public String getCategory(){return Category;}
     public String getSubcategory(){return Subcategory;}
 

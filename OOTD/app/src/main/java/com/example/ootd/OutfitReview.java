@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -101,7 +102,15 @@ public class OutfitReview extends Fragment {
         saveBtn.setOnClickListener(v->{
             List<Garment> garmentsSelected = garmentsForOutfit.getSelectedGarments().getValue();
             Outfit outfitChosen = new Outfit(garmentsSelected);
+
+
             if (!outfitChosen.isEmpty()) {
+                EditText nameTextView = view.findViewById(R.id.setOutfitName);
+                String name = nameTextView.getText().toString();
+                outfitChosen.setName(name);
+
+                viewModel.saveOutfit(outfitChosen); // ✅ Then save
+
                 viewModel.saveOutfit(outfitChosen);
                 garmentsForOutfit.clearSelection();
                 Toast.makeText(requireContext(), "Outfit successfully saved!",
@@ -186,6 +195,7 @@ public class OutfitReview extends Fragment {
 //                chipGroup.addView(chip);
 //            }
 
+
             ImageButton favoriteBtn = viewHolder.favorite;
 
             if (currGarment.isFavorite()) {
@@ -202,6 +212,8 @@ public class OutfitReview extends Fragment {
                 Log.e("ImageLoadError", "Could not load image: " + e.getMessage());
                 viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default);
             });
+
+
         }
 
         // Return the size of your dataset (invoked by the layout manager)

@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
     public void onStart() {
         super.onStart();
 
@@ -74,7 +74,6 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
-
 
     private void updateUI(FirebaseUser currentUser) {
         if (currentUser != null) {
