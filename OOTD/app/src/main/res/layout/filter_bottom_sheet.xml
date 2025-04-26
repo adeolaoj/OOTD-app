@@ -278,12 +278,12 @@
             android:layout_marginBottom="7dp"/>
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/subcategoryChipGroup"
+            android:id="@+id/topSubcategoryChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:chipSpacing="4dp"
             app:chipSpacingVertical="2dp"
-            android:layout_marginBottom="7dp">
+            android:visibility="gone">
 
             <!-- top subcat -->
             <com.google.android.material.chip.Chip
@@ -390,7 +390,17 @@
                 android:text="@string/cardigan"
                 app:chipBackgroundColor="@color/regular_grey" />
 
-            <!-- bottoms subcat -->
+        </com.google.android.material.chip.ChipGroup>
+
+        <!-- bottoms subcat -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/bottomsSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/jeansChip"
                 android:layout_width="wrap_content"
@@ -456,7 +466,17 @@
                 android:text="@string/leggings"
                 app:chipBackgroundColor="@color/regular_grey" />
 
-            <!-- outerwear subcat -->
+        </com.google.android.material.chip.ChipGroup>
+
+        <!-- outerwear subcat -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/outerwearSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/jacketChip"
                 android:layout_width="wrap_content"
@@ -488,6 +508,16 @@
                 android:checkable="true"
                 android:text="@string/puffer"
                 app:chipBackgroundColor="@color/regular_grey" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/bagsSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
 
             <!-- bags subcat -->
             <com.google.android.material.chip.Chip
@@ -554,6 +584,15 @@
                 android:text="@string/belt_bag"
                 app:chipBackgroundColor="@color/regular_grey" />
 
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/shoesSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
             <!-- shoes subcat -->
             <com.google.android.material.chip.Chip
                 android:id="@+id/bootsChip"
@@ -611,6 +650,16 @@
                 android:text="@string/wedges"
                 app:chipBackgroundColor="@color/regular_grey" />
 
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/dressesSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
+
             <!-- dresses subcat -->
             <com.google.android.material.chip.Chip
                 android:id="@+id/maxiChip"
@@ -652,6 +701,16 @@
                 android:text="@string/jumpsuit"
                 app:chipBackgroundColor="@color/regular_grey" />
 
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/swimSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
+
             <!-- swim subcat -->
             <com.google.android.material.chip.Chip
                 android:id="@+id/bikiniChip"
@@ -684,6 +743,16 @@
                 android:checkable="true"
                 android:text="@string/cover_up"
                 app:chipBackgroundColor="@color/regular_grey" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/accessoriesSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
 
             <!-- accessories subcat -->
             <com.google.android.material.chip.Chip
@@ -750,6 +819,16 @@
                 android:text="@string/other_acc"
                 app:chipBackgroundColor="@color/regular_grey" />
 
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/jewelrySubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
+
             <!-- jewelry subcat -->
             <com.google.android.material.chip.Chip
                 android:id="@+id/braceletChip"
@@ -798,6 +877,16 @@
                 android:checkable="true"
                 android:text="@string/other_jewel"
                 app:chipBackgroundColor="@color/regular_grey" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/hatsSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
 
             <!-- hat subcat -->
             <com.google.android.material.chip.Chip
