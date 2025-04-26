@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center"
-        android:padding="16dp" >
+        android:layout_gravity="center_horizontal"
+        android:padding="23dp" >
 
 
         <TextView
@@ -20,7 +20,8 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/sort_and_filter"
             android:textColor="@color/dark_text"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:layout_marginBottom="16dp" />
 
         <TextView
             android:id="@+id/SortFilterCategory"
@@ -29,13 +30,16 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/category"
             android:textColor="@color/dark_text"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_marginBottom="7dp"/>
 
         <com.google.android.material.chip.ChipGroup
+            android:id="@+id/categoryChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:chipSpacing="4dp"
-            app:chipSpacingVertical="2dp">
+            app:chipSpacingVertical="2dp"
+            android:layout_marginBottom="7dp">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/topsChip"
@@ -134,13 +138,16 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/color"
             android:textColor="@color/dark_text"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_marginBottom="7dp"/>
 
         <com.google.android.material.chip.ChipGroup
+            android:id="@+id/colorChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:chipSpacing="4dp"
-            app:chipSpacingVertical="2dp">
+            app:chipSpacingVertical="2dp"
+            android:layout_marginBottom="7dp">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/redChip"
@@ -267,13 +274,16 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/sub_category"
             android:textColor="@color/dark_text"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_marginBottom="7dp"/>
 
         <com.google.android.material.chip.ChipGroup
+            android:id="@+id/subcategoryChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:chipSpacing="4dp"
-            app:chipSpacingVertical="2dp">
+            app:chipSpacingVertical="2dp"
+            android:layout_marginBottom="7dp">
 
             <!-- top subcat -->
             <com.google.android.material.chip.Chip
