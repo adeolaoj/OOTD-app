@@ -420,6 +420,7 @@ public class ClosetLanding_ItemListing extends Fragment {
 
         // when press apply filters
         bottomSheetView.findViewById(R.id.applyFilterButton).setOnClickListener(v -> {
+            List<Garment> filteredGarments = new ArrayList<>();
 
             String selectedCategory = null;
             if (categoryChipGroup.getCheckedChipId() != View.NO_ID) {
@@ -439,37 +440,61 @@ public class ClosetLanding_ItemListing extends Fragment {
 
             boolean showFavoritesOnly = favorites.isChecked();
 
-            Query query = FirebaseDatabase.getInstance().getReference("data/test/garments");
-
+            Query queryCategory = FirebaseDatabase.getInstance().getReference("data/test/garments");
+            Query queryFavorites = FirebaseDatabase.getInstance().getReference("data/test/garments");
+            Query queryColors = FirebaseDatabase.getInstance().getReference("data/test/garments");
 
             if (finalSelectedCategory != null) {
-                query = query.orderByChild("Category").equalTo(finalSelectedCategory);
+                queryCategory = queryCategory.orderByChild("Category").equalTo(finalSelectedCategory);
             }
-
             if (showFavoritesOnly) {
-                query = query.orderByChild("favorites").equalTo(true);
+                queryFavorites = queryFavorites.orderByChild("favorites").equalTo(true);
             }
 
-            // this just straight up doesnt work because querys are stupid
             if (!selectedColors.isEmpty()) {
-                query = query.orderByChild("ColorTags");
+                queryColors = queryColors.orderByChild("ColorTags");
             }
 
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
+            queryCategory.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
-                    Log.d("Query Results", "Snapshot: " + snapshot.getValue());
-                    List<Garment> filteredGarments = new ArrayList<>();
-
+                    //Log.d("Query Results", "Snapshot: " + snapshot.getValue());
                     for (DataSnapshot garmentSnapshot : snapshot.getChildren()) {
                         Garment garment = garmentSnapshot.getValue(Garment.class);
-
                         if (finalSelectedCategory != null && !finalSelectedCategory.equals(garment.getCategory())) {
                             continue;
                         }
+                        filteredGarments.add(garment);
+                    }
+                    //Log.d("Filtered Garments", "Garments after filter: " + filteredGarments.size());
+                }
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    Log.e("Firebase", "Error fetching data", error.toException());
+                }
+            });
+            queryFavorites.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    for (DataSnapshot garmentSnapshot : snapshot.getChildren()) {
+                        Garment garment = garmentSnapshot.getValue(Garment.class);
+
                         if (showFavoritesOnly && !garment.isFavorite()) {
                             continue;
                         }
+                        filteredGarments.add(garment);
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    Log.e("Firebase", "Error fetching data", error.toException());
+                }
+            });
+            queryColors.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    for (DataSnapshot garmentSnapshot : snapshot.getChildren()) {
+                        Garment garment = garmentSnapshot.getValue(Garment.class);
                         if (!selectedColors.isEmpty()) {
                             boolean matchesColor = false;
                             for (String color : selectedColors) {
@@ -482,19 +507,16 @@ public class ClosetLanding_ItemListing extends Fragment {
                                 continue;
                             }
                         }
-
                         filteredGarments.add(garment);
                     }
-
-                    adapter.updateGarmentData(filteredGarments);
-                    Log.d("Filtered Garments", "Garments after filter: " + filteredGarments.size());
                 }
-
                 @Override
                 public void onCancelled(DatabaseError error) {
                     Log.e("Firebase", "Error fetching data", error.toException());
                 }
             });
+
+            adapter.updateGarmentData(filteredGarments);
 
             bottomSheetDialog.dismiss();
         });
