@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -289,11 +290,44 @@ public class ClosetLanding_ItemListing extends Fragment {
 
             ImageButton favoriteBtn = viewHolder.favorite;
             favoriteBtn.setImageResource(garment.isFavorite() ? R.drawable.favorites_filled : R.drawable.favorites_unfilled);
+
             favoriteBtn.setOnClickListener(v -> {
-                boolean isFavorite = garment.isFavorite();
-                garment.setFavorites();
-                favoriteBtn.setImageResource(!isFavorite ? R.drawable.favorites_filled : R.drawable.favorites_unfilled);
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                String uid = auth.getUid();
+
+                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
+
+                userRef.get().addOnSuccessListener(snapshot -> {
+                    if (snapshot.exists()) {
+                        String username = snapshot.getValue(String.class);
+
+                        if (username != null) {
+                            boolean isFavorite = garment.isFavorite();
+                            garment.setFavorites();
+
+                            DatabaseReference garmentRef = FirebaseDatabase.getInstance()
+                                    .getReference("data")
+                                    .child(username)
+                                    .child("garments")
+                                    .child(garment.getKey())
+                                    .child("favorites");
+
+                            garmentRef.setValue(garment.isFavorite())
+                                    .addOnSuccessListener(aVoid -> {
+                                        favoriteBtn.setImageResource(garment.isFavorite() ? R.drawable.favorites_filled : R.drawable.favorites_unfilled);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(context, "Failed to update favorite", Toast.LENGTH_SHORT).show();
+                                    });
+                        }
+                    } else {
+                        Log.e("Favorite", "No username found");
+                    }
+                }).addOnFailureListener(e -> {
+                    Log.e("Favorite", "Failed to retrieve username", e);
+                });
             });
+
 
             viewHolder.itemView.setOnLongClickListener(v -> {
                 currPosition = viewHolder.getAdapterPosition();

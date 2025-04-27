@@ -97,13 +97,14 @@ public class GarmentListingFragment extends Fragment {
                     Chip chip = (Chip) chipView;
                     String chipText = chip.getText().toString().trim(); // Important: trim spaces
                     if (colorTags.contains(chipText)) {
-                        chip.setChecked(true); // ✅ Select it
+                        chip.setChecked(true);
                     } else {
-                        chip.setChecked(false); // ❌ Make sure it's unchecked otherwise
+                        chip.setChecked(false);
                     }
                 }
             }
         }
+
 
 
         saveButton = binding.SaveListing;
@@ -173,6 +174,7 @@ public class GarmentListingFragment extends Fragment {
                             userData.put("Category", category);
                             userData.put("Subcategory", subcategory);
                             userData.put("ColorTags", colorsSelected);
+                            userData.put("favorites", "false");
 
                             dbref.child(userId).setValue(userData);
                         }
