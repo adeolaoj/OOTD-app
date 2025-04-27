@@ -37,6 +37,8 @@ import com.example.ootd.databinding.FragmentClosetLandingItemListingBinding;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -362,6 +364,22 @@ public class ClosetLanding_ItemListing extends Fragment {
 
         }
 
+        public void filterGarments(String selectedCategory, List<String> selectedColors, boolean showFavoritesOnly) {
+            List<Garment> filteredGarments = new ArrayList<>();
+
+            for (Garment garment : garmentList) {
+                boolean matchesCategory = selectedCategory == null || garment.getCategory().equals(selectedCategory);
+                boolean matchesColor = selectedColors.isEmpty() || garment.getColorTags() != null && garment.getColorTags().containsAll(selectedColors);
+                boolean matchesFavorite = !showFavoritesOnly || garment.isFavorite();
+
+                if (matchesCategory && matchesColor && matchesFavorite) {
+                    filteredGarments.add(garment);
+                }
+            }
+
+            updateGarmentData(filteredGarments);
+        }
+
         @Override
         public int getItemCount() {
             return garmentList.size();
@@ -396,32 +414,17 @@ public class ClosetLanding_ItemListing extends Fragment {
         );
         bottomSheetDialog.setContentView(bottomSheetView);
 
-        // visibility for subcategories so the sort and filter screen isn't extremely long
         ChipGroup categoryChipGroup = bottomSheetView.findViewById(R.id.categoryChipGroup);
-        TextView subcategoryText = bottomSheetView.findViewById(R.id.SortFilterSubcategory);
         ChipGroup colorChipGroup = bottomSheetView.findViewById(R.id.colorChipGroup);
         CheckBox favorites = bottomSheetView.findViewById(R.id.checkboxFavorites);
 
-        // change visibility
-        subcategoryText.setVisibility(View.GONE);
-
-
-        // make the stuff behind the filter window darker
+        // Make the stuff behind the filter window darker
         if (bottomSheetDialog.getWindow() != null) {
             bottomSheetDialog.getWindow().setDimAmount(0.7f);
         }
 
-        // when press clear filters
-        bottomSheetView.findViewById(R.id.clearFilterButton).setOnClickListener(v -> {
-            categoryChipGroup.clearCheck();
-            colorChipGroup.clearCheck();
-            favorites.setChecked(false);
-        });
-
-        // when press apply filters
+        // When press apply filters
         bottomSheetView.findViewById(R.id.applyFilterButton).setOnClickListener(v -> {
-            List<Garment> filteredGarments = new ArrayList<>();
-
             String selectedCategory = null;
             if (categoryChipGroup.getCheckedChipId() != View.NO_ID) {
                 Chip selectedChip = bottomSheetView.findViewById(categoryChipGroup.getCheckedChipId());
@@ -436,87 +439,10 @@ public class ClosetLanding_ItemListing extends Fragment {
                 }
             }
 
-            final String finalSelectedCategory = selectedCategory;
-
             boolean showFavoritesOnly = favorites.isChecked();
 
-            Query queryCategory = FirebaseDatabase.getInstance().getReference("data/test/garments");
-            Query queryFavorites = FirebaseDatabase.getInstance().getReference("data/test/garments");
-            Query queryColors = FirebaseDatabase.getInstance().getReference("data/test/garments");
-
-            if (finalSelectedCategory != null) {
-                queryCategory = queryCategory.orderByChild("Category").equalTo(finalSelectedCategory);
-            }
-            if (showFavoritesOnly) {
-                queryFavorites = queryFavorites.orderByChild("favorites").equalTo(true);
-            }
-
-            if (!selectedColors.isEmpty()) {
-                queryColors = queryColors.orderByChild("ColorTags");
-            }
-
-            queryCategory.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    //Log.d("Query Results", "Snapshot: " + snapshot.getValue());
-                    for (DataSnapshot garmentSnapshot : snapshot.getChildren()) {
-                        Garment garment = garmentSnapshot.getValue(Garment.class);
-                        if (finalSelectedCategory != null && !finalSelectedCategory.equals(garment.getCategory())) {
-                            continue;
-                        }
-                        filteredGarments.add(garment);
-                    }
-                    //Log.d("Filtered Garments", "Garments after filter: " + filteredGarments.size());
-                }
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    Log.e("Firebase", "Error fetching data", error.toException());
-                }
-            });
-            queryFavorites.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    for (DataSnapshot garmentSnapshot : snapshot.getChildren()) {
-                        Garment garment = garmentSnapshot.getValue(Garment.class);
-
-                        if (showFavoritesOnly && !garment.isFavorite()) {
-                            continue;
-                        }
-                        filteredGarments.add(garment);
-                    }
-                }
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    Log.e("Firebase", "Error fetching data", error.toException());
-                }
-            });
-            queryColors.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    for (DataSnapshot garmentSnapshot : snapshot.getChildren()) {
-                        Garment garment = garmentSnapshot.getValue(Garment.class);
-                        if (!selectedColors.isEmpty()) {
-                            boolean matchesColor = false;
-                            for (String color : selectedColors) {
-                                if (garment.getColorTags() != null && garment.getColorTags().contains(color)) {
-                                    matchesColor = true;
-                                    break;
-                                }
-                            }
-                            if (!matchesColor) {
-                                continue;
-                            }
-                        }
-                        filteredGarments.add(garment);
-                    }
-                }
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    Log.e("Firebase", "Error fetching data", error.toException());
-                }
-            });
-
-            adapter.updateGarmentData(filteredGarments);
+            // Call filter method in the adapter
+            adapter.filterGarments(selectedCategory, selectedColors, showFavoritesOnly);
 
             bottomSheetDialog.dismiss();
         });
