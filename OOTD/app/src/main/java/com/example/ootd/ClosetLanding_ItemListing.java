@@ -121,7 +121,6 @@ public class ClosetLanding_ItemListing extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_closet_landing__item_listing, container, false);
         binding = FragmentClosetLandingItemListingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
