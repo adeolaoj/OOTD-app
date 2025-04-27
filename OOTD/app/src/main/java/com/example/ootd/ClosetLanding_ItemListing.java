@@ -154,7 +154,20 @@ public class ClosetLanding_ItemListing extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+
+        if (!isVisible()) {
+            return false;
+        }
+
         super.onContextItemSelected(item);
+
+        int positionCurr = adapter.getCurrPosition();
+
+        if (positionCurr < 0 || positionCurr >= adapter.getItemCount()) {
+            Toast.makeText(requireContext(), "Error: No garment selected.",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
         switch (item.getItemId()) {
             case MENU_ITEM_EDIT: {
@@ -180,7 +193,7 @@ public class ClosetLanding_ItemListing extends Fragment {
                 Garment toDelete = adapter.getGarmentAt(position);
 
                 if (toDelete.getKey() == null) {
-                    Toast.makeText(cntx, "Error: Garment key not found",
+                    Toast.makeText(requireContext(), "Error: Garment key not found",
                             Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -202,19 +215,19 @@ public class ClosetLanding_ItemListing extends Fragment {
 
                             garmentRef.removeValue()
                                     .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(cntx, "Garment deleted", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(requireContext(), "Garment deleted", Toast.LENGTH_SHORT).show();
                                     })
                                     .addOnFailureListener(e -> {
-                                        Toast.makeText(cntx, "Delete unsuccessful", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(requireContext(), "Delete unsuccessful", Toast.LENGTH_SHORT).show();
                                     });
                         } else {
-                            Toast.makeText(cntx, "Username not found", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "Username not found", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(cntx, "User not found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "User not found", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(e -> {
-                    Toast.makeText(cntx, "Error retrieving user", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Error retrieving user", Toast.LENGTH_SHORT).show();
                 });
 
                 return true;
