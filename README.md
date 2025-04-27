@@ -1,5 +1,5 @@
 # Login Information
-username: test
+username: test,
 password: password
 
 # Features completed for Sprint 1:
