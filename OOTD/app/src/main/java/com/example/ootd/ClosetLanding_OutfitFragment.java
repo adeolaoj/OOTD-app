@@ -112,11 +112,6 @@ public class ClosetLanding_OutfitFragment extends Fragment {
         binding = FragmentClosetLandingOutfitBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        ImageButton filterButton = binding.filterButtonOutfits;
-        filterButton.setOnClickListener(v -> {
-            openFilter();
-        });
-
         return root;
     }
 
