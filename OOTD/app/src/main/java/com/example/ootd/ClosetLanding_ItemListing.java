@@ -152,7 +152,6 @@ public class ClosetLanding_ItemListing extends Fragment {
             openFilter();
         });
 
-        // Inflate the layout for this fragment
         //return view;
         return root;
     }
@@ -367,6 +366,11 @@ public class ClosetLanding_ItemListing extends Fragment {
         public void filterGarments(String selectedCategory, List<String> selectedColors, boolean showFavoritesOnly) {
             List<Garment> filteredGarments = new ArrayList<>();
 
+            Log.d("Filter", "Selected Category: " + selectedCategory);
+            for (Garment garment : garmentList) {
+                Log.d("Filter", "Garment Category: " + garment.getCategory());
+            }
+
             for (Garment garment : garmentList) {
                 boolean matchesCategory = selectedCategory == null || garment.getCategory().equals(selectedCategory);
                 boolean matchesColor = selectedColors.isEmpty() || garment.getColorTags() != null && garment.getColorTags().containsAll(selectedColors);
@@ -426,8 +430,10 @@ public class ClosetLanding_ItemListing extends Fragment {
         // When press apply filters
         bottomSheetView.findViewById(R.id.applyFilterButton).setOnClickListener(v -> {
             String selectedCategory = null;
-            if (categoryChipGroup.getCheckedChipId() != View.NO_ID) {
-                Chip selectedChip = bottomSheetView.findViewById(categoryChipGroup.getCheckedChipId());
+            int checkedChipId = categoryChipGroup.getCheckedChipId();
+            Log.d("Filter", "Checked chip id: " + checkedChipId);
+            if (checkedChipId != View.NO_ID) {
+                Chip selectedChip = bottomSheetView.findViewById(checkedChipId);
                 selectedCategory = selectedChip.getText().toString();
             }
 
@@ -441,7 +447,6 @@ public class ClosetLanding_ItemListing extends Fragment {
 
             boolean showFavoritesOnly = favorites.isChecked();
 
-            // Call filter method in the adapter
             adapter.filterGarments(selectedCategory, selectedColors, showFavoritesOnly);
 
             bottomSheetDialog.dismiss();
