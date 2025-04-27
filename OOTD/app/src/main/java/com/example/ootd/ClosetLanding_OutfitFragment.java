@@ -20,13 +20,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.ootd.databinding.FragmentClosetLandingOutfitBinding;
+
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -48,6 +53,7 @@ public class ClosetLanding_OutfitFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private FragmentClosetLandingOutfitBinding binding;
     private RecyclerView recyclerView;
     private GarmentViewModel viewModel;
 
@@ -80,9 +86,15 @@ public class ClosetLanding_OutfitFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        binding = FragmentClosetLandingOutfitBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
-        return inflater.inflate(R.layout.fragment_closet_landing__outfit, container, false);
+        ImageButton filterButton = binding.filterButtonOutfits;
+        filterButton.setOnClickListener(v -> {
+            openFilter();
+        });
+
+        return root;
     }
 
     @Override
@@ -227,5 +239,34 @@ public class ClosetLanding_OutfitFragment extends Fragment {
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             super.onMeasure(widthMeasureSpec, widthMeasureSpec);
         }
+    }
+
+    private void openFilter() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+
+        View bottomSheetView = LayoutInflater.from(getActivity()).inflate(
+                R.layout.filter_bottom_sheet_outfits,
+                getActivity().findViewById(android.R.id.content),
+                false
+        );
+        bottomSheetDialog.setContentView(bottomSheetView);
+        CheckBox favorites = bottomSheetView.findViewById(R.id.checkboxFavoritesOutfits);
+
+        // make the stuff behind the filter window darker
+        if (bottomSheetDialog.getWindow() != null) {
+            bottomSheetDialog.getWindow().setDimAmount(0.7f);
+        }
+
+        // when press clear filters
+        bottomSheetView.findViewById(R.id.clearFilterButtonOutfits).setOnClickListener(v -> {
+            favorites.setChecked(false);
+        });
+
+        // when press apply filters
+        bottomSheetView.findViewById(R.id.applyFilterButtonOutfits).setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+        });
+
+        bottomSheetDialog.show();
     }
 }
