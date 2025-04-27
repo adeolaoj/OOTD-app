@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class GarmentListingFragment extends Fragment {
     public GarmentListingFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,6 +71,28 @@ public class GarmentListingFragment extends Fragment {
         String path;
         if (bundles != null && bundles.containsKey("ImagePath")) {
             path = bundles.getString("ImagePath");
+
+            EditText Category = binding.Tops;
+            EditText Subcategory = binding.Blouse;
+            ChipGroup chips = binding.colorGroup;
+
+            Category.setText(bundles.getString("Category"));
+            Subcategory.setText(bundles.getString("Subcategory"));
+            ArrayList<String> colorTags = bundles.getStringArrayList("ColorTags");
+
+            if (colorTags != null) {
+                for (int i = 0; i < chips.getChildCount(); ++i) {
+                    View chip = chips.getChildAt(i);
+                    if (chip instanceof Chip) {
+                        Chip colorChip = (Chip) chip;
+                        if (colorTags.contains(colorChip.getText().toString())) {
+                            colorChip.setChecked(true);
+                        }
+                    }
+                }
+            }
+
+
             Log.e("GarmentListingFragment", "ImagePath Found");
         } else {
             // debugging
@@ -108,13 +132,32 @@ public class GarmentListingFragment extends Fragment {
                             return;
                         }
 
-                        String userId = dbref.push().getKey();
-                        Map<String, Object> userData = new HashMap<>();
-                        userData.put("ImagePath", path);
-                        userData.put("Category", category);
-                        userData.put("Subcategory", subcategory);
+                        if (bundles != null && bundles.containsKey("key")) {
+                            // ✅ Editing an existing garment
+                            String key = bundles.getString("key");
 
-                        dbref.child(userId).setValue(userData);
+                            Map<String, Object> updatedData = new HashMap<>();
+                            updatedData.put("ImagePath", path);
+                            updatedData.put("Category", category);
+                            updatedData.put("Subcategory", subcategory);
+
+                            dbref.child(key).updateChildren(updatedData)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(getActivity(), "Garment updated!", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(getActivity(), "Update failed", Toast.LENGTH_SHORT).show();
+                                    });
+
+                        } else {
+                            String userId = dbref.push().getKey();
+                            Map<String, Object> userData = new HashMap<>();
+                            userData.put("ImagePath", path);
+                            userData.put("Category", category);
+                            userData.put("Subcategory", subcategory);
+
+                            dbref.child(userId).setValue(userData);
+                        }
 
                         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
                         navController.navigate(R.id.navigation_closet);
