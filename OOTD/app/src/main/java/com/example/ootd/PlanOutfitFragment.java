@@ -191,11 +191,11 @@ public class PlanOutfitFragment extends Fragment {
                 if (selectedGarments.contains(currGarment)) {
                     selectedGarments.removeGarment(currGarment);
                     garmentSelected.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white));
-                } else if (selectedGarments.numGarments() < 5) {
+                } else if (selectedGarments.numGarments() < 4) {
                     selectedGarments.addGarment(currGarment);
                     garmentSelected.setCardBackgroundColor(ContextCompat.getColor(context, R.color.highlight_grey));
                 } else {
-                    Toast toast = Toast.makeText(context, "You may only select up to 5 garments", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(context, "You may only select up to 4 garments", Toast.LENGTH_SHORT);
                     toast.show();
                 }
             });
