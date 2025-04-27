@@ -62,6 +62,7 @@ password: password
         - This is the default view once the app opens, so there is no need to navigate anywhere on the navigation menu.
         - The Closet landing allows you to scroll up/down, left/right (to navigate to "Saved Outfits" tab), and left/right on the garment details at the bottom of each garment image.
         - To add a garment to your favorites, simply press the heart which will immediately fill the heart with pink. To unfavorite it, repeat this action.
+        - Filtering: Right now, filtering is cumulative. This means that if you filter by favorites, click off, and try to filter by a color (ex: yellow), the results will show favorites that are also that color. Aside from this, filtering allows users to specify a color, category, or favorite and display items of those tags.
     - Saved Outfits Tab:
       - Quick Overview:
         - Click "Saved Outfits" tab to reach this view.
