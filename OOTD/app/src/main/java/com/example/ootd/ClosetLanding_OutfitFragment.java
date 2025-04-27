@@ -16,7 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ootd.databinding.FragmentClosetLandingOutfitBinding;
 
@@ -56,6 +60,10 @@ public class ClosetLanding_OutfitFragment extends Fragment {
     private FragmentClosetLandingOutfitBinding binding;
     private RecyclerView recyclerView;
     private GarmentViewModel viewModel;
+    private outfitAdapter adapter;
+    private Context cntx;
+    public static final int MENU_ITEM_VIEW = Menu.FIRST;
+    public static final int MENU_ITEM_DELETE = Menu.FIRST + 1;
 
     public ClosetLanding_OutfitFragment() {
         // Required empty public constructor
@@ -75,6 +83,18 @@ public class ClosetLanding_OutfitFragment extends Fragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        // create menu in code instead of in xml file (xml approach preferred)
+        cntx = getContext();
+
+        // Add menu items
+        menu.add(0, MENU_ITEM_VIEW, 0, R.string.view_listing);
+        menu.add(0, MENU_ITEM_DELETE, 0, R.string.delete_listing);
     }
 
     @Override
@@ -112,11 +132,35 @@ public class ClosetLanding_OutfitFragment extends Fragment {
             adapter.updateOutfitData(outfits);
         });
 
+        recyclerView.setOnCreateContextMenuListener(this);
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        super.onContextItemSelected(item);
+
+        switch (item.getItemId()) {
+            case MENU_ITEM_VIEW: {
+                int position = adapter.getCurrPosition();
+                Toast.makeText(cntx, "View Listing Not Implemented",
+                        Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            case MENU_ITEM_DELETE: {
+                int position = adapter.getCurrPosition();
+                Toast.makeText(cntx, "Delete Listing Not Implemented",
+                        Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        }
+        return false;
     }
 
     public static class outfitAdapter extends RecyclerView.Adapter<outfitAdapter.ViewHolder> {
         private List<Outfit> outfits = new ArrayList<>();
         private Context context;
+        private int currPosition = -1;
         private OnItemClickListener listener;
 
         public interface OnItemClickListener {
@@ -125,6 +169,10 @@ public class ClosetLanding_OutfitFragment extends Fragment {
 
         public void setOnItemClickListener(OnItemClickListener listener) {
             this.listener = listener;
+        }
+
+        public int getCurrPosition() {
+            return currPosition;
         }
 
         public void updateOutfitData(List<Outfit> outfits) {
@@ -198,6 +246,12 @@ public class ClosetLanding_OutfitFragment extends Fragment {
 
 
                 index++;
+
+                holder.itemView.setOnLongClickListener(v -> {
+                    currPosition = holder.getAdapterPosition();
+                    v.showContextMenu();
+                    return true;
+                });
             }
         }
 
