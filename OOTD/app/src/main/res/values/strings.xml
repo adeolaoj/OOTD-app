@@ -341,6 +341,7 @@
     <string name="white">White</string>
 
     <string name="edit_listing">Edit Listing</string>
+    <string name="view_listing">View Listing</string>
     <string name="delete_listing">Delete Listing</string>
     <string name="sort_and_filter">Sort and Filter</string>
     <string name="color">Color</string>
