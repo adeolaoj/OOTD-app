@@ -89,6 +89,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        /*
         stinkerButton = binding.stinkerButton;
         stinkerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,9 +98,12 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+         */
+
         return root;
     }
 
+    /*
     private void openFilter() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
 
@@ -246,6 +250,6 @@ public class ProfileFragment extends Fragment {
         bottomSheetDialog.show();
     }
 
-
+    */
 
 }
