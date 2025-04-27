@@ -39,6 +39,7 @@
             android:layout_height="wrap_content"
             app:chipSpacing="4dp"
             app:chipSpacingVertical="2dp"
+            app:singleSelection="true"
             android:layout_marginBottom="7dp">
 
             <com.google.android.material.chip.Chip

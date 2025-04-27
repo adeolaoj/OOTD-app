@@ -112,11 +112,6 @@ public class ClosetLanding_OutfitFragment extends Fragment {
         binding = FragmentClosetLandingOutfitBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        ImageButton filterButton = binding.filterButtonOutfits;
-        filterButton.setOnClickListener(v -> {
-            openFilter();
-        });
-
         return root;
     }
 
@@ -150,8 +145,21 @@ public class ClosetLanding_OutfitFragment extends Fragment {
         switch (item.getItemId()) {
             case MENU_ITEM_VIEW: {
                 int position = adapter.getCurrPosition();
-                Toast.makeText(cntx, "View Listing Not Implemented",
-                        Toast.LENGTH_SHORT).show();
+                if (position >= 0 && position < adapter.outfits.size()) {
+                    Outfit selected = adapter.outfits.get(position);
+
+                    ArrayList<Garment> garments = new ArrayList<>(selected.getOutfitGarments());
+
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("garments", garments);
+                    bundle.putString("name", selected.getOutfitName());
+
+                    Navigation.findNavController(requireView()).navigate(R.id.navigation_saved_outfit_details,
+                            bundle);
+                } else {
+                    Toast.makeText(cntx, "No outfit selected.",
+                            Toast.LENGTH_SHORT).show();
+                }
                 return true;
             }
             case MENU_ITEM_DELETE: {

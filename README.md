@@ -1,12 +1,13 @@
-LOGIN INFORMATION:
-email: testuser@testemail.com
+# Login Information
+username: test,
 password: password
 
-Features completed so far:
+# Features completed for Sprint 1:
 - Login/Sign Up
 - Logout button on the Profile Tab
 - Navigation between Fragments and Activities, including tabs and back arrows for navigation up
 
+# Brief Description of Sprint 1 Implementations
 - Closet Landing:
   - Closet Tab:
     - View list of garments in a scrollable grid.
@@ -28,8 +29,29 @@ Features completed so far:
     - Once the "Done Planning" button is clicked, the view will navigate to the Outfit Review view. The user can press the back button in the action bar to navigate to the previous screen, or they can click the "Save Outfit" button to save the outfit in their closet.
     - Once the "Save Outfit" button is clicked, the view will navigate back to the Closet landing. If the user clicks on the "Saved Outfits" tab, the newly created outfit will appear.
   - Add Item prompts the camera and saves the image to the database if the user fills out the listing. 
-  
-General state of app:
+
+# Features completed for Sprint 2:
+- New authentication/user data implemented
+- Linking all previous data to new database
+- Attaching photos to all instances
+- Filtering (thank you Anna!)
+- Edit/Delete Outfit/Garment Implemented
+
+# Brief Description of Sprint 2 Implementations
+- Database 
+  - User data is now organized by usernames
+- Garments
+  - Bug fixed in garment categorization where the keyboard pushes everything
+  - Images fully linked
+  - Favoriting implemented, no longer crashes the app
+  - Context menu (long click) will allow you to edit or delete item
+- Outfits
+  - Outfit photos now attached
+  - changed limit to 4 for uniform display
+  - Users can now edit the names of outfits
+  - Long click will allow you to rename or delete outfit
+
+# General state of app:
 - Navigating App Features:
   - Closet Landing:
     - Closet Tab:
@@ -40,6 +62,7 @@ General state of app:
         - This is the default view once the app opens, so there is no need to navigate anywhere on the navigation menu.
         - The Closet landing allows you to scroll up/down, left/right (to navigate to "Saved Outfits" tab), and left/right on the garment details at the bottom of each garment image.
         - To add a garment to your favorites, simply press the heart which will immediately fill the heart with pink. To unfavorite it, repeat this action.
+        - Filtering: Right now, filtering is cumulative. This means that if you filter by favorites, click off, and try to filter by a color (ex: yellow), the results will show favorites that are also that color. Aside from this, filtering allows users to specify a color, category, or favorite and display items of those tags.
     - Saved Outfits Tab:
       - Quick Overview:
         - Click "Saved Outfits" tab to reach this view.
@@ -58,7 +81,7 @@ General state of app:
       - Detailed Instructions:
         - To plan an outfit, navigate to the Add/Plan tab at the bottom of the navigation menu.
         - Press the Plan Outfit button which will navigate to the garment selection view.
-        - Choose at least two, but up to three, items and when you are satisfied, click Done Planning. This will navigate to the Outfit Review view.
+        - Choose at least two, but up to four, items and when you are satisfied, click Done Planning. This will navigate to the Outfit Review view.
         - If you wish to remove/add an item, press the back button to navigate to the previous screen. Otherwise, click "Save Outfit" which will navigate to the Closet landing.
         - Click on the "Saved Outfits" tab where your newly saved outfit will be.
     - Add Item:
@@ -94,7 +117,21 @@ General state of app:
       - Use the dropdown menus to select categories, and the color buttons to describe the color of the garment. After finishing, click "Save" which will navigate to the Closet landing.
       - You will now be able to see your newly added garment in your closet with its appropriate categorizations.
 
-- Limitations:
+# Limitations:
   - Emulators are unable to support taking an actual picture, so there were limitations on the images stored in the app.
   - Could store limited amount of images in JSON, but only a few because of storage issues
   - Some features for storing images required payment
+
+# Sprint 2 Meeting Major Decisions
+- A hovering question following sprint 1 was whether we wanted to switch to FireStore instead of realtime database. We ended up staying with realtime as our database is constantly updated and edited
+- Displaying outfits proved to be difficult, as we wanted to balance user aesthetic and uniformness. We settled on a 2x2 square formatting.
+- We found filtering to be difficult with realtime database. Instead of a query based approach, we used a user data loop as it was quicker and more space efficient.
+- Users will not be able to edit outfits, but only the names. 
+- We will not be filtering the plan page, due to time constraints. Filters are only applied to closet page
+
+# Main Contributions
+- Anna: Filtering (Java and Firebase), Closet (XML and Java), Add (XML and Java), Camera (XML and Java)
+- Adeola: Closet (XML and Java), Plan (XML and Java), Add (XML and Java), Profile (XML and Java)
+- Emily: Firebase related code (storage, data org., and authentication), Login (Java and XML), Closet (Java)
+- Shevante: Closet (XML and Java), Plan (XML and Java), Add (XML and Java), Profile (XML and Java)
+
