@@ -347,5 +347,6 @@
     <string name="show_favorites">Show Favorites</string>
     <string name="clear_filters_text">Clear Filters</string>
     <string name="apply_filters_text">Apply Filters</string>
+    <string name="filters">Filters</string>
 
 </resources>
