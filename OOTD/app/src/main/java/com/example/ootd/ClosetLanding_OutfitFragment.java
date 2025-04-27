@@ -36,6 +36,9 @@ import com.example.ootd.databinding.FragmentClosetLandingOutfitBinding;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -125,7 +128,7 @@ public class ClosetLanding_OutfitFragment extends Fragment {
         recyclerView.setPadding(0, 0, 0,160);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        outfitAdapter adapter = new outfitAdapter();
+        adapter = new outfitAdapter();
         recyclerView.setAdapter(adapter);
 
         viewModel.getSavedOutfits().observe(getViewLifecycleOwner(), outfits -> {
@@ -138,6 +141,10 @@ public class ClosetLanding_OutfitFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        if (!isVisible()) {
+            return false;
+        }
+
         super.onContextItemSelected(item);
 
         switch (item.getItemId()) {
@@ -149,8 +156,58 @@ public class ClosetLanding_OutfitFragment extends Fragment {
             }
             case MENU_ITEM_DELETE: {
                 int position = adapter.getCurrPosition();
-                Toast.makeText(cntx, "Delete Listing Not Implemented",
-                        Toast.LENGTH_SHORT).show();
+                if (position >= 0) {
+                    Outfit toDelete = adapter.outfits.get(position);
+
+                    if (toDelete.getKey() == null) {
+                        Toast.makeText(cntx, "Error: Outfit key not found",
+                                Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                    String uid = auth.getUid();
+                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
+
+                    userRef.get().addOnSuccessListener(snapshot -> {
+                        if (snapshot.exists()) {
+                            String username = snapshot.getValue(String.class);
+
+                            if (username != null) {
+                                DatabaseReference outfitRef = FirebaseDatabase.getInstance()
+                                        .getReference("data")
+                                        .child(username)
+                                        .child("outfits")
+                                        .child(toDelete.getKey());
+
+                                outfitRef.removeValue()
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(cntx, "Outfit successfully deleted!",
+                                                    Toast.LENGTH_SHORT).show();
+
+                                            adapter.outfits.remove(position);
+                                            adapter.notifyItemRemoved(position);
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(cntx, "Delete unsuccessful.",
+                                                    Toast.LENGTH_SHORT).show();
+                                        });
+                            } else {
+                                Toast.makeText(cntx, "Username not found.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(cntx, "User not found.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(cntx, "Error retrieving user.",
+                                Toast.LENGTH_SHORT).show();
+                    });
+                } else {
+                    Toast.makeText(cntx, "Error: No outfit selected.",
+                            Toast.LENGTH_SHORT).show();
+                }
                 return true;
             }
         }

@@ -101,17 +101,26 @@ public class OutfitReview extends Fragment {
         saveBtn = view.findViewById(R.id.saveOutfitButton);
         saveBtn.setOnClickListener(v->{
             List<Garment> garmentsSelected = garmentsForOutfit.getSelectedGarments().getValue();
-            Outfit outfitChosen = new Outfit(garmentsSelected);
+
+            EditText nameTextView = view.findViewById(R.id.setOutfitName);
+            String name = nameTextView.getText().toString();
+
+            if (garmentsSelected != null && !garmentsSelected.isEmpty()) {
+                if (name.isEmpty()) {
+                    Toast.makeText(requireContext(), "Must input an outfit name.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Outfit outfitChosen = new Outfit(name, garmentsSelected);
 
 
-            if (!outfitChosen.isEmpty()) {
-                EditText nameTextView = view.findViewById(R.id.setOutfitName);
-                String name = nameTextView.getText().toString();
-                outfitChosen.setName(name);
-
-                viewModel.saveOutfit(outfitChosen); // ✅ Then save
+//            if (!outfitChosen.isEmpty()) {
+//                EditText nameTextView = view.findViewById(R.id.setOutfitName);
+//                String name = nameTextView.getText().toString();
+//                outfitChosen.setName(name);
 
                 viewModel.saveOutfit(outfitChosen);
+
                 garmentsForOutfit.clearSelection();
                 Toast.makeText(requireContext(), "Outfit successfully saved!",
                         Toast.LENGTH_SHORT).show();

@@ -87,8 +87,9 @@ public class GarmentViewModel extends ViewModel {
 
 
 
-                                Outfit outfit = new Outfit(garmentsInOutfit);
-                                outfit.setName(outfitSnapshot.getKey());
+                                String outfitName = outfitSnapshot.getKey();
+                                Outfit outfit = new Outfit(outfitName, garmentsInOutfit);
+                                outfit.setKey(outfitSnapshot.getKey());
                                 outfitsList.add(outfit);
                             }
 
@@ -183,6 +184,7 @@ public class GarmentViewModel extends ViewModel {
                         Garment garment = snapshot.getValue(Garment.class);
                         if (garment != null) {
                             garment.setKey(snapshot.getKey());
+                            garment.setImagePath(snapshot.child("ImagePath").getValue(String.class));
                             Boolean favorite = snapshot.child("favorites").getValue(Boolean.class);
                             if (favorite != null) {
                                 garment.setFavorites();
