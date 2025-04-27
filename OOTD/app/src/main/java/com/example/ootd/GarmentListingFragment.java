@@ -150,6 +150,7 @@ public class GarmentListingFragment extends Fragment {
                             }
                         }
 
+
                         if (bundles != null && bundles.containsKey("key")) {
                             String key = bundles.getString("key");
 
