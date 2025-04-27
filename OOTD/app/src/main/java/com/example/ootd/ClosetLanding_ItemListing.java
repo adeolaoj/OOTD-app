@@ -157,8 +157,8 @@ public class ClosetLanding_ItemListing extends Fragment {
                 Log.d("ImagePath", "Image Path before passing to bundle: " + curr.getImagePath());
                 bundle.putString("Category", curr.getCategory());
                 bundle.putString("Subcategory", curr.getSubcategory());
-                List<String> colorTags = curr.getColorTags();
-                ArrayList<String> colorTagsBruh = (ArrayList<String>)colorTags;
+                ArrayList<String> colorTagsBruh = (ArrayList<String>) curr.getColorTags();
+
                 bundle.putStringArrayList("ColorTags", colorTagsBruh);
 
                 Navigation.findNavController(this.getView()).navigate(R.id.navigation_garment_listing, bundle);

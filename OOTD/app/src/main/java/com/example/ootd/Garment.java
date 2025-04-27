@@ -9,7 +9,7 @@ public class Garment {
     private String Category;
     private String ImagePath;
     private String Subcategory;
-    private List<String> colorTags;
+    private List<String> ColorTags;
     private Boolean favorites = false;
     private String key;
 
@@ -21,7 +21,7 @@ public class Garment {
         this.Category = Category;
         this.ImagePath = ImagePath;
         this.Subcategory = Subcategory;
-        this.colorTags = colorTags;
+        this.ColorTags = colorTags;
         this.favorites = false;
     }
 
@@ -49,7 +49,7 @@ public class Garment {
 
     public List<String> getGarmentTags() {return Arrays.asList(Category, Subcategory);}
 
-    public List<String> getColorTags() { return colorTags; }
+    public List<String> getColorTags() { return ColorTags; }
     public Boolean isFavorite(){
         return favorites != null && favorites;
     }
