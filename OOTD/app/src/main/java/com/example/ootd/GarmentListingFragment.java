@@ -33,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,24 +75,9 @@ public class GarmentListingFragment extends Fragment {
 
             EditText Category = binding.Tops;
             EditText Subcategory = binding.Blouse;
-            ChipGroup chips = binding.colorGroup;
 
             Category.setText(bundles.getString("Category"));
             Subcategory.setText(bundles.getString("Subcategory"));
-            ArrayList<String> colorTags = bundles.getStringArrayList("ColorTags");
-
-            if (colorTags != null) {
-                for (int i = 0; i < chips.getChildCount(); ++i) {
-                    View chip = chips.getChildAt(i);
-                    if (chip instanceof Chip) {
-                        Chip colorChip = (Chip) chip;
-                        if (colorTags.contains(colorChip.getText().toString())) {
-                            colorChip.setChecked(true);
-                        }
-                    }
-                }
-            }
-
 
             Log.e("GarmentListingFragment", "ImagePath Found");
         } else {
@@ -99,6 +85,24 @@ public class GarmentListingFragment extends Fragment {
             Log.e("GarmentListingFragment", "Missing 'ImagePath' argument");
             path = null;
             Toast.makeText(getContext(), "Missing image path", Toast.LENGTH_SHORT).show();
+        }
+
+        ArrayList<String> colorTags = bundles.getStringArrayList("ColorTags");
+        ChipGroup chips = binding.colorGroup;
+
+        if (colorTags != null) {
+            for (int i = 0; i < chips.getChildCount(); ++i) {
+                View chipView = chips.getChildAt(i);
+                if (chipView instanceof Chip) {
+                    Chip chip = (Chip) chipView;
+                    String chipText = chip.getText().toString().trim(); // Important: trim spaces
+                    if (colorTags.contains(chipText)) {
+                        chip.setChecked(true); // ✅ Select it
+                    } else {
+                        chip.setChecked(false); // ❌ Make sure it's unchecked otherwise
+                    }
+                }
+            }
         }
 
 
@@ -132,14 +136,27 @@ public class GarmentListingFragment extends Fragment {
                             return;
                         }
 
+                        ArrayList<String> colorsSelected = new ArrayList<>();
+                        ChipGroup chips = binding.colorGroup;
+
+                        for (int i = 0; i < chips.getChildCount(); ++i) {
+                            View chip = chips.getChildAt(i);
+                            if (chip instanceof Chip) {
+                                Chip color = (Chip) chip;
+                                if (color.isChecked()) {
+                                    colorsSelected.add(color.getText().toString());
+                                }
+                            }
+                        }
+
                         if (bundles != null && bundles.containsKey("key")) {
-                            // ✅ Editing an existing garment
                             String key = bundles.getString("key");
 
                             Map<String, Object> updatedData = new HashMap<>();
                             updatedData.put("ImagePath", path);
                             updatedData.put("Category", category);
                             updatedData.put("Subcategory", subcategory);
+                            updatedData.put("ColorTags", colorsSelected);
 
                             dbref.child(key).updateChildren(updatedData)
                                     .addOnSuccessListener(aVoid -> {
@@ -155,6 +172,7 @@ public class GarmentListingFragment extends Fragment {
                             userData.put("ImagePath", path);
                             userData.put("Category", category);
                             userData.put("Subcategory", subcategory);
+                            userData.put("ColorTags", colorsSelected);
 
                             dbref.child(userId).setValue(userData);
                         }
@@ -163,6 +181,7 @@ public class GarmentListingFragment extends Fragment {
                         navController.navigate(R.id.navigation_closet);
                     }
                 });
+
 
             } else {
                 Log.d("GarmentListingFragment", "Username not found!");
@@ -190,62 +209,6 @@ public class GarmentListingFragment extends Fragment {
             }
         });
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String Category = binding.Tops.getText().toString();
-                String Subcategory = binding.Blouse.getText().toString();
-
-                if (Category.isEmpty()) {
-                    Toast.makeText(getActivity(), "Category Required", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (Subcategory.isEmpty()) {
-                    Toast.makeText(getActivity(),"Subcategory Required",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                ChipGroup chips = binding.colorGroup;
-                List<String> colorsSelected = new ArrayList<>();
-
-                for (int i = 0; i < chips.getChildCount(); ++i) {
-                    View chip = chips.getChildAt(i);
-                    if (chip instanceof Chip) {
-                        Chip color = (Chip) chip;
-                        if (color.isChecked()) {
-                            colorsSelected.add(color.getText().toString());
-                        }
-                    }
-                }
-
-                if (colorsSelected.isEmpty()) {
-                    Toast.makeText(getActivity(),"Please select at least one color",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                String userId = dbref.push().getKey();
-                Map<String, Object> userData = new HashMap<>();
-
-                userData.put("ImagePath", path);
-                userData.put("Category", Category);
-                userData.put("Subcategory", Subcategory);
-                userData.put("colorTags", colorsSelected);
-
-                assert userId != null;
-                dbref.child(userId).setValue(userData);
-
-                Garment newGarment = new Garment(Category, path, Subcategory, colorsSelected);
-
-                GarmentViewModel garmentViewModel = new ViewModelProvider(requireActivity()).get(GarmentViewModel.class);
-                garmentViewModel.addGarment(newGarment);
-
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
-                navController.navigate(R.id.navigation_closet);
-            }
-        });
 
         return root;
     }
