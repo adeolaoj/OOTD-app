@@ -111,7 +111,7 @@ public class LoginFragment extends Fragment {
                         FirebaseUser user = mAuth.getCurrentUser();
 
                         Bundle bdl = new Bundle();
-                        bdl.putString("Username",name);
+                        bdl.putString("Username", name);
 
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         intent.putExtras(bdl);
@@ -120,10 +120,26 @@ public class LoginFragment extends Fragment {
                         getActivity().finish();
                     } else {
                         Log.w("Auth", "signInWithEmail:failure", task.getException());
-                        Toast.makeText(getActivity(), "Invalid Sign In", Toast.LENGTH_SHORT).show();
+
+                        String errorMessage = "Invalid Sign In"; 
+
+                        Exception exception = task.getException();
+                        if (exception != null) {
+                            String error = exception.getMessage();
+                            if (error != null) {
+                                if (error.contains("password is invalid") || error.contains("INVALID_PASSWORD")) {
+                                    errorMessage = "Incorrect password";
+                                } else if (error.contains("no user record") || error.contains("EMAIL_NOT_FOUND")) {
+                                    errorMessage = "Username not found";
+                                }
+                            }
+                        }
+
+                        Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
 
 
 }

@@ -17,6 +17,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,8 +56,6 @@ public class ProfileFragment extends Fragment {
     public static ProfileFragment newInstance(String param1, String param2) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,45 +63,74 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // log out button logic
+        TextView username = binding.usernameText;
+        TextView emailText = binding.email;
+        TextView garmentsText = binding.numGarments;
+        TextView outfitsText = binding.numOutfits;
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String uid = auth.getUid();
+
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
+
+        userRef.get().addOnSuccessListener(userSnapshot -> {
+            if (userSnapshot.exists()) {
+                String usernameString = userSnapshot.getValue(String.class);
+
+                if (usernameString != null) {
+                    DatabaseReference dataRef = FirebaseDatabase.getInstance()
+                            .getReference("data")
+                            .child(usernameString);
+
+                    dataRef.child("email").get().addOnSuccessListener(emailSnapshot -> {
+                        if (emailSnapshot.exists()) {
+                            String emailStr = emailSnapshot.getValue(String.class);
+                            emailText.setText(emailStr);
+                        }
+                    });
+
+                    dataRef.child("garments").get().addOnSuccessListener(garmentsSnapshot -> {
+                        if (garmentsSnapshot.exists()) {
+                            int numGarments = (int) garmentsSnapshot.getChildrenCount();
+                            garmentsText.setText(String.valueOf(numGarments));
+                        } else {
+                            garmentsText.setText("0");
+                        }
+                    });
+
+                    dataRef.child("outfits").get().addOnSuccessListener(outfitsSnapshot -> {
+                        if (outfitsSnapshot.exists()) {
+                            int numOutfits = (int) outfitsSnapshot.getChildrenCount();
+                            outfitsText.setText(String.valueOf(numOutfits));
+                        } else {
+                            outfitsText.setText("0");
+                        }
+                    });
+
+                    username.setText(usernameString);
+                }
+            }
+        });
+
         logOutButton = binding.logOutButton;
-        logOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-                getActivity().finish();
-            }
+        logOutButton.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
+            requireActivity().finish();
         });
-
-        /*
-        stinkerButton = binding.stinkerButton;
-        stinkerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFilter();
-            }
-        });
-
-         */
 
         return root;
     }
+
 
     /*
     private void openFilter() {
