@@ -360,8 +360,10 @@ public class ClosetLanding_ItemListing extends Fragment {
                             Boolean isFavorite = favSnapshot.getValue(Boolean.class);
                             if (isFavorite != null && isFavorite) {
                                 viewHolder.favorite.setImageResource(R.drawable.favorites_filled);
+                                garment.setFavorites(true);
                             } else {
                                 viewHolder.favorite.setImageResource(R.drawable.favorites_unfilled);
+                                garment.setFavorites(false);
                             }
                         }).addOnFailureListener(e -> {
                             viewHolder.favorite.setImageResource(R.drawable.favorites_unfilled);

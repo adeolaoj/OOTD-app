@@ -56,4 +56,8 @@ public class Garment {
     public void setFavorites(){
         favorites = !favorites;
     }
+
+    public void setFavorites(Boolean isFavorite) {
+        favorites = isFavorite;
+    }
 }
