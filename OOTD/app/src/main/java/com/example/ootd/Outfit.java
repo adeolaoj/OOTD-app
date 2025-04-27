@@ -13,9 +13,13 @@ public class Outfit {
     }
 
     public Outfit(List<Garment> createdOutfit) {
-        //this.outfitName = outfitName;
+        this.outfitName = outfitName;
         this.favorites = false;
         this.createdOutfit = createdOutfit;
+    }
+
+    public void setName(String name) {
+        this.outfitName = name;
     }
 
     public Boolean isFavorite(){

@@ -12,16 +12,21 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +102,15 @@ public class OutfitReview extends Fragment {
         saveBtn.setOnClickListener(v->{
             List<Garment> garmentsSelected = garmentsForOutfit.getSelectedGarments().getValue();
             Outfit outfitChosen = new Outfit(garmentsSelected);
+
+
             if (!outfitChosen.isEmpty()) {
+                EditText nameTextView = view.findViewById(R.id.setOutfitName);
+                String name = nameTextView.getText().toString();
+                outfitChosen.setName(name);
+
+                viewModel.saveOutfit(outfitChosen); // ✅ Then save
+
                 viewModel.saveOutfit(outfitChosen);
                 garmentsForOutfit.clearSelection();
                 Toast.makeText(requireContext(), "Outfit successfully saved!",
@@ -182,6 +195,7 @@ public class OutfitReview extends Fragment {
 //                chipGroup.addView(chip);
 //            }
 
+
             ImageButton favoriteBtn = viewHolder.favorite;
 
             if (currGarment.isFavorite()) {
@@ -191,7 +205,14 @@ public class OutfitReview extends Fragment {
             // Get element from dataset at the corresponding positions and replace the
             // contents of the view with a picture of the garment
             //TODO: REPLACE WITH NON-PLACEHOLDER IMAGE
-            viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default);
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+            storageReference.child(currGarment.getImagePath()).getDownloadUrl().addOnSuccessListener( uri->{
+                Glide.with(context).load(uri).into(viewHolder.getImageView());
+            }).addOnFailureListener(e-> {
+                Log.e("ImageLoadError", "Could not load image: " + e.getMessage());
+                viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default);
+            });
+
 
         }
 

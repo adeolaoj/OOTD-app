@@ -44,16 +44,6 @@ import java.util.Set;
  */
 public class PlanOutfitFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private Button donePlanningBtn;
 
     public PlanOutfitFragment() {
@@ -63,8 +53,6 @@ public class PlanOutfitFragment extends Fragment {
     public static PlanOutfitFragment newInstance(String param1, String param2) {
         PlanOutfitFragment fragment = new PlanOutfitFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,10 +60,6 @@ public class PlanOutfitFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
     }
 
@@ -238,12 +222,12 @@ public class PlanOutfitFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (garmentsForOutfit.numGarments() < 2) {
-                        Toast selectToast = Toast.makeText(getContext(), "Select at least 2 garments", Toast.LENGTH_SHORT);
-                        selectToast.show();
-                    } else {
-                        Navigation.findNavController(v).navigate(R.id.navigation_review_outfit);
-                    }
+                    Toast selectToast = Toast.makeText(getContext(), "Select at least 2 garments", Toast.LENGTH_SHORT);
+                    selectToast.show();
+                } else {
+                    Navigation.findNavController(v).navigate(R.id.navigation_review_outfit);
                 }
+            }
         });
     }
 }
