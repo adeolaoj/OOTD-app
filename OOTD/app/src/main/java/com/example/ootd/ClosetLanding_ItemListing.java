@@ -70,8 +70,6 @@ public class ClosetLanding_ItemListing extends Fragment {
     private MainActivity myact;
 
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private List<Garment> garmentList;
 
     private FragmentClosetLandingItemListingBinding binding;
@@ -263,31 +261,43 @@ public class ClosetLanding_ItemListing extends Fragment {
             chipGroup.removeAllViews();
 
             String imagePath = garment.getImagePath();
+            Log.e("StorageDebug", "Trying to load imagePath: " + imagePath);
+
             if (imagePath != null && !imagePath.isEmpty()) {
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference imageRef = storage.getReference().child(imagePath);
 
-                // Get the download URL and load it with Glide
-                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Glide.with(viewHolder.imageView.getContext())
-                                .load(uri)
-                                .placeholder(R.drawable.garment_picture_default) // Show default while loading
-                                .error(R.drawable.garment_picture_default) // Show default on error
-                                .into(viewHolder.getImageView());
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("Firebase", "Error loading image", e);
-                        // Optionally handle errors, e.g., by showing a default image or a toast
-                        viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default);
-                    }
-                });
+                imageRef.getDownloadUrl()
+                        .addOnSuccessListener(uri -> {
+                            Glide.with(viewHolder.imageView.getContext())
+                                    .load(uri)
+                                    .placeholder(R.drawable.garment_picture_default) // <-- sets default while loading
+                                    .error(R.drawable.garment_picture_default)       // <-- fallback if error
+                                    .into(viewHolder.getImageView());
+                        })
+                        .addOnFailureListener(e -> {
+                            viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default);
+                        });
             } else {
-                // If no image path is available, use the default image
                 viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default);
+            }
+
+
+            if (imagePath != null && !imagePath.isEmpty()) {
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference imageRef = storage.getReference().child(imagePath);
+
+                imageRef.getDownloadUrl()
+                        .addOnSuccessListener(uri -> {
+                            Glide.with(viewHolder.imageView.getContext())
+                                    .load(uri)
+                                    .placeholder(R.drawable.garment_picture_default)
+                                    .error(R.drawable.garment_picture_default)
+                                    .into(viewHolder.getImageView());
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("StorageDebug", "Failed to load imagePath: " + imagePath, e);
+                        });
             }
 
 
@@ -309,57 +319,84 @@ public class ClosetLanding_ItemListing extends Fragment {
                 }
             }
 
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            String uid = auth.getUid();
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
+
+            userRef.get().addOnSuccessListener(snapshot -> {
+                if (snapshot.exists()) {
+                    String username = snapshot.getValue(String.class);
+                    if (username != null) {
+
+                        if (garment.getKey() == null) {
+                            Log.e("FavoriteError", "Garment key is null for garment: " + garment.getImagePath());
+                            viewHolder.favorite.setImageResource(R.drawable.favorites_unfilled);
+                            return;
+                        }
+
+                        DatabaseReference garmentRef = FirebaseDatabase.getInstance()
+                                .getReference("data")
+                                .child(username)
+                                .child("garments")
+                                .child(garment.getKey())
+                                .child("favorites");
+
+                        garmentRef.get().addOnSuccessListener(favSnapshot -> {
+                            Boolean isFavorite = favSnapshot.getValue(Boolean.class);
+                            if (isFavorite != null && isFavorite) {
+                                viewHolder.favorite.setImageResource(R.drawable.favorites_filled);
+                            } else {
+                                viewHolder.favorite.setImageResource(R.drawable.favorites_unfilled);
+                            }
+                        }).addOnFailureListener(e -> {
+                            viewHolder.favorite.setImageResource(R.drawable.favorites_unfilled);
+                        });
+                    }
+                }
+            });
+
 
             ImageButton favoriteBtn = viewHolder.favorite;
-            favoriteBtn.setImageResource(garment.isFavorite() ? R.drawable.favorites_filled : R.drawable.favorites_unfilled);
-
             favoriteBtn.setOnClickListener(v -> {
-                FirebaseAuth auth = FirebaseAuth.getInstance();
-                String uid = auth.getUid();
+                FirebaseAuth auth2 = FirebaseAuth.getInstance();
+                String uid2 = auth2.getUid();
 
-                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
+                DatabaseReference userRef2 = FirebaseDatabase.getInstance().getReference("users").child(uid2);
 
-                userRef.get().addOnSuccessListener(snapshot -> {
+                userRef2.get().addOnSuccessListener(snapshot -> {
                     if (snapshot.exists()) {
-                        String username = snapshot.getValue(String.class);
+                        String username2 = snapshot.getValue(String.class);
 
-                        if (username != null) {
-                            boolean isFavorite = garment.isFavorite();
-                            garment.setFavorites();
-
-                            DatabaseReference garmentRef = FirebaseDatabase.getInstance()
+                        if (username2 != null) {
+                            DatabaseReference garmentRef2 = FirebaseDatabase.getInstance()
                                     .getReference("data")
-                                    .child(username)
+                                    .child(username2)
                                     .child("garments")
                                     .child(garment.getKey())
                                     .child("favorites");
 
-                            garmentRef.setValue(garment.isFavorite())
-                                    .addOnSuccessListener(aVoid -> {
-                                        favoriteBtn.setImageResource(garment.isFavorite() ? R.drawable.favorites_filled : R.drawable.favorites_unfilled);
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(context, "Failed to update favorite", Toast.LENGTH_SHORT).show();
-                                    });
+                            garmentRef2.get().addOnSuccessListener(favSnapshot -> {
+                                Boolean isFavorite = favSnapshot.getValue(Boolean.class);
+                                if (isFavorite != null && isFavorite) {
+                                    garmentRef2.setValue(false);
+                                    favoriteBtn.setImageResource(R.drawable.favorites_unfilled);
+                                } else {
+                                    garmentRef2.setValue(true);
+                                    favoriteBtn.setImageResource(R.drawable.favorites_filled);
+                                }
+                            });
                         }
-                    } else {
-                        Log.e("Favorite", "No username found");
                     }
-                }).addOnFailureListener(e -> {
-                    Log.e("Favorite", "Failed to retrieve username", e);
                 });
             });
-
 
             viewHolder.itemView.setOnLongClickListener(v -> {
                 currPosition = viewHolder.getAdapterPosition();
                 v.showContextMenu();
                 return true;
             });
-
-            viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default); // TODO: Load actual image
-
         }
+
 
         @Override
         public int getItemCount() {

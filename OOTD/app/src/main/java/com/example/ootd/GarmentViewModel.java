@@ -183,6 +183,7 @@ public class GarmentViewModel extends ViewModel {
                         Garment garment = snapshot.getValue(Garment.class);
                         if (garment != null) {
                             garment.setKey(snapshot.getKey());
+                            garment.setImagePath(snapshot.child("ImagePath").getValue(String.class));
                             Boolean favorite = snapshot.child("favorites").getValue(Boolean.class);
                             if (favorite != null) {
                                 garment.setFavorites();
