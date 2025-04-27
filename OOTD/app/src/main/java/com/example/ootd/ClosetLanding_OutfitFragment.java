@@ -16,18 +16,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.ootd.databinding.FragmentClosetLandingOutfitBinding;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -47,8 +55,15 @@ public class ClosetLanding_OutfitFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+    private FragmentClosetLandingOutfitBinding binding;
     private RecyclerView recyclerView;
     private GarmentViewModel viewModel;
+    private outfitAdapter adapter;
+    private Context cntx;
+    public static final int MENU_ITEM_VIEW = Menu.FIRST;
+    public static final int MENU_ITEM_DELETE = Menu.FIRST + 1;
 
     public ClosetLanding_OutfitFragment() {
         // Required empty public constructor
@@ -71,6 +86,18 @@ public class ClosetLanding_OutfitFragment extends Fragment {
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        // create menu in code instead of in xml file (xml approach preferred)
+        cntx = getContext();
+
+        // Add menu items
+        menu.add(0, MENU_ITEM_VIEW, 0, R.string.view_listing);
+        menu.add(0, MENU_ITEM_DELETE, 0, R.string.delete_listing);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(GarmentViewModel.class);
@@ -79,9 +106,15 @@ public class ClosetLanding_OutfitFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        binding = FragmentClosetLandingOutfitBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
-        return inflater.inflate(R.layout.fragment_closet_landing__outfit, container, false);
+        ImageButton filterButton = binding.filterButtonOutfits;
+        filterButton.setOnClickListener(v -> {
+            openFilter();
+        });
+
+        return root;
     }
 
     @Override
@@ -99,11 +132,35 @@ public class ClosetLanding_OutfitFragment extends Fragment {
             adapter.updateOutfitData(outfits);
         });
 
+        recyclerView.setOnCreateContextMenuListener(this);
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        super.onContextItemSelected(item);
+
+        switch (item.getItemId()) {
+            case MENU_ITEM_VIEW: {
+                int position = adapter.getCurrPosition();
+                Toast.makeText(cntx, "View Listing Not Implemented",
+                        Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            case MENU_ITEM_DELETE: {
+                int position = adapter.getCurrPosition();
+                Toast.makeText(cntx, "Delete Listing Not Implemented",
+                        Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        }
+        return false;
     }
 
     public static class outfitAdapter extends RecyclerView.Adapter<outfitAdapter.ViewHolder> {
         private List<Outfit> outfits = new ArrayList<>();
         private Context context;
+        private int currPosition = -1;
         private OnItemClickListener listener;
 
         public interface OnItemClickListener {
@@ -112,6 +169,10 @@ public class ClosetLanding_OutfitFragment extends Fragment {
 
         public void setOnItemClickListener(OnItemClickListener listener) {
             this.listener = listener;
+        }
+
+        public int getCurrPosition() {
+            return currPosition;
         }
 
         public void updateOutfitData(List<Outfit> outfits) {
@@ -185,6 +246,12 @@ public class ClosetLanding_OutfitFragment extends Fragment {
 
 
                 index++;
+
+                holder.itemView.setOnLongClickListener(v -> {
+                    currPosition = holder.getAdapterPosition();
+                    v.showContextMenu();
+                    return true;
+                });
             }
         }
 
@@ -226,5 +293,34 @@ public class ClosetLanding_OutfitFragment extends Fragment {
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             super.onMeasure(widthMeasureSpec, widthMeasureSpec);
         }
+    }
+
+    private void openFilter() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+
+        View bottomSheetView = LayoutInflater.from(getActivity()).inflate(
+                R.layout.filter_bottom_sheet_outfits,
+                getActivity().findViewById(android.R.id.content),
+                false
+        );
+        bottomSheetDialog.setContentView(bottomSheetView);
+        CheckBox favorites = bottomSheetView.findViewById(R.id.checkboxFavoritesOutfits);
+
+        // make the stuff behind the filter window darker
+        if (bottomSheetDialog.getWindow() != null) {
+            bottomSheetDialog.getWindow().setDimAmount(0.7f);
+        }
+
+        // when press clear filters
+        bottomSheetView.findViewById(R.id.clearFilterButtonOutfits).setOnClickListener(v -> {
+            favorites.setChecked(false);
+        });
+
+        // when press apply filters
+        bottomSheetView.findViewById(R.id.applyFilterButtonOutfits).setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+        });
+
+        bottomSheetDialog.show();
     }
 }

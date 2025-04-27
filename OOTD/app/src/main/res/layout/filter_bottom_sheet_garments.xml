@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center"
-        android:padding="16dp" >
+        android:layout_gravity="center_horizontal"
+        android:padding="23dp" >
 
 
         <TextView
@@ -20,7 +20,8 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/sort_and_filter"
             android:textColor="@color/dark_text"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:layout_marginBottom="16dp" />
 
         <TextView
             android:id="@+id/SortFilterCategory"
@@ -29,13 +30,16 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/category"
             android:textColor="@color/dark_text"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_marginBottom="7dp"/>
 
         <com.google.android.material.chip.ChipGroup
+            android:id="@+id/categoryChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:chipSpacing="4dp"
-            app:chipSpacingVertical="2dp">
+            app:chipSpacingVertical="2dp"
+            android:layout_marginBottom="7dp">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/topsChip"
@@ -43,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/tops"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -51,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/bottoms"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -59,6 +65,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/shoes"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -67,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/outerwear"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -75,6 +83,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/dresses"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -83,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/swim"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -91,6 +101,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/accessories"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -99,6 +110,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/jewelry"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -107,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/bags"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -115,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/headwear"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
             <com.google.android.material.chip.Chip
@@ -123,6 +137,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/other"
+                app:checkedIconTint="@color/nav_bar_color"
                 app:chipBackgroundColor="@color/regular_grey" />
 
         </com.google.android.material.chip.ChipGroup>
@@ -134,13 +149,16 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/color"
             android:textColor="@color/dark_text"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_marginBottom="7dp"/>
 
         <com.google.android.material.chip.ChipGroup
+            android:id="@+id/colorChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:chipSpacing="4dp"
-            app:chipSpacingVertical="2dp">
+            app:chipSpacingVertical="2dp"
+            android:layout_marginBottom="7dp">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/redChip"
@@ -267,13 +285,16 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/sub_category"
             android:textColor="@color/dark_text"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_marginBottom="7dp"/>
 
         <com.google.android.material.chip.ChipGroup
+            android:id="@+id/topSubcategoryChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:chipSpacing="4dp"
-            app:chipSpacingVertical="2dp">
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
 
             <!-- top subcat -->
             <com.google.android.material.chip.Chip
@@ -380,7 +401,17 @@
                 android:text="@string/cardigan"
                 app:chipBackgroundColor="@color/regular_grey" />
 
-            <!-- bottoms subcat -->
+        </com.google.android.material.chip.ChipGroup>
+
+        <!-- bottoms subcat -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/bottomsSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/jeansChip"
                 android:layout_width="wrap_content"
@@ -446,7 +477,17 @@
                 android:text="@string/leggings"
                 app:chipBackgroundColor="@color/regular_grey" />
 
-            <!-- outerwear subcat -->
+        </com.google.android.material.chip.ChipGroup>
+
+        <!-- outerwear subcat -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/outerwearSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/jacketChip"
                 android:layout_width="wrap_content"
@@ -478,6 +519,16 @@
                 android:checkable="true"
                 android:text="@string/puffer"
                 app:chipBackgroundColor="@color/regular_grey" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/bagsSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
 
             <!-- bags subcat -->
             <com.google.android.material.chip.Chip
@@ -544,6 +595,15 @@
                 android:text="@string/belt_bag"
                 app:chipBackgroundColor="@color/regular_grey" />
 
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/shoesSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
             <!-- shoes subcat -->
             <com.google.android.material.chip.Chip
                 android:id="@+id/bootsChip"
@@ -601,6 +661,16 @@
                 android:text="@string/wedges"
                 app:chipBackgroundColor="@color/regular_grey" />
 
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/dressesSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
+
             <!-- dresses subcat -->
             <com.google.android.material.chip.Chip
                 android:id="@+id/maxiChip"
@@ -642,6 +712,16 @@
                 android:text="@string/jumpsuit"
                 app:chipBackgroundColor="@color/regular_grey" />
 
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/swimSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
+
             <!-- swim subcat -->
             <com.google.android.material.chip.Chip
                 android:id="@+id/bikiniChip"
@@ -674,6 +754,16 @@
                 android:checkable="true"
                 android:text="@string/cover_up"
                 app:chipBackgroundColor="@color/regular_grey" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/accessoriesSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
 
             <!-- accessories subcat -->
             <com.google.android.material.chip.Chip
@@ -740,6 +830,16 @@
                 android:text="@string/other_acc"
                 app:chipBackgroundColor="@color/regular_grey" />
 
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/jewelrySubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
+
             <!-- jewelry subcat -->
             <com.google.android.material.chip.Chip
                 android:id="@+id/braceletChip"
@@ -789,6 +889,16 @@
                 android:text="@string/other_jewel"
                 app:chipBackgroundColor="@color/regular_grey" />
 
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/hatsSubcategoryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="4dp"
+            app:chipSpacingVertical="2dp"
+            android:visibility="gone">
+
             <!-- hat subcat -->
             <com.google.android.material.chip.Chip
                 android:id="@+id/hatChip"
@@ -823,6 +933,7 @@
             android:text="@string/show_favorites"
             android:textSize="20sp"
             android:textColor="@color/dark_text"
+            android:buttonTint="@color/nav_bar_color"
             android:layout_marginTop="8dp"/>
 
 
@@ -830,7 +941,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="12dp">
 
             <Button
                 android:id="@+id/applyFilterButton"
@@ -838,7 +949,8 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/apply_filters_text" />
+                android:text="@string/apply_filters_text"
+                android:layout_marginBottom="10dp"/>
 
             <Button
                 android:id="@+id/clearFilterButton"

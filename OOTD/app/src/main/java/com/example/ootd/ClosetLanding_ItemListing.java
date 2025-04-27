@@ -25,14 +25,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.ootd.databinding.FragmentClosetLandingItemListingBinding;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
@@ -69,6 +74,7 @@ public class ClosetLanding_ItemListing extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private List<Garment> garmentList;
 
+    private FragmentClosetLandingItemListingBinding binding;
     private RecyclerView recyclerView;
     private GarmentAdapter adapter;
 
@@ -115,9 +121,11 @@ public class ClosetLanding_ItemListing extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_closet_landing__item_listing, container, false);
+        binding = FragmentClosetLandingItemListingBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
-        recyclerView = view.findViewById(R.id.garmentRecyclerView);
+        //recyclerView = view.findViewById(R.id.garmentRecyclerView);
+        recyclerView = root.findViewById(R.id.garmentRecyclerView);
         recyclerView.setPadding(0, 0, 0, 160);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
@@ -136,9 +144,14 @@ public class ClosetLanding_ItemListing extends Fragment {
 
         recyclerView.setOnCreateContextMenuListener(this);
 
+        ImageButton filterButton = binding.filterButtonItems;
+        filterButton.setOnClickListener(v -> {
+            openFilter();
+        });
 
         // Inflate the layout for this fragment
-        return view;
+        //return view;
+        return root;
     }
 
     @Override
@@ -370,6 +383,142 @@ public class ClosetLanding_ItemListing extends Fragment {
             }
         }
 
+    }
+
+    private void openFilter() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+
+        View bottomSheetView = LayoutInflater.from(getActivity()).inflate(
+                R.layout.filter_bottom_sheet_garments,
+                getActivity().findViewById(android.R.id.content),
+                false
+        );
+        bottomSheetDialog.setContentView(bottomSheetView);
+
+        // visibility for subcategories so the sort and filter screen isn't extremely long
+        ChipGroup categoryChipGroup = bottomSheetView.findViewById(R.id.categoryChipGroup);
+        TextView subcategoryText = bottomSheetView.findViewById(R.id.SortFilterSubcategory);
+        ChipGroup colorChipGroup = bottomSheetView.findViewById(R.id.colorChipGroup);
+        CheckBox favorites = bottomSheetView.findViewById(R.id.checkboxFavorites);
+
+        // tops
+        Chip topsChip = bottomSheetView.findViewById(R.id.topsChip);
+        ChipGroup topSubcategoryChipGroup = bottomSheetView.findViewById(R.id.topSubcategoryChipGroup);
+        // bottoms
+        Chip bottomsChip = bottomSheetView.findViewById(R.id.bottomsChip);
+        ChipGroup bottomsSubcategoryChipGroup = bottomSheetView.findViewById(R.id.bottomsSubcategoryChipGroup);
+        // shoes
+        Chip shoesChip = bottomSheetView.findViewById(R.id.shoesChip);
+        ChipGroup shoesSubcategoryChipGroup = bottomSheetView.findViewById(R.id.shoesSubcategoryChipGroup);
+        // outerwear
+        Chip outerwearChip = bottomSheetView.findViewById(R.id.outerwearChip);
+        ChipGroup outerwearSubcategoryChipGroup = bottomSheetView.findViewById(R.id.outerwearSubcategoryChipGroup);
+        // dresses
+        Chip dressesChip = bottomSheetView.findViewById(R.id.dressesChip);
+        ChipGroup dressesSubcategoryChipGroup = bottomSheetView.findViewById(R.id.dressesSubcategoryChipGroup);
+        // swim
+        Chip swimChip = bottomSheetView.findViewById(R.id.swimChip);
+        ChipGroup swimSubcategoryChipGroup = bottomSheetView.findViewById(R.id.swimSubcategoryChipGroup);
+        // accessories
+        Chip accessoriesChip = bottomSheetView.findViewById(R.id.accessoriesChip);
+        ChipGroup accessoriesSubcategoryChipGroup = bottomSheetView.findViewById(R.id.accessoriesSubcategoryChipGroup);
+        // jewelry
+        Chip jewelryChip = bottomSheetView.findViewById(R.id.jewelryChip);
+        ChipGroup jewelrySubcategoryChipGroup = bottomSheetView.findViewById(R.id.jewelrySubcategoryChipGroup);
+        // bags
+        Chip bagChip = bottomSheetView.findViewById(R.id.bagsChip);
+        ChipGroup bagSubcategoryChipGroup = bottomSheetView.findViewById(R.id.bagsSubcategoryChipGroup);
+        // headwear
+        Chip headwearChip = bottomSheetView.findViewById(R.id.headwearChip);
+        ChipGroup headwearSubcategoryChipGroup = bottomSheetView.findViewById(R.id.hatsSubcategoryChipGroup);
+
+        // change visibility
+        subcategoryText.setVisibility(View.GONE);
+
+        categoryChipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
+                if (topsChip.isChecked()) {
+                    topSubcategoryChipGroup.setVisibility(View.VISIBLE);
+                    subcategoryText.setVisibility(View.VISIBLE);
+                } else {
+                    topSubcategoryChipGroup.setVisibility(View.GONE);
+                }
+                if (bottomsChip.isChecked()) {
+                    bottomsSubcategoryChipGroup.setVisibility(View.VISIBLE);
+                    subcategoryText.setVisibility(View.VISIBLE);
+                } else {
+                    bottomsSubcategoryChipGroup.setVisibility(View.GONE);
+                }
+                if (shoesChip.isChecked()) {
+                    shoesSubcategoryChipGroup.setVisibility(View.VISIBLE);
+                    subcategoryText.setVisibility(View.VISIBLE);
+                } else {
+                    shoesSubcategoryChipGroup.setVisibility(View.GONE);
+                }
+                if (outerwearChip.isChecked()) {
+                    outerwearSubcategoryChipGroup.setVisibility(View.VISIBLE);
+                    subcategoryText.setVisibility(View.VISIBLE);
+                } else {
+                    outerwearSubcategoryChipGroup.setVisibility(View.GONE);
+                }
+                if (dressesChip.isChecked()) {
+                    dressesSubcategoryChipGroup.setVisibility(View.VISIBLE);
+                    subcategoryText.setVisibility(View.VISIBLE);
+                } else {
+                    dressesSubcategoryChipGroup.setVisibility(View.GONE);
+                }
+                if (swimChip.isChecked()) {
+                    swimSubcategoryChipGroup.setVisibility(View.VISIBLE);
+                    subcategoryText.setVisibility(View.VISIBLE);
+                } else {
+                    swimSubcategoryChipGroup.setVisibility(View.GONE);
+                }
+                if (accessoriesChip.isChecked()) {
+                    accessoriesSubcategoryChipGroup.setVisibility(View.VISIBLE);
+                    subcategoryText.setVisibility(View.VISIBLE);
+                } else {
+                    accessoriesSubcategoryChipGroup.setVisibility(View.GONE);
+                }
+                if (jewelryChip.isChecked()) {
+                    jewelrySubcategoryChipGroup.setVisibility(View.VISIBLE);
+                    subcategoryText.setVisibility(View.VISIBLE);
+                } else {
+                    jewelrySubcategoryChipGroup.setVisibility(View.GONE);
+                }
+                if (bagChip.isChecked()) {
+                    bagSubcategoryChipGroup.setVisibility(View.VISIBLE);
+                    subcategoryText.setVisibility(View.VISIBLE);
+                } else {
+                    bagSubcategoryChipGroup.setVisibility(View.GONE);
+                }
+                if (headwearChip.isChecked()) {
+                    headwearSubcategoryChipGroup.setVisibility(View.VISIBLE);
+                    subcategoryText.setVisibility(View.VISIBLE);
+                } else {
+                    headwearSubcategoryChipGroup.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        // make the stuff behind the filter window darker
+        if (bottomSheetDialog.getWindow() != null) {
+            bottomSheetDialog.getWindow().setDimAmount(0.7f);
+        }
+
+        // when press clear filters
+        bottomSheetView.findViewById(R.id.clearFilterButton).setOnClickListener(v -> {
+            categoryChipGroup.clearCheck();
+            colorChipGroup.clearCheck();
+            favorites.setChecked(false);
+        });
+
+        // when press apply filters
+        bottomSheetView.findViewById(R.id.applyFilterButton).setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+        });
+
+        bottomSheetDialog.show();
     }
 
 
