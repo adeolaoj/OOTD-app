@@ -151,7 +151,6 @@ public class ClosetLanding_ItemListing extends Fragment {
 
                 Garment curr = adapter.getGarmentAt(currPosition);
 
-                // new bundle to pass data
                 Bundle bundle = new Bundle();
                 bundle.putString("key", curr.getKey());
                 bundle.putString("ImagePath",curr.getImagePath());
@@ -169,34 +168,44 @@ public class ClosetLanding_ItemListing extends Fragment {
                 int position = adapter.getCurrPosition();
                 Garment toDelete = adapter.getGarmentAt(position);
 
-                if (toDelete.getImagePath() == null) {
-                    Toast.makeText(cntx, "Error: Image path not found",
+                if (toDelete.getKey() == null) {
+                    Toast.makeText(cntx, "Error: Garment key not found",
                             Toast.LENGTH_SHORT).show();
                     return true;
                 }
 
-                DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Garments");
-                dbref.orderByChild("ImagePath").equalTo(toDelete.getImagePath())
-                                .addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        if (snapshot.exists()) {
-                                            for (DataSnapshot item : snapshot.getChildren()) {
-                                                item.getRef().removeValue(); // delete from Firebase
-                                            }
-                                            Toast.makeText(cntx, "Garment deleted",
-                                                    Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(cntx, "Item not found",
-                                                    Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-                                        Toast.makeText(cntx, "Delete unsuccessful",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                String uid = auth.getUid();
+                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
+
+                userRef.get().addOnSuccessListener(snapshot -> {
+                    if (snapshot.exists()) {
+                        String username = snapshot.getValue(String.class);
+
+                        if (username != null) {
+                            DatabaseReference garmentRef = FirebaseDatabase.getInstance()
+                                    .getReference("data")
+                                    .child(username)
+                                    .child("garments")
+                                    .child(toDelete.getKey());
+
+                            garmentRef.removeValue()
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(cntx, "Garment deleted", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(cntx, "Delete unsuccessful", Toast.LENGTH_SHORT).show();
+                                    });
+                        } else {
+                            Toast.makeText(cntx, "Username not found", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(cntx, "User not found", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(cntx, "Error retrieving user", Toast.LENGTH_SHORT).show();
+                });
+
                 return true;
             }
         }

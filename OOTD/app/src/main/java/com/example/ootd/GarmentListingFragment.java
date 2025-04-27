@@ -174,7 +174,7 @@ public class GarmentListingFragment extends Fragment {
                             userData.put("Category", category);
                             userData.put("Subcategory", subcategory);
                             userData.put("ColorTags", colorsSelected);
-                            userData.put("favorites", "false");
+                            userData.put("favorites", false);
 
                             dbref.child(userId).setValue(userData);
                         }
