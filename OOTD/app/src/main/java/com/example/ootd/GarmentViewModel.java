@@ -183,13 +183,16 @@ public class GarmentViewModel extends ViewModel {
                         Garment garment = snapshot.getValue(Garment.class);
                         if (garment != null) {
                             garment.setKey(snapshot.getKey());
+                            Boolean favorite = snapshot.child("favorites").getValue(Boolean.class);
+                            if (favorite != null) {
+                                garment.setFavorites();
+                            }
                             garments.add(garment);
                         }
                     }
                     garmentsData.setValue(garments);
-
-                    garmentsData.setValue(garments);
                 }
+
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
