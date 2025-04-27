@@ -182,9 +182,12 @@ public class GarmentViewModel extends ViewModel {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Garment garment = snapshot.getValue(Garment.class);
                         if (garment != null) {
+                            garment.setKey(snapshot.getKey());
                             garments.add(garment);
                         }
                     }
+                    garmentsData.setValue(garments);
+
                     garmentsData.setValue(garments);
                 }
 

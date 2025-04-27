@@ -152,6 +152,7 @@ public class ClosetLanding_ItemListing extends Fragment {
 
                 // new bundle to pass data
                 Bundle bundle = new Bundle();
+                bundle.putString("key", curr.getKey());
                 bundle.putString("ImagePath",curr.getImagePath());
                 Log.d("ImagePath", "Image Path before passing to bundle: " + curr.getImagePath());
                 bundle.putString("Category", curr.getCategory());

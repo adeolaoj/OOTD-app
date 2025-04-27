@@ -11,6 +11,7 @@ public class Garment {
     private String Subcategory;
     private List<String> colorTags;
     private Boolean favorites = false;
+    private String key;
 
     public Garment() {
         // private constructor for firestore
@@ -22,6 +23,14 @@ public class Garment {
         this.Subcategory = Subcategory;
         this.colorTags = colorTags;
         this.favorites = false;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getImagePath() {
