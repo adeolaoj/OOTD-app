@@ -241,6 +241,8 @@ public class ClosetLanding_ItemListing extends Fragment {
     public class GarmentAdapter extends RecyclerView.Adapter<GarmentAdapter.ViewHolder> {
         private List<Garment> garmentList;
         private Context context;
+        private List<Garment> fullGarmentList = new ArrayList<>();
+
 
         private int currPosition = -1;
 
@@ -249,11 +251,17 @@ public class ClosetLanding_ItemListing extends Fragment {
             this.context = context;
         }
 
+        public void resetGarments() {
+            this.garmentList = new ArrayList<>(fullGarmentList);
+            notifyDataSetChanged();
+        }
+
         public Garment getGarmentAt(int position) {
             return garmentList.get(position);
         }
 
         public void updateGarmentData(List<Garment> newData) {
+            this.fullGarmentList = new ArrayList<>(newData);
             this.garmentList = newData;
             notifyDataSetChanged();  // Notifying the adapter to re-render the data
         }
@@ -422,7 +430,7 @@ public class ClosetLanding_ItemListing extends Fragment {
                 Log.d("Filter", "Garment Category: " + garment.getCategory());
             }
 
-            for (Garment garment : garmentList) {
+            for (Garment garment : fullGarmentList) {
                 boolean matchesCategory = selectedCategory == null || garment.getCategory().equals(selectedCategory);
                 boolean matchesColor = selectedColors.isEmpty() || garment.getColorTags() != null && garment.getColorTags().containsAll(selectedColors);
                 boolean matchesFavorite = !showFavoritesOnly || garment.isFavorite();
@@ -431,8 +439,8 @@ public class ClosetLanding_ItemListing extends Fragment {
                     filteredGarments.add(garment);
                 }
             }
-
-            updateGarmentData(filteredGarments);
+            this.garmentList = filteredGarments;
+            notifyDataSetChanged();
         }
       
         @Override
@@ -503,7 +511,19 @@ public class ClosetLanding_ItemListing extends Fragment {
             bottomSheetDialog.dismiss();
         });
 
+        bottomSheetView.findViewById(R.id.clearFilterButton).setOnClickListener(v -> {
+            deleteFilters();
+            bottomSheetDialog.dismiss();
+        });
+
+
         bottomSheetDialog.show();
+    }
+
+    private void deleteFilters() {
+        if (adapter != null) {
+            adapter.resetGarments();
+        }
     }
 
 
