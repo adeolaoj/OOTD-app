@@ -13,18 +13,22 @@
         android:roundIcon="@mipmap/app_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.OOTD"
+        android:screenOrientation="portrait"
         tools:targetApi="31">
         <activity
             android:name=".CameraApplication"
             android:exported="true"
             android:label="@string/title_activity_camera_application"
             android:theme="@style/Base.Theme.OOTD"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".LoginActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
