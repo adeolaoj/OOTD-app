@@ -174,7 +174,6 @@ public class PlanOutfitFragment extends Fragment {
 
             // Get element from dataset at the corresponding positions and replace the
             // contents of the view with a picture of the garment
-            //viewHolder.getImageView().setImageURI(Uri.parse(currGarment.getImagePath()));
 
             StorageReference storageReference = FirebaseStorage.getInstance().getReference();
             storageReference.child(currGarment.getImagePath()).getDownloadUrl().addOnSuccessListener( uri->{
