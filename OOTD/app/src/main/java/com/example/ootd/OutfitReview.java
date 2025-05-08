@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +20,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +44,8 @@ public class OutfitReview extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private Button saveBtn;
-    FirebaseDatabase database;
-    DatabaseReference dbref;
+
+    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private RecyclerView recyclerView;
@@ -53,7 +54,15 @@ public class OutfitReview extends Fragment {
         // Required empty public constructor
     }
 
-
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment OutfitReview.
+     */
+    // TODO: Rename and change types and number of parameters
     public static OutfitReview newInstance(String param1, String param2) {
         OutfitReview fragment = new OutfitReview();
         Bundle args = new Bundle();
@@ -89,33 +98,38 @@ public class OutfitReview extends Fragment {
             adapter.updateGarmentData(garmentsForOutfit);
         });
 
-        EditText outftitEditText = view.findViewById(R.id.setOutfitName);
-        String outfitName = outftitEditText.getText().toString().trim();
-
         saveBtn = view.findViewById(R.id.saveOutfitButton);
         saveBtn.setOnClickListener(v->{
             List<Garment> garmentsSelected = garmentsForOutfit.getSelectedGarments().getValue();
-            Outfit outfitChosen = new Outfit(outfitName, garmentsSelected);
-            if (!outfitChosen.isEmpty()) {
+
+            EditText nameTextView = view.findViewById(R.id.setOutfitName);
+            String name = nameTextView.getText().toString();
+
+            if (garmentsSelected != null && !garmentsSelected.isEmpty()) {
+                if (name.isEmpty()) {
+                    Toast.makeText(requireContext(), "Must input an outfit name.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Outfit outfitChosen = new Outfit(name, garmentsSelected);
+
+
+//            if (!outfitChosen.isEmpty()) {
+//                EditText nameTextView = view.findViewById(R.id.setOutfitName);
+//                String name = nameTextView.getText().toString();
+//                outfitChosen.setName(name);
+
                 viewModel.saveOutfit(outfitChosen);
-//              this doesn't work LOL
-//                String outfitId = dbref.push().getKey();
-//                assert outfitId != null;
-//                dbref.child(outfitId).setValue(outfitChosen);
 
                 garmentsForOutfit.clearSelection();
                 Toast.makeText(requireContext(), "Outfit successfully saved!",
                         Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(v).navigate(R.id.navigation_closet);
             } else {
-                garmentsForOutfit.clearSelection();
                 Toast.makeText(requireContext(), "No garments selected!",
                         Toast.LENGTH_SHORT).show();
             }
         });
-
-        garmentsForOutfit.clearSelection();
-
         return view;
     }
 
@@ -190,6 +204,7 @@ public class OutfitReview extends Fragment {
 //                chipGroup.addView(chip);
 //            }
 
+
             ImageButton favoriteBtn = viewHolder.favorite;
 
             if (currGarment.isFavorite()) {
@@ -199,7 +214,14 @@ public class OutfitReview extends Fragment {
             // Get element from dataset at the corresponding positions and replace the
             // contents of the view with a picture of the garment
             //TODO: REPLACE WITH NON-PLACEHOLDER IMAGE
-            viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default);
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+            storageReference.child(currGarment.getImagePath()).getDownloadUrl().addOnSuccessListener( uri->{
+                Glide.with(context).load(uri).into(viewHolder.getImageView());
+            }).addOnFailureListener(e-> {
+                Log.e("ImageLoadError", "Could not load image: " + e.getMessage());
+                viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default);
+            });
+
 
         }
 

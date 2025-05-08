@@ -7,6 +7,18 @@
     android:orientation="vertical"
     tools:context=".ClosetLanding_ItemListing">
 
+    <ImageButton
+        android:id="@+id/filterButtonItems"
+        android:layout_width="49dp"
+        android:layout_height="50dp"
+        android:background="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/filter" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:clipToPadding="false"
         android:layout_width="match_parent"
@@ -18,5 +30,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
     </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/filterTextItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/filters"
+        android:textColor="@color/dark_text"
+        android:textSize="21sp"
+        app:layout_constraintBottom_toBottomOf="@+id/filterButtonItems"
+        app:layout_constraintEnd_toStartOf="@+id/filterButtonItems"
+        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

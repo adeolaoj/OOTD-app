@@ -16,16 +16,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.ootd.databinding.FragmentClosetLandingOutfitBinding;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -41,14 +54,19 @@ import java.util.Random;
  */
 public class ClosetLanding_OutfitFragment extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
+    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private FragmentClosetLandingOutfitBinding binding;
     private RecyclerView recyclerView;
     private GarmentViewModel viewModel;
     private outfitAdapter adapter;
+    private Context cntx;
+    public static final int MENU_ITEM_VIEW = Menu.FIRST;
+    public static final int MENU_ITEM_DELETE = Menu.FIRST + 1;
 
     public ClosetLanding_OutfitFragment() {
         // Required empty public constructor
@@ -66,10 +84,20 @@ public class ClosetLanding_OutfitFragment extends Fragment {
     public static ClosetLanding_OutfitFragment newInstance(String param1, String param2) {
         ClosetLanding_OutfitFragment fragment = new ClosetLanding_OutfitFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        // create menu in code instead of in xml file (xml approach preferred)
+        cntx = getContext();
+
+        // Add menu items
+        menu.add(0, MENU_ITEM_VIEW, 0, R.string.view_listing);
+        menu.add(0, MENU_ITEM_DELETE, 0, R.string.delete_listing);
     }
 
     @Override
@@ -81,21 +109,10 @@ public class ClosetLanding_OutfitFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_closet_landing__outfit, container, false);
+        binding = FragmentClosetLandingOutfitBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
-        recyclerView = view.findViewById(R.id.outfitsRecyclerView);
-        recyclerView.setPadding(0, 0, 0, 160);
-
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-        recyclerView.setLayoutManager(layoutManager);
-
-        GarmentViewModel viewModel = new ViewModelProvider(requireActivity()).get(GarmentViewModel.class);
-
-        adapter = new outfitAdapter(new ArrayList<>(), getContext());
-        recyclerView.setAdapter(adapter);
-
-        return view;
+        return root;
     }
 
     @Override
@@ -106,35 +123,125 @@ public class ClosetLanding_OutfitFragment extends Fragment {
         recyclerView.setPadding(0, 0, 0,160);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        outfitAdapter adapter = new outfitAdapter(new ArrayList<>(), getContext());
+        adapter = new outfitAdapter();
         recyclerView.setAdapter(adapter);
 
         viewModel.getSavedOutfits().observe(getViewLifecycleOwner(), outfits -> {
             adapter.updateOutfitData(outfits);
         });
 
+        recyclerView.setOnCreateContextMenuListener(this);
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (!isVisible()) {
+            return false;
+        }
+
+        super.onContextItemSelected(item);
+
+        switch (item.getItemId()) {
+            case MENU_ITEM_VIEW: {
+                int position = adapter.getCurrPosition();
+                if (position >= 0 && position < adapter.outfits.size()) {
+                    Outfit selected = adapter.outfits.get(position);
+
+                    ArrayList<Garment> garments = new ArrayList<>(selected.getOutfitGarments());
+
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("garments", garments);
+                    bundle.putString("name", selected.getOutfitName());
+
+                    Navigation.findNavController(requireView()).navigate(R.id.navigation_saved_outfit_details,
+                            bundle);
+                } else {
+                    Toast.makeText(cntx, "No outfit selected.",
+                            Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+            case MENU_ITEM_DELETE: {
+                int position = adapter.getCurrPosition();
+                if (position >= 0) {
+                    Outfit toDelete = adapter.outfits.get(position);
+
+                    if (toDelete.getKey() == null) {
+                        Toast.makeText(cntx, "Error: Outfit key not found",
+                                Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                    String uid = auth.getUid();
+                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
+
+                    userRef.get().addOnSuccessListener(snapshot -> {
+                        if (snapshot.exists()) {
+                            String username = snapshot.getValue(String.class);
+
+                            if (username != null) {
+                                DatabaseReference outfitRef = FirebaseDatabase.getInstance()
+                                        .getReference("data")
+                                        .child(username)
+                                        .child("outfits")
+                                        .child(toDelete.getKey());
+
+                                outfitRef.removeValue()
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(cntx, "Outfit successfully deleted!",
+                                                    Toast.LENGTH_SHORT).show();
+
+                                            adapter.outfits.remove(position);
+                                            adapter.notifyItemRemoved(position);
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(cntx, "Delete unsuccessful.",
+                                                    Toast.LENGTH_SHORT).show();
+                                        });
+                            } else {
+                                Toast.makeText(cntx, "Username not found.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(cntx, "User not found.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(cntx, "Error retrieving user.",
+                                Toast.LENGTH_SHORT).show();
+                    });
+                } else {
+                    Toast.makeText(cntx, "Error: No outfit selected.",
+                            Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     public static class outfitAdapter extends RecyclerView.Adapter<outfitAdapter.ViewHolder> {
-        private List<Outfit> outfitList;
+        private List<Outfit> outfits = new ArrayList<>();
         private Context context;
+        private int currPosition = -1;
         private OnItemClickListener listener;
 
         public interface OnItemClickListener {
             void onItemClick(int position);
         }
 
-        public outfitAdapter(List<Outfit> outfits, Context context) {
-            this.outfitList = outfits;
-            this.context = context;
-        }
-
         public void setOnItemClickListener(OnItemClickListener listener) {
             this.listener = listener;
         }
 
+        public int getCurrPosition() {
+            return currPosition;
+        }
+
         public void updateOutfitData(List<Outfit> outfits) {
-            this.outfitList = outfits;
+            this.outfits = outfits;
             notifyDataSetChanged();
         }
 
@@ -148,8 +255,10 @@ public class ClosetLanding_OutfitFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            Outfit outfit = outfitList.get(position);
+            Outfit outfit = outfits.get(position);
             List<Garment> garments = outfit.getOutfitGarments();
+
+            holder.outfitNameTextView.setText(outfit.getOutfitName());
 
             GridLayout mainGrid = holder.itemView.findViewById(R.id.mainGrid);
             LinearLayout bottomRow = holder.itemView.findViewById(R.id.extraRow);
@@ -157,20 +266,24 @@ public class ClosetLanding_OutfitFragment extends Fragment {
             mainGrid.removeAllViews();
             bottomRow.removeAllViews();
 
-            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-
             int padding = 4;
             int index = 0;
 
             for (Garment garment:garments) {
                 SquareImageView imageView = new SquareImageView(context);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                storageReference.child(garment.getImagePath()).getDownloadUrl().addOnSuccessListener( uri->{
-                    Glide.with(context).load(uri).into(imageView);
-                }).addOnFailureListener(e-> {
+
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                storageReference.child(garment.getImagePath()).getDownloadUrl().addOnSuccessListener(uri -> {
+                    Glide.with(context)
+                            .load(uri)
+                            .placeholder(R.drawable.garment_picture_default)
+                            .into(imageView);
+                }).addOnFailureListener(e -> {
                     Log.e("ImageLoadError", "Could not load image: " + e.getMessage());
                     imageView.setImageResource(R.drawable.garment_picture_default);
                 });
+
 
                 if (index < 4) {
                     GridLayout.LayoutParams params = new GridLayout.LayoutParams();
@@ -196,33 +309,36 @@ public class ClosetLanding_OutfitFragment extends Fragment {
                     bottomRow.addView(imageView, params);
                 }
 
+
                 index++;
+
+                holder.itemView.setOnLongClickListener(v -> {
+                    currPosition = holder.getAdapterPosition();
+                    v.showContextMenu();
+                    return true;
+                });
             }
         }
 
         @Override
         public int getItemCount() {
-            return outfitList.size();
+            return outfits.size();
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
             GridLayout mainGrid;
             LinearLayout bottomRow;
+            private TextView outfitNameTextView;
+
 
             ViewHolder(View itemView) {
                 super(itemView);
                 mainGrid = itemView.findViewById(R.id.mainGrid);
                 bottomRow = itemView.findViewById(R.id.extraRow);
-            }
-
-            SquareImageView imageView;
-            public SquareImageView getImageView() {
-                return imageView;
+                outfitNameTextView = itemView.findViewById(R.id.outfitNameTextView);
             }
 
         }
-
-
     }
 
     public static class SquareImageView extends AppCompatImageView {
@@ -242,5 +358,34 @@ public class ClosetLanding_OutfitFragment extends Fragment {
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             super.onMeasure(widthMeasureSpec, widthMeasureSpec);
         }
+    }
+
+    private void openFilter() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+
+        View bottomSheetView = LayoutInflater.from(getActivity()).inflate(
+                R.layout.filter_bottom_sheet_outfits,
+                getActivity().findViewById(android.R.id.content),
+                false
+        );
+        bottomSheetDialog.setContentView(bottomSheetView);
+        CheckBox favorites = bottomSheetView.findViewById(R.id.checkboxFavoritesOutfits);
+
+        // make the stuff behind the filter window darker
+        if (bottomSheetDialog.getWindow() != null) {
+            bottomSheetDialog.getWindow().setDimAmount(0.7f);
+        }
+
+        // when press clear filters
+        bottomSheetView.findViewById(R.id.clearFilterButtonOutfits).setOnClickListener(v -> {
+            favorites.setChecked(false);
+        });
+
+        // when press apply filters
+        bottomSheetView.findViewById(R.id.applyFilterButtonOutfits).setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+        });
+
+        bottomSheetDialog.show();
     }
 }

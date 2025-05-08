@@ -1,19 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- not needed for rn
+    <ImageButton
+        android:id="@+id/filterButtonOutfits"
+        android:layout_width="49dp"
+        android:layout_height="50dp"
+        android:background="@null"
+        app:layout_constraintBottom_toTopOf="@+id/outfitsRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/filter" />
+        -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/outfitsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
+
         android:padding="8dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        tools:listitem="@layout/garment_layout"/>
+        tools:listitem="@layout/garment_layout" />
+
+    <!-- not neeeded rn
+    <TextView
+        android:id="@+id/filterTextOutfits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/filters"
+        android:textSize="21sp"
+        android:textColor="@color/dark_text"
+        app:layout_constraintBottom_toTopOf="@+id/outfitsRecyclerView"
+        app:layout_constraintEnd_toStartOf="@+id/filterButtonOutfits"
+        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+        -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

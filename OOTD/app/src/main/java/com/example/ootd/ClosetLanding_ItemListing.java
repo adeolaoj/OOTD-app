@@ -25,20 +25,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.ootd.databinding.FragmentClosetLandingItemListingBinding;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
@@ -64,10 +73,9 @@ public class ClosetLanding_ItemListing extends Fragment {
     private MainActivity myact;
 
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private List<Garment> garmentList;
 
+    private FragmentClosetLandingItemListingBinding binding;
     private RecyclerView recyclerView;
     private GarmentAdapter adapter;
 
@@ -114,9 +122,11 @@ public class ClosetLanding_ItemListing extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_closet_landing__item_listing, container, false);
+        binding = FragmentClosetLandingItemListingBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
-        recyclerView = view.findViewById(R.id.garmentRecyclerView);
+        //recyclerView = view.findViewById(R.id.garmentRecyclerView);
+        recyclerView = root.findViewById(R.id.garmentRecyclerView);
         recyclerView.setPadding(0, 0, 0, 160);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
@@ -135,14 +145,31 @@ public class ClosetLanding_ItemListing extends Fragment {
 
         recyclerView.setOnCreateContextMenuListener(this);
 
+        ImageButton filterButton = binding.filterButtonItems;
+        filterButton.setOnClickListener(v -> {
+            openFilter();
+        });
 
-        // Inflate the layout for this fragment
-        return view;
+        //return view;
+        return root;
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+
+        if (!isVisible()) {
+            return false;
+        }
+
         super.onContextItemSelected(item);
+
+        int positionCurr = adapter.getCurrPosition();
+
+        if (positionCurr < 0 || positionCurr >= adapter.getItemCount()) {
+            Toast.makeText(requireContext(), "Error: No garment selected.",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
         switch (item.getItemId()) {
             case MENU_ITEM_EDIT: {
@@ -150,14 +177,14 @@ public class ClosetLanding_ItemListing extends Fragment {
 
                 Garment curr = adapter.getGarmentAt(currPosition);
 
-                // new bundle to pass data
                 Bundle bundle = new Bundle();
+                bundle.putString("key", curr.getKey());
                 bundle.putString("ImagePath",curr.getImagePath());
                 Log.d("ImagePath", "Image Path before passing to bundle: " + curr.getImagePath());
                 bundle.putString("Category", curr.getCategory());
                 bundle.putString("Subcategory", curr.getSubcategory());
-                List<String> colorTags = curr.getColorTags();
-                ArrayList<String> colorTagsBruh = (ArrayList<String>)colorTags;
+                ArrayList<String> colorTagsBruh = (ArrayList<String>) curr.getColorTags();
+
                 bundle.putStringArrayList("ColorTags", colorTagsBruh);
 
                 Navigation.findNavController(this.getView()).navigate(R.id.navigation_garment_listing, bundle);
@@ -167,34 +194,44 @@ public class ClosetLanding_ItemListing extends Fragment {
                 int position = adapter.getCurrPosition();
                 Garment toDelete = adapter.getGarmentAt(position);
 
-                if (toDelete.getImagePath() == null) {
-                    Toast.makeText(cntx, "Error: Image path not found",
+                if (toDelete.getKey() == null) {
+                    Toast.makeText(requireContext(), "Error: Garment key not found",
                             Toast.LENGTH_SHORT).show();
                     return true;
                 }
 
-                DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Garments");
-                dbref.orderByChild("ImagePath").equalTo(toDelete.getImagePath())
-                                .addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        if (snapshot.exists()) {
-                                            for (DataSnapshot item : snapshot.getChildren()) {
-                                                item.getRef().removeValue(); // delete from Firebase
-                                            }
-                                            Toast.makeText(cntx, "Garment deleted",
-                                                    Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(cntx, "Item not found",
-                                                    Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-                                        Toast.makeText(cntx, "Delete unsuccessful",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                String uid = auth.getUid();
+                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
+
+                userRef.get().addOnSuccessListener(snapshot -> {
+                    if (snapshot.exists()) {
+                        String username = snapshot.getValue(String.class);
+
+                        if (username != null) {
+                            DatabaseReference garmentRef = FirebaseDatabase.getInstance()
+                                    .getReference("data")
+                                    .child(username)
+                                    .child("garments")
+                                    .child(toDelete.getKey());
+
+                            garmentRef.removeValue()
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(requireContext(), "Garment deleted", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(requireContext(), "Delete unsuccessful", Toast.LENGTH_SHORT).show();
+                                    });
+                        } else {
+                            Toast.makeText(requireContext(), "Username not found", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), "User not found", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(requireContext(), "Error retrieving user", Toast.LENGTH_SHORT).show();
+                });
+
                 return true;
             }
         }
@@ -204,6 +241,8 @@ public class ClosetLanding_ItemListing extends Fragment {
     public class GarmentAdapter extends RecyclerView.Adapter<GarmentAdapter.ViewHolder> {
         private List<Garment> garmentList;
         private Context context;
+        private List<Garment> fullGarmentList = new ArrayList<>();
+
 
         private int currPosition = -1;
 
@@ -212,11 +251,17 @@ public class ClosetLanding_ItemListing extends Fragment {
             this.context = context;
         }
 
+        public void resetGarments() {
+            this.garmentList = new ArrayList<>(fullGarmentList);
+            notifyDataSetChanged();
+        }
+
         public Garment getGarmentAt(int position) {
             return garmentList.get(position);
         }
 
         public void updateGarmentData(List<Garment> newData) {
+            this.fullGarmentList = new ArrayList<>(newData);
             this.garmentList = newData;
             notifyDataSetChanged();  // Notifying the adapter to re-render the data
         }
@@ -239,31 +284,43 @@ public class ClosetLanding_ItemListing extends Fragment {
             chipGroup.removeAllViews();
 
             String imagePath = garment.getImagePath();
+            Log.e("StorageDebug", "Trying to load imagePath: " + imagePath);
+
             if (imagePath != null && !imagePath.isEmpty()) {
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference imageRef = storage.getReference().child(imagePath);
 
-                // Get the download URL and load it with Glide
-                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Glide.with(viewHolder.imageView.getContext())
-                                .load(uri)
-                                .placeholder(R.drawable.garment_picture_default) // Show default while loading
-                                .error(R.drawable.garment_picture_default) // Show default on error
-                                .into(viewHolder.getImageView());
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("Firebase", "Error loading image", e);
-                        // Optionally handle errors, e.g., by showing a default image or a toast
-                        viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default);
-                    }
-                });
+                imageRef.getDownloadUrl()
+                        .addOnSuccessListener(uri -> {
+                            Glide.with(viewHolder.imageView.getContext())
+                                    .load(uri)
+                                    .placeholder(R.drawable.garment_picture_default) // <-- sets default while loading
+                                    .error(R.drawable.garment_picture_default)       // <-- fallback if error
+                                    .into(viewHolder.getImageView());
+                        })
+                        .addOnFailureListener(e -> {
+                            viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default);
+                        });
             } else {
-                // If no image path is available, use the default image
                 viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default);
+            }
+
+
+            if (imagePath != null && !imagePath.isEmpty()) {
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference imageRef = storage.getReference().child(imagePath);
+
+                imageRef.getDownloadUrl()
+                        .addOnSuccessListener(uri -> {
+                            Glide.with(viewHolder.imageView.getContext())
+                                    .load(uri)
+                                    .placeholder(R.drawable.garment_picture_default)
+                                    .error(R.drawable.garment_picture_default)
+                                    .into(viewHolder.getImageView());
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("StorageDebug", "Failed to load imagePath: " + imagePath, e);
+                        });
             }
 
 
@@ -285,13 +342,77 @@ public class ClosetLanding_ItemListing extends Fragment {
                 }
             }
 
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            String uid = auth.getUid();
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
+
+            userRef.get().addOnSuccessListener(snapshot -> {
+                if (snapshot.exists()) {
+                    String username = snapshot.getValue(String.class);
+                    if (username != null) {
+
+                        if (garment.getKey() == null) {
+                            Log.e("FavoriteError", "Garment key is null for garment: " + garment.getImagePath());
+                            viewHolder.favorite.setImageResource(R.drawable.favorites_unfilled);
+                            return;
+                        }
+
+                        DatabaseReference garmentRef = FirebaseDatabase.getInstance()
+                                .getReference("data")
+                                .child(username)
+                                .child("garments")
+                                .child(garment.getKey())
+                                .child("favorites");
+
+                        garmentRef.get().addOnSuccessListener(favSnapshot -> {
+                            Boolean isFavorite = favSnapshot.getValue(Boolean.class);
+                            if (isFavorite != null && isFavorite) {
+                                viewHolder.favorite.setImageResource(R.drawable.favorites_filled);
+                                garment.setFavorites(true);
+                            } else {
+                                viewHolder.favorite.setImageResource(R.drawable.favorites_unfilled);
+                                garment.setFavorites(false);
+                            }
+                        }).addOnFailureListener(e -> {
+                            viewHolder.favorite.setImageResource(R.drawable.favorites_unfilled);
+                        });
+                    }
+                }
+            });
+
 
             ImageButton favoriteBtn = viewHolder.favorite;
-            favoriteBtn.setImageResource(garment.isFavorite() ? R.drawable.favorites_filled : R.drawable.favorites_unfilled);
             favoriteBtn.setOnClickListener(v -> {
-                boolean isFavorite = garment.isFavorite();
-                garment.setFavorites();
-                favoriteBtn.setImageResource(!isFavorite ? R.drawable.favorites_filled : R.drawable.favorites_unfilled);
+                FirebaseAuth auth2 = FirebaseAuth.getInstance();
+                String uid2 = auth2.getUid();
+
+                DatabaseReference userRef2 = FirebaseDatabase.getInstance().getReference("users").child(uid2);
+
+                userRef2.get().addOnSuccessListener(snapshot -> {
+                    if (snapshot.exists()) {
+                        String username2 = snapshot.getValue(String.class);
+
+                        if (username2 != null) {
+                            DatabaseReference garmentRef2 = FirebaseDatabase.getInstance()
+                                    .getReference("data")
+                                    .child(username2)
+                                    .child("garments")
+                                    .child(garment.getKey())
+                                    .child("favorites");
+
+                            garmentRef2.get().addOnSuccessListener(favSnapshot -> {
+                                Boolean isFavorite = favSnapshot.getValue(Boolean.class);
+                                if (isFavorite != null && isFavorite) {
+                                    garmentRef2.setValue(false);
+                                    favoriteBtn.setImageResource(R.drawable.favorites_unfilled);
+                                } else {
+                                    garmentRef2.setValue(true);
+                                    favoriteBtn.setImageResource(R.drawable.favorites_filled);
+                                }
+                            });
+                        }
+                    }
+                });
             });
 
             viewHolder.itemView.setOnLongClickListener(v -> {
@@ -299,11 +420,29 @@ public class ClosetLanding_ItemListing extends Fragment {
                 v.showContextMenu();
                 return true;
             });
-
-            viewHolder.getImageView().setImageResource(R.drawable.garment_picture_default); // TODO: Load actual image
-
         }
 
+        public void filterGarments(String selectedCategory, List<String> selectedColors, boolean showFavoritesOnly) {
+            List<Garment> filteredGarments = new ArrayList<>();
+
+            Log.d("Filter", "Selected Category: " + selectedCategory);
+            for (Garment garment : garmentList) {
+                Log.d("Filter", "Garment Category: " + garment.getCategory());
+            }
+
+            for (Garment garment : fullGarmentList) {
+                boolean matchesCategory = selectedCategory == null || garment.getCategory().equals(selectedCategory);
+                boolean matchesColor = selectedColors.isEmpty() || garment.getColorTags() != null && garment.getColorTags().containsAll(selectedColors);
+                boolean matchesFavorite = !showFavoritesOnly || garment.isFavorite();
+
+                if (matchesCategory && matchesColor && matchesFavorite) {
+                    filteredGarments.add(garment);
+                }
+            }
+            this.garmentList = filteredGarments;
+            notifyDataSetChanged();
+        }
+      
         @Override
         public int getItemCount() {
             return garmentList.size();
@@ -326,6 +465,65 @@ public class ClosetLanding_ItemListing extends Fragment {
             }
         }
 
+    }
+
+    private void openFilter() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+
+        View bottomSheetView = LayoutInflater.from(getActivity()).inflate(
+                R.layout.filter_bottom_sheet_garments,
+                getActivity().findViewById(android.R.id.content),
+                false
+        );
+        bottomSheetDialog.setContentView(bottomSheetView);
+
+        ChipGroup categoryChipGroup = bottomSheetView.findViewById(R.id.categoryChipGroup);
+        ChipGroup colorChipGroup = bottomSheetView.findViewById(R.id.colorChipGroup);
+        CheckBox favorites = bottomSheetView.findViewById(R.id.checkboxFavorites);
+
+        // Make the stuff behind the filter window darker
+        if (bottomSheetDialog.getWindow() != null) {
+            bottomSheetDialog.getWindow().setDimAmount(0.7f);
+        }
+
+        // When press apply filters
+        bottomSheetView.findViewById(R.id.applyFilterButton).setOnClickListener(v -> {
+            String selectedCategory = null;
+            int checkedChipId = categoryChipGroup.getCheckedChipId();
+            Log.d("Filter", "Checked chip id: " + checkedChipId);
+            if (checkedChipId != View.NO_ID) {
+                Chip selectedChip = bottomSheetView.findViewById(checkedChipId);
+                selectedCategory = selectedChip.getText().toString();
+            }
+
+            List<String> selectedColors = new ArrayList<>();
+            for (int i = 0; i < colorChipGroup.getChildCount(); i++) {
+                Chip chip = (Chip) colorChipGroup.getChildAt(i);
+                if (chip.isChecked()) {
+                    selectedColors.add(chip.getText().toString());
+                }
+            }
+
+            boolean showFavoritesOnly = favorites.isChecked();
+
+            adapter.filterGarments(selectedCategory, selectedColors, showFavoritesOnly);
+
+            bottomSheetDialog.dismiss();
+        });
+
+        bottomSheetView.findViewById(R.id.clearFilterButton).setOnClickListener(v -> {
+            deleteFilters();
+            bottomSheetDialog.dismiss();
+        });
+
+
+        bottomSheetDialog.show();
+    }
+
+    private void deleteFilters() {
+        if (adapter != null) {
+            adapter.resetGarments();
+        }
     }
 
 

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -26,11 +27,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,64 +48,154 @@ public class GarmentListingFragment extends Fragment {
     StorageReference sref;
     FirebaseDatabase database;
     DatabaseReference dbref;
+    DatabaseReference user_ref;
+    String path;
+    String username;
     String currentCategory;
 
 
     public GarmentListingFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentGarmentListingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         ImageView image = binding.ListingImage;
+        setupDropdownMenu_Category();
+        setupDropdownMenu_SubCategory(null);
 
         Bundle bundles = getArguments();
+
         String path;
         if (bundles != null && bundles.containsKey("ImagePath")) {
             path = bundles.getString("ImagePath");
+
+            EditText Category = binding.Tops;
+            EditText Subcategory = binding.Blouse;
+
+            Category.setText(bundles.getString("Category"));
+            Subcategory.setText(bundles.getString("Subcategory"));
+
+            Log.e("GarmentListingFragment", "ImagePath Found");
         } else {
             // debugging
             Log.e("GarmentListingFragment", "Missing 'ImagePath' argument");
             path = null;
             Toast.makeText(getContext(), "Missing image path", Toast.LENGTH_SHORT).show();
         }
-        setupDropdownMenu_Category();
 
+        ArrayList<String> colorTags = bundles.getStringArrayList("ColorTags");
+        ChipGroup chips = binding.colorGroup;
 
-        // editing logic
-        // TODO: right now, editing and saving will duplicate the key -> need to pass id stuff
-        String savedCategory = null;
-        String savedSubCat = null;
-        ArrayList<String> savedColors = null;
-
-        if (bundles != null) {
-            savedCategory = bundles.getString("Category");
-            savedSubCat = bundles.getString("Subcategory");
-            //savedColors = bundles.getStringArrayList("ColorTags"); // TODO: check if this is going to cause a type error
+        if (colorTags != null) {
+            for (int i = 0; i < chips.getChildCount(); ++i) {
+                View chipView = chips.getChildAt(i);
+                if (chipView instanceof Chip) {
+                    Chip chip = (Chip) chipView;
+                    String chipText = chip.getText().toString().trim(); // Important: trim spaces
+                    if (colorTags.contains(chipText)) {
+                        chip.setChecked(true);
+                    } else {
+                        chip.setChecked(false);
+                    }
+                }
+            }
         }
 
-        // populate drop down menu if loading existing listing
-        if (savedCategory != null) {
-            binding.Tops.setText(savedCategory, false);
-        }
-        if (savedSubCat != null) {
-            binding.Blouse.setText(savedSubCat, false);
-        }
-        // TODO: logic for color tags
-        if (savedColors != null && !savedColors.isEmpty()) {
-            binding.colorGroup.removeAllViews();
-        }
+
+
+        saveButton = binding.SaveListing;
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String user = auth.getUid();
+
+        user_ref = FirebaseDatabase.getInstance().getReference("users");
+
+        user_ref.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult().exists()) {
+                username = task.getResult().child(user).getValue(String.class);
+                Log.e("GarmentListingFragment", "Username: " + username);
+
+                dbref = FirebaseDatabase.getInstance().getReference("data").child(username).child("garments");
+
+                saveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String category = binding.Tops.getText().toString();
+                        String subcategory = binding.Blouse.getText().toString();
+
+                        if (category.isEmpty()) {
+                            Toast.makeText(getActivity(), "Category Required", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if (subcategory.isEmpty()) {
+                            Toast.makeText(getActivity(),"Subcategory Required",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        ArrayList<String> colorsSelected = new ArrayList<>();
+                        ChipGroup chips = binding.colorGroup;
+
+                        for (int i = 0; i < chips.getChildCount(); ++i) {
+                            View chip = chips.getChildAt(i);
+                            if (chip instanceof Chip) {
+                                Chip color = (Chip) chip;
+                                if (color.isChecked()) {
+                                    colorsSelected.add(color.getText().toString());
+                                }
+                            }
+                        }
+
+
+                        if (bundles != null && bundles.containsKey("key")) {
+                            String key = bundles.getString("key");
+
+                            Map<String, Object> updatedData = new HashMap<>();
+                            updatedData.put("ImagePath", path);
+                            updatedData.put("Category", category);
+                            updatedData.put("Subcategory", subcategory);
+                            updatedData.put("ColorTags", colorsSelected);
+
+                            dbref.child(key).updateChildren(updatedData)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(getActivity(), "Garment updated!", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(getActivity(), "Update failed", Toast.LENGTH_SHORT).show();
+                                    });
+
+                        } else {
+                            String userId = dbref.push().getKey();
+                            Map<String, Object> userData = new HashMap<>();
+                            userData.put("ImagePath", path);
+                            userData.put("Category", category);
+                            userData.put("Subcategory", subcategory);
+                            userData.put("ColorTags", colorsSelected);
+                            userData.put("favorites", false);
+
+                            dbref.child(userId).setValue(userData);
+                        }
+
+                        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
+                        navController.navigate(R.id.navigation_closet);
+                    }
+                });
+
+
+            } else {
+                Log.d("GarmentListingFragment", "Username not found!");
+            }
+        });
 
         storage = FirebaseStorage.getInstance();
         sref = storage.getReference();
         StorageReference imageRef = sref.child(path);
 
         saveButton = binding.SaveListing;
-
-        database = FirebaseDatabase.getInstance();
-        dbref = database.getReference("Garments");
 
         imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -119,62 +212,6 @@ public class GarmentListingFragment extends Fragment {
             }
         });
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String Category = binding.Tops.getText().toString();
-                String Subcategory = binding.Blouse.getText().toString();
-
-                if (Category.isEmpty()) {
-                    Toast.makeText(getActivity(), "Category Required", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (Subcategory.isEmpty()) {
-                    Toast.makeText(getActivity(),"Subcategory Required",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                ChipGroup chips = binding.colorGroup;
-                List<String> colorsSelected = new ArrayList<>();
-
-                for (int i = 0; i < chips.getChildCount(); ++i) {
-                    View chip = chips.getChildAt(i);
-                    if (chip instanceof Chip) {
-                        Chip color = (Chip) chip;
-                        if (color.isChecked()) {
-                            colorsSelected.add(color.getText().toString());
-                        }
-                    }
-                }
-
-                if (colorsSelected.isEmpty()) {
-                    Toast.makeText(getActivity(),"Please select at least one color",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                String userId = dbref.push().getKey();
-                Map<String, Object> userData = new HashMap<>();
-
-                userData.put("ImagePath", path);
-                userData.put("Category", Category);
-                userData.put("Subcategory", Subcategory);
-                userData.put("colorTags", colorsSelected);
-
-                assert userId != null;
-                dbref.child(userId).setValue(userData);
-
-                Garment newGarment = new Garment(Category, path, Subcategory, colorsSelected);
-
-                GarmentViewModel garmentViewModel = new ViewModelProvider(requireActivity()).get(GarmentViewModel.class);
-                garmentViewModel.addGarment(newGarment);
-
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
-                navController.navigate(R.id.navigation_closet);
-            }
-        });
 
         return root;
     }

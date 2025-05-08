@@ -94,7 +94,7 @@
             app:layout_constraintHorizontal_bias="0.72"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/Listing_Image"
-            app:layout_constraintVertical_bias="0.609"
+            app:layout_constraintVertical_bias="0.64"
             app:singleLine="false">
 
             <com.google.android.material.chip.Chip

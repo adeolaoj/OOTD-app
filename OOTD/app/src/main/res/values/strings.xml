@@ -312,7 +312,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="textEmail">Email</string>
     <string name="textPassword">Password</string>
-    <string name="textName">Name</string>
+    <string name="textName">Username</string>
     <string name="confirmPassword">Confirm Password</string>
     <string name="title_activity_camera_application">CameraApplication</string>
     <string name="next">Next</string>
@@ -341,11 +341,13 @@
     <string name="white">White</string>
 
     <string name="edit_listing">Edit Listing</string>
+    <string name="view_listing">View Listing</string>
     <string name="delete_listing">Delete Listing</string>
     <string name="sort_and_filter">Sort and Filter</string>
     <string name="color">Color</string>
     <string name="show_favorites">Show Favorites</string>
     <string name="clear_filters_text">Clear Filters</string>
     <string name="apply_filters_text">Apply Filters</string>
+    <string name="filters">Filters</string>
 
 </resources>

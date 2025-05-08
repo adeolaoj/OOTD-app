@@ -24,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.Executor;
 
@@ -31,7 +33,7 @@ import java.util.concurrent.Executor;
 public class LoginFragment extends Fragment {
 
     private Button loginButton;
-    private EditText email;
+    private EditText name;
     private EditText password;
 
     private SharedPreferences myPrefs;
@@ -50,27 +52,22 @@ public class LoginFragment extends Fragment {
         View root = binding.getRoot();
 
         loginButton = binding.loginButton;
-        email = binding.loginUserEmail;
-        password = binding.loginUserPassword;
-
-        Context context = getActivity().getApplicationContext();
-        myPrefs = context.getSharedPreferences("OOTD", Context.MODE_PRIVATE);
-
-        // get saved info from prefs
-        savedEmail = myPrefs.getString("loginEmail","");
-        savedPassword = myPrefs.getString("loginPassword","");
-
-        // set info to text views
-        email.setText(savedEmail);
-        password.setText(savedPassword);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = binding.loginUserEmail.getText().toString();
+                String name = binding.loginUserName.getText().toString();
+                Log.d("Auth", "Name: " + name);
                 String password = binding.loginUserPassword.getText().toString();
+                Log.d("Auth", "Password: " + password);
 
-                loginUser(email, password);
+                if (name.isEmpty()) {
+                    Toast.makeText(getActivity(), "Please enter username", Toast.LENGTH_SHORT).show();
+                } else if (password.isEmpty()) {
+                    Toast.makeText(getActivity(), "Please enter password", Toast.LENGTH_SHORT).show();
+                } else {
+                    lookup(name, password);
+                }
 
             }
         });
@@ -85,21 +82,64 @@ public class LoginFragment extends Fragment {
         binding = null;
     }
 
-    public void loginUser(String email, String password) {
+    public void lookup(String username, String password) {
+        DatabaseReference dbref = FirebaseDatabase.getInstance()
+                .getReference("data")
+                .child(username);
+
+        Log.d("Auth", "dbref: " + dbref.getKey());
+
+
+        dbref.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult().exists()) {
+                String email = task.getResult().child("email").getValue(String.class);
+                Log.d("Auth", "Email: " + email);
+                Log.d("Auth", "Username found!");
+                loginUser(username,email,password);
+            } else {
+                Toast.makeText(getActivity(), "Username not found", Toast.LENGTH_SHORT).show();
+                Log.d("Auth", "Username not found!");
+            }
+        });
+    }
+
+    public void loginUser(String name, String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(ContextCompat.getMainExecutor(getActivity()), task -> {
                     if (task.isSuccessful()) {
                         Log.d("Auth", "signInWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
+
+                        Bundle bdl = new Bundle();
+                        bdl.putString("Username", name);
+
                         Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtras(bdl);
+
                         startActivity(intent);
                         getActivity().finish();
                     } else {
                         Log.w("Auth", "signInWithEmail:failure", task.getException());
-                        Toast.makeText(getActivity(), "Invalid Sign In", Toast.LENGTH_SHORT).show();
+
+                        String errorMessage = "Invalid Sign In"; 
+
+                        Exception exception = task.getException();
+                        if (exception != null) {
+                            String error = exception.getMessage();
+                            if (error != null) {
+                                if (error.contains("password is invalid") || error.contains("INVALID_PASSWORD")) {
+                                    errorMessage = "Incorrect password";
+                                } else if (error.contains("no user record") || error.contains("EMAIL_NOT_FOUND")) {
+                                    errorMessage = "Username not found";
+                                }
+                            }
+                        }
+
+                        Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
 
 
 }
