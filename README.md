@@ -1,3 +1,6 @@
+# Accessing Main Application
+the OOTD application can be accessed by opening up the OOTD folder
+
 # Login Information
 username: test,
 password: password
